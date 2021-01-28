@@ -35,7 +35,6 @@ function HomeScreen() {
               <Product product={product} />
             </Col>
           ))}
-        Kien
         </Row>
       )}
     </>
