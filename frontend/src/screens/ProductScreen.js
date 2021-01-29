@@ -37,90 +37,75 @@ function ProductScreen({ history, match }) {
       ) : error ? (
         <Message variant='danger'>{error}</Message>
       ) : (
-        <Row>
-          <Col md={5}>
+        <Row className='container-productGreen'>
+          <Col md={5} className='p-0 img-productGreen'>
             <Image src={product.image} alt={product.name} fluid />
           </Col>
 
-          <Col md={4} className='text-left p-1'>
-            <ListGroup variant='flush'>
-              <ListGroup.Item className='border-0'>
-                <strong>
-                  <h6>{product.name}</h6>
-                </strong>
-              </ListGroup.Item>
+          <Col md={7} className='text-left p-1'>
+            <Row className='pl-4'>
+              <ListGroup variant='flush' className='pr-3'>
+                <ListGroup.Item className='border-0 pb-0'>
+                  <strong>
+                    <h5>{product.name}</h5>
+                  </strong>
+                </ListGroup.Item>
 
-              <ListGroup.Item className='border-0'>
-                <Rating
-                  value={product.rating}
-                  text={`${product.numReviews} reviews`}
-                />
-              </ListGroup.Item>
-
-              <ListGroup.Item className='border-0'>
-                Price: ${product.price}
-              </ListGroup.Item>
-
-              <ListGroup.Item>
-                Description: {product.description}
-              </ListGroup.Item>
-            </ListGroup>
-          </Col>
-
-          <Col md={3} className='text-center'>
-            <Card>
-              <ListGroup variant='flush'>
-                <ListGroup.Item>
-                  <Row>
-                    <Col>Price: </Col>
-                    <Col>
-                      <strong>${product.price}</strong>
-                    </Col>
-                  </Row>
+                <ListGroup.Item className='border-0 pb-0'>
+                  <Rating
+                    value={product.rating}
+                    text={`(${product.numReviews} reviews)`}
+                  />
                 </ListGroup.Item>
 
                 <ListGroup.Item>
-                  <Row>
-                    <Col>Status: </Col>
-                    <Col>
-                      {product.countInStock > 0 ? 'In Stock' : 'Out of Stock'}
-                    </Col>
-                  </Row>
+                  Description: {product.description}
                 </ListGroup.Item>
+              </ListGroup>
 
-                {product.countInStock > 0 && (
-                  <ListGroup.Item>
-                    <Row>
-                      <Col>Qty</Col>
-                      <Col>
-                        <Form.Control
-                          as='select'
-                          value={qty}
-                          onChange={(e) => setQty(e.target.value)}
-                        >
-                          {[...Array(product.countInStock).keys()].map((x) => (
-                            <option key={x + 1} value={x + 1}>
-                              {x + 1}
-                            </option>
-                          ))}
-                        </Form.Control>
-                      </Col>
-                    </Row>
+              <ListGroup variant='flush' className='border-0 pt-0'>
+                <div className='group-items p-1 ml-4'>
+                  <ListGroup.Item className='border-0 pt-0 pb-0 mb-0 group-items'>
+                    <h2>${product.price}</h2>
                   </ListGroup.Item>
-                )}
 
-                <ListGroup.Item>
+                  <ListGroup.Item className='border-0 group-items'>
+                    Status:{' '}
+                    {product.countInStock > 0 ? 'In Stock' : 'Out of Stock'}
+                  </ListGroup.Item>
+
+                  {product.countInStock > 0 && (
+                    <ListGroup.Item className='border-0 pt-0 pb-0 group-items'>
+                      <Row>
+                        <Col md={3}>Qty:</Col>
+                        <Col md={4}>
+                          <Form.Control
+                            className='text-center'
+                            type='number'
+                            size='sm'
+                            min='0'
+                            defaultValue='1'
+                            onChange={(e) => setQty(e.target.value)}
+                          ></Form.Control>
+                        </Col>
+                      </Row>
+                    </ListGroup.Item>
+                  )}
+                </div>
+
+                <ListGroup.Item className='ml-4 pl-0 pr-0'>
                   <Button
-                    onClick={addToCartHandler} 
-                    className='btn-block btn-warning'
+                    onClick={addToCartHandler}
+                    className='btn-block btn-danger'
                     type='button'
                     disabled={product.countInStock === 0}
+                    style={{ fontSize: '1em' }}
                   >
-                    Add to Cart
+                    <strong>Add to Cart</strong>
                   </Button>
                 </ListGroup.Item>
               </ListGroup>
-            </Card>
+            </Row>
           </Col>
         </Row>
       )}

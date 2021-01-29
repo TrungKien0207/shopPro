@@ -22,7 +22,7 @@ function HomeScreen() {
 
   return (
     <>
-      <h1>Latest Product</h1>
+      <h3>Latest Product</h3>
       
       {loading ? (
         <Loader/>
