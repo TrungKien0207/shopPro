@@ -75,7 +75,7 @@ export const CartScreen = ({ match, location, history }) => {
                     <Col md={3}>
                       <Link
                         to={`/product/${item.product}`}
-                        className='text-decoration-none'
+                        className='text-decoration-none product-card-green'
                       >
                         <Image src={item.image} alt={item.name} fluid />
                       </Link>

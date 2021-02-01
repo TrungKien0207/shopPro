@@ -43,7 +43,7 @@ function ProductScreen({ history, match }) {
           </Col>
 
           <Col md={7} className='text-left p-1'>
-            <Row className='pl-4'>
+            <Row className='pl-4 pr-2'>
               <ListGroup variant='flush' className='pr-3'>
                 <ListGroup.Item className='border-0 pb-0'>
                   <strong>
@@ -58,7 +58,7 @@ function ProductScreen({ history, match }) {
                   />
                 </ListGroup.Item>
 
-                <ListGroup.Item>
+                <ListGroup.Item className='text-justify'>
                   Description: {product.description}
                 </ListGroup.Item>
               </ListGroup>
@@ -71,7 +71,7 @@ function ProductScreen({ history, match }) {
 
                   <ListGroup.Item className='border-0 group-items'>
                     Status:{' '}
-                    {product.countInStock > 0 ? 'In Stock' : 'Out of Stock'}
+                    {product.countInStock > 0 ? 'In Stock' : <b className='danger'>Out of Stock</b>}
                   </ListGroup.Item>
 
                   {product.countInStock > 0 && (
