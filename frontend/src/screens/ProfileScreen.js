@@ -12,7 +12,13 @@ import {
 import FormContainer from '../components/FormContainer'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
-
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+import ErrorIcon from '@material-ui/icons/Error'
+import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline'
+import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline'
+import { useSnackbar } from 'notistack'
+import '../toast.css'
 ProfileScreen.propTypes = {}
 
 function ProfileScreen({ location, history }) {
@@ -35,10 +41,55 @@ function ProfileScreen({ location, history }) {
 
   const submitHandler = (e) => {
     e.preventDefault()
+    error && toast.error(
+      <div>
+        <ErrorOutlineIcon className='pr-1' fontSize='large' /> {error}
+      </div>,
+      {
+        position: 'top-right',
+        autoClose: 2500,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      }
+    )
+
     if (password !== confirmPassword) {
-      setMessage('Password do not match')
+      toast.error(
+        <div>
+          <ErrorOutlineIcon className='pr-1' fontSize='large' /> Password is not
+          match
+        </div>,
+        {
+          position: 'top-right',
+          autoClose: 2500,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        }
+      )
     } else {
       dispatch(updateUserProfile({ id: user._id, email, name, password }))
+      toast.success(
+        <div>
+          <CheckCircleOutlineIcon className='pr-1' fontSize='large' />
+          Profile Updated
+        </div>,
+        {
+          className: 'Toastify__toast--success',
+          position: 'top-right',
+          autoClose: 2500,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        }
+      )
     }
   }
 
@@ -59,9 +110,8 @@ function ProfileScreen({ location, history }) {
     <Row>
       <Col md={4}>
         <h2>User Profile</h2>
-        {message && <Message variant='danger'>{message}</Message>}
-        {success && <Message variant='success'>Profile Updated</Message>}
-        {error && <Message variant='danger'>{error}</Message>}
+        {/* {message && <Message variant='danger'>{message}</Message>}
+        {error && <Message variant='danger'>{error}</Message>} */}
         {loading && <Loader />}
         <Form onSubmit={submitHandler}>
           <Form.Group controlId='name'>
@@ -107,6 +157,7 @@ function ProfileScreen({ location, history }) {
           <Button type='submit' variant='success'>
             Update
           </Button>
+          <ToastContainer />
         </Form>
       </Col>
       <Col md={8}>

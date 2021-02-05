@@ -7,6 +7,7 @@ body {
   letter-spacing: 0.05rem;
   background-color: rgb(239, 239, 239);
   color: rgb(36, 36, 36);
+  border: 1px solid rgba(211, 211, 211, 0.993);
 }
 
 html {
@@ -106,3 +107,24 @@ p {
   color: red;
 }
 
+.link-green {
+  color: rgb(255, 255, 255);
+  font-size: 0.8rem;
+  letter-spacing: 0.05rem;
+  padding-left: 1.4rem;
+}
+
+.link-green:hover {
+  color: rgb(255, 255, 255);
+}
+
+.bg-step {
+  clip-path: polygon(0% 0%, 78% 0, 90% 50%, 78% 100%, 0% 100%);
+  width: 8rem;
+}
+
+.bg-step-2 {
+  clip-path: polygon(78% 0, 90% 50%, 78% 100%, 0% 100%, 10% 50%, 0% 0%);
+  /* padding-left: 0.4rem; */
+  width: 8.2rem;
+}
