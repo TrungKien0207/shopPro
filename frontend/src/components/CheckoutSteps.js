@@ -39,7 +39,7 @@ function CheckoutSteps({ step1, step2, step3, step4 }) {
 
       <Nav.Item className='bg-dark bg-step-2'>
         {step4 ? (
-          <LinkContainer to='/placeorder'>
+          <LinkContainer to='/placeorder' className='bg-info'>
             <Nav.Link className='link-green'>Place Order</Nav.Link>
           </LinkContainer>
         ) : (

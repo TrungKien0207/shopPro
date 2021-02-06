@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Button, Form, Col } from 'react-bootstrap'
+import { Button, Form, Col, Image } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { savePaymentMethod } from '../actions/cartActions'
 import CheckoutSteps from '../components/CheckoutSteps'
@@ -40,9 +40,8 @@ export const PaymentScreen = ({ history }) => {
               name='paymentMethod'
               checked
               onChange={(e) => setPaymentMethod(e.target.value)}
-              src='https://www.google.com/url?sa=i&url=https%3A%2F%2Fcanhme.com%2Fkien-thuc%2Fhuong-dan-dang-ky-va-xac-thuc-tai-khoan-paypal%2F&psig=AOvVaw3a2E8rn0ouL18ad88RGpJ7&ust=1612627466126000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCMjI6_GP0-4CFQAAAAAdAAAAABAD'
             ></Form.Check>
-
+            
             <Form.Check
               type='radio'
               label='Stripe'

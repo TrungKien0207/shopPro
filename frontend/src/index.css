@@ -128,3 +128,19 @@ p {
   /* padding-left: 0.4rem; */
   width: 8.2rem;
 }
+
+.link-product {
+  text-decoration: none;
+  color: rgb(52, 58, 64);
+}
+
+.link-product:hover {
+  text-decoration: none;
+  color: rgb(10, 10, 10);
+}
+
+.btn-apply {
+  letter-spacing: 0.2rem;
+  border-radius: 0;
+  font-size: 1rem;
+}
