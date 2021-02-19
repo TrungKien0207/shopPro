@@ -137,6 +137,7 @@ p {
 .link-product:hover {
   text-decoration: none;
   color: rgb(10, 10, 10);
+  font-weight: 700;
 }
 
 .btn-apply {

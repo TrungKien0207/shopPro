@@ -8,11 +8,13 @@ import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline'
 Message.propTypes = {}
 
 function Message({ variant, children }) {
-  toast.error(
+  toast.success(
     <div>
-      <ErrorOutlineIcon className='pr-1' fontSize='large' /> {children}
+      <CheckCircleOutlineIcon className='pr-1' fontSize='large' />
+      {variant}
     </div>,
     {
+      className: 'Toastify__toast--success',
       position: 'top-right',
       autoClose: 2500,
       hideProgressBar: true,
@@ -22,7 +24,6 @@ function Message({ variant, children }) {
       progress: undefined,
     }
   )
-
   return (
     <ToastContainer></ToastContainer>
   )
