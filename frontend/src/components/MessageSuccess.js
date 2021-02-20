@@ -5,9 +5,9 @@ import { ToastContainer, toast } from 'react-toastify'
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline'
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline'
 
-Message.propTypes = {}
+MessageSuccess.propTypes = {}
 
-function Message({ variant, children }) {
+function MessageSuccess({ variant, children }) {
   toast.success(
     <div>
       <CheckCircleOutlineIcon className='pr-1' fontSize='large' />
@@ -29,8 +29,8 @@ function Message({ variant, children }) {
   )
 }
 
-Message.defaultProps = {
+MessageSuccess.defaultProps = {
   variant: 'info',
 }
 
-export default Message
+export default MessageSuccess
