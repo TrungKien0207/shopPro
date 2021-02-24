@@ -145,3 +145,8 @@ p {
   border-radius: 0;
   font-size: 1rem;
 }
+
+.bg-table {
+  background-color: #ddd;
+  border: 0;
+}

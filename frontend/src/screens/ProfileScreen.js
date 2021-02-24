@@ -1,8 +1,17 @@
 import { set } from 'mongoose'
 import React, { useEffect, useState } from 'react'
-import { Button, Col, Form, Row } from 'react-bootstrap'
+import {
+  Button,
+  Col,
+  Form,
+  Row,
+  Table,
+  Image,
+  ListGroup,
+} from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
+import { LinkContainer } from 'react-router-bootstrap'
 import {
   register,
   login,
@@ -19,6 +28,8 @@ import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline'
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline'
 import { useSnackbar } from 'notistack'
 import '../toast.css'
+import { listMyOrders } from '../actions/orderActions'
+import Announcement from '../components/Announcement'
 ProfileScreen.propTypes = {}
 
 function ProfileScreen({ location, history }) {
@@ -39,22 +50,26 @@ function ProfileScreen({ location, history }) {
   const userUpdateProfile = useSelector((state) => state.userUpdateProfile)
   const { success } = userUpdateProfile
 
+  const orderListMy = useSelector((state) => state.orderListMy)
+  const { loading: loadingOrders, error: errorOrders, orders } = orderListMy
+
   const submitHandler = (e) => {
     e.preventDefault()
-    error && toast.error(
-      <div>
-        <ErrorOutlineIcon className='pr-1' fontSize='large' /> {error}
-      </div>,
-      {
-        position: 'top-right',
-        autoClose: 2500,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      }
-    )
+    error &&
+      toast.error(
+        <div>
+          <ErrorOutlineIcon className='pr-1' fontSize='large' /> {error}
+        </div>,
+        {
+          position: 'top-right',
+          autoClose: 2500,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        }
+      )
 
     if (password !== confirmPassword) {
       toast.error(
@@ -99,6 +114,7 @@ function ProfileScreen({ location, history }) {
     } else {
       if (!user.name) {
         dispatch(getUserDetails('profile'))
+        dispatch(listMyOrders())
       } else {
         setName(user.name)
         setEmail(user.email)
@@ -108,7 +124,7 @@ function ProfileScreen({ location, history }) {
 
   return (
     <Row>
-      <Col md={4}>
+      <Col md={3}>
         <h2>User Profile</h2>
         {/* {message && <Message variant='danger'>{message}</Message>}
         {error && <Message variant='danger'>{error}</Message>} */}
@@ -160,8 +176,68 @@ function ProfileScreen({ location, history }) {
           <ToastContainer />
         </Form>
       </Col>
-      <Col md={8}>
+      <Col md={9}>
         <h2>My Order</h2>
+        {loadingOrders ? (
+          <Loader />
+        ) : errorOrders ? (
+          <Announcement variant='danger'>{errorOrders}</Announcement>
+        ) : (
+          <Table striped  bordered responsive className='table-sm bg-table'>
+            <thead>
+              <tr className='text-center'>
+                <th>NAME</th>
+                <th>IMAGE</th>
+                <th>DATE</th>
+                <th>TOTAL</th>
+                <th>PAID</th>
+                <th>DELIVERED</th>
+              </tr>
+            </thead>
+            <tbody >
+              {orders.map((order) => (
+                <tr key={order._id}>
+                  <td className='p-0'>
+                    {order.orderItems.map((item, index) => (
+                      <ListGroup.Item key={index} className='bg-table'>
+                        {item.name}
+                      </ListGroup.Item>
+                    ))}
+                  </td>
+                  <td style={{ width:'2rem', height:'2rem' }} className='p-0'>
+                    {order.orderItems.map((item, index) => (
+                      <ListGroup.Item key={index} className='bg-table p-1'>
+                        <Image src={item.image} alt={item.name} fluid rounded />
+                      </ListGroup.Item>
+                    ))}
+                  </td>
+                  <td>{order.createdAt.substring(0, 10)}</td>
+                  <td>
+                    {order.isPaid ? (
+                      order.paidAt.substring(0, 10)
+                    ) : (
+                      <i className='fas fa-times' style={{ color: 'red' }} />
+                    )}
+                  </td>
+                  <td>
+                    {order.isDelivered ? (
+                      order.deliveredAt.substring(0, 10)
+                    ) : (
+                      <i className='fas fa-times' style={{ color: 'red' }} />
+                    )}
+                  </td>
+                  <td>
+                    <LinkContainer to={`/orders/${order._id}`}>
+                      <Button variant='info' className='text-uppercase'>
+                        Details
+                      </Button>
+                    </LinkContainer>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        )}
       </Col>
     </Row>
   )

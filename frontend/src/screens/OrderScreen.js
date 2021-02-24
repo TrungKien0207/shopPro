@@ -13,9 +13,7 @@ import {
   ORDER_PAY_RESET
 } from '../constants/orderConstants'
 
-OrderScreen.propTypes = {}
-
-function OrderScreen({ match }) {
+const OrderScreen = ({ match, history }) => {
   const orderId = match.params.id
 
   const [sdkReady, setSdkReady] = useState(false)
@@ -27,6 +25,12 @@ function OrderScreen({ match }) {
 
   const orderPay = useSelector((state) => state.orderPay)
   const { loading: loadingPay, success: successPay } = orderPay
+
+  // const orderDeliver = useSelector((state) => state.orderDeliver)
+  // const { loading: loadingDeliver, success: successDeliver } = orderDeliver
+
+  const userLogin = useSelector((state) => state.userLogin)
+  const { userInfo } = userLogin
 
   if (!loading) {
     //   Calculate prices
@@ -40,6 +44,10 @@ function OrderScreen({ match }) {
   }
 
   useEffect(() => {
+    if (!userInfo) {
+      history.push('/login')
+    }
+
     const addPayPalScript = async () => {
       const { data: clientId } = await axios.get('/api/config/paypal')
       const script = document.createElement('script')
@@ -52,8 +60,9 @@ function OrderScreen({ match }) {
       document.body.appendChild(script)
     }
 
-    if (!order || successPay) {
+    if (!order || successPay ) {
       dispatch({ type: ORDER_PAY_RESET })
+      // dispatch({ type: ORDER_DELIVER_RESET })
       dispatch(getOrderDetails(orderId))
     } else if (!order.isPaid) {
       if (!window.paypal) {
@@ -68,6 +77,7 @@ function OrderScreen({ match }) {
     console.log(paymentResult)
     dispatch(payOrder(orderId, paymentResult))
   }
+
 
   return loading ? (
     <Loader />
@@ -94,7 +104,7 @@ function OrderScreen({ match }) {
                 </a>
               </p>
 
-              <p className='mb-1'>
+              <p className='mb-3'>
                 <strong>Address: </strong>
                 {order.shippingAddress.address}, {order.shippingAddress.city},{' '}
                 {order.shippingAddress.postalCode},{' '}
