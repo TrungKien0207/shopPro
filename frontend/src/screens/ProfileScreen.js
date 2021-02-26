@@ -183,7 +183,13 @@ function ProfileScreen({ location, history }) {
         ) : errorOrders ? (
           <Announcement variant='danger'>{errorOrders}</Announcement>
         ) : (
-          <Table striped  bordered responsive className='table-sm bg-table'>
+          <Table
+            striped
+            bordered
+            hover
+            responsive
+            className='table-sm text-center'
+          >
             <thead>
               <tr className='text-center'>
                 <th>NAME</th>
@@ -194,26 +200,31 @@ function ProfileScreen({ location, history }) {
                 <th>DELIVERED</th>
               </tr>
             </thead>
-            <tbody >
+            <tbody>
               {orders.map((order) => (
                 <tr key={order._id}>
-                  <td className='p-0'>
+                  <td className='p-0 r'>
                     {order.orderItems.map((item, index) => (
-                      <ListGroup.Item key={index} className='bg-table'>
+                      <td key={index} className='border-0'>
                         {item.name}
-                      </ListGroup.Item>
+                      </td>
                     ))}
                   </td>
-                  <td style={{ width:'2rem', height:'2rem' }} className='p-0'>
+                  <td style={{ width: '2rem', height: '2rem' }} className='p-0'>
                     {order.orderItems.map((item, index) => (
-                      <ListGroup.Item key={index} className='bg-table p-1'>
+                      <td key={index} className='p-1 border-0'>
                         <Image src={item.image} alt={item.name} fluid rounded />
-                      </ListGroup.Item>
+                      </td>
                     ))}
                   </td>
-                  <td>{order.createdAt.substring(0, 10)}</td>
+                  <td>
+                    {order.createdAt.substring(11, 19)} <br/>{' '}
+                    {order.createdAt.substring(0, 10)}
+                  </td>
                   <td>
                     {order.isPaid ? (
+                      order.paidAt.substring(11, 19) +
+                      ' : '  +
                       order.paidAt.substring(0, 10)
                     ) : (
                       <i className='fas fa-times' style={{ color: 'red' }} />

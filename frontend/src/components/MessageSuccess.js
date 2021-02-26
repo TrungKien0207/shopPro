@@ -16,7 +16,7 @@ function MessageSuccess({ variant, children }) {
     {
       className: 'Toastify__toast--success',
       position: 'top-right',
-      autoClose: 2500,
+      autoClose: 5500,
       hideProgressBar: true,
       closeOnClick: true,
       pauseOnHover: true,

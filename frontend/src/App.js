@@ -6,13 +6,15 @@ import Header from './components/Header'
 import CartScreen from './screens/CartScreen.js'
 import HomeScreen from './screens/HomeScreen'
 import LoginScreen from './screens/LoginScreen'
+import OrderScreen from './screens/OrderScreen.js'
 import { PaymentScreen } from './screens/PaymentScreen'
 import PlaceOrderScreen from './screens/PlaceOrderScreen'
 import ProductScreen from './screens/ProductScreen.js'
 import ProfileScreen from './screens/ProfileScreen'
 import RegisterScreen from './screens/RegisterScreen.js'
-import OrderScreen from './screens/OrderScreen.js'
 import { ShippingScreen } from './screens/ShippingScreen'
+import UserEditScreen from './screens/UserEditScreen'
+import UserListScreen from './screens/UserListScreen'
 
 const App = () => {
   return (
@@ -30,6 +32,8 @@ const App = () => {
           <Route path='/payment' component={PaymentScreen} exact />
           <Route path='/placeorder' component={PlaceOrderScreen} exact />
           <Route path='/cart/:id?' component={CartScreen} exact />
+          <Route path='/admin/userlist' component={UserListScreen} exact />
+          <Route path='/admin/user/:id/edit' component={UserEditScreen} exact />
         </Container>
       </main>
       <Footer />

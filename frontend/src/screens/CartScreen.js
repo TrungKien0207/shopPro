@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import Message from '../components/Message'
+import Announcement from '../components/Announcement'
 import { Link } from 'react-router-dom'
 import {
   Button,
@@ -55,11 +55,16 @@ export const CartScreen = ({ match, location, history }) => {
       </Link>
       <h3>Shopping Cart</h3>
       <Row>
-        <Col md={9} className='p-0 pr-4 '>
+        <Col md={9} className='p-0 pr-4 mt-2 text-center text-uppercase'>
           {cartItems.length === 0 ? (
-            <Message>
-              Your cart is empty <Link to='/'>Go back</Link>
-            </Message>
+            <Announcement variant='warning'>
+              <b className='text-light fs-1'>Your cart is empty </b>
+              <Link to='/'>
+                <Button variant='light' className='text-uppercase'>
+                  Shop now
+                </Button>
+              </Link>
+            </Announcement>
           ) : (
             <ListGroup variant='flush' className=''>
               {cartItems.map((item) => (
