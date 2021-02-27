@@ -16,12 +16,14 @@ function MessageSuccess({ variant, children }) {
     {
       className: 'Toastify__toast--success',
       position: 'top-right',
-      autoClose: 5500,
+      autoClose: 2500,
       hideProgressBar: true,
       closeOnClick: true,
       pauseOnHover: true,
       draggable: true,
       progress: undefined,
+      preventDuplicates: true,
+      preventOpenDuplicates: true
     }
   )
   return (

@@ -1,17 +1,14 @@
 import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
-import { Form, Button, Row, Col, InputGroup } from 'react-bootstrap'
+import { Button, Form } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
+import { getUserDetails, updateUser } from '../actions/userActions'
 import FormContainer from '../components/FormContainer'
-import { getUserDetails, register, updateUser } from '../actions/userActions'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
 import MessageSuccess from '../components/MessageSuccess'
-import Announcement from '../components/Announcement'
-import { SnackbarProvider } from 'notistack'
 import {
-  USER_UPDATE_REQUEST,
-  USER_UPDATE_RESET,
+  USER_UPDATE_RESET
 } from '../constants/userConstants'
 
 function UserEditScreen({ match, history }) {
@@ -43,7 +40,7 @@ function UserEditScreen({ match, history }) {
       dispatch({ type: USER_UPDATE_RESET })
       history.push('/admin/userlist')
     } else {
-      if (!user.name || user._id != userId) {
+      if (!user.name || user._id !== userId) {
         dispatch(getUserDetails(userId))
       } else {
         setName(user.name)
