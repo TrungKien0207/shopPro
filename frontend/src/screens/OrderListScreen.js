@@ -54,25 +54,27 @@ function OrderListScreen({ history }) {
                   {order.createdAt.substring(0, 10)}
                 </td>
                 <td>${order.totalPrice}</td>
-                <td>
+                <td style={{color: '#fd7e14' , fontWeight: 'bold'}}>
                   {order.isPaid ? (
                     order.paidAt.substring(11, 19) +
-                    ' : '  +
+                    ' : ' +
                     order.paidAt.substring(0, 10)
                   ) : (
                     <i className='fas fa-times' style={{ color: 'red' }}></i>
                   )}
                 </td>
-                <td>
+                <td style={{color: 'green', fontWeight: 'bold'}}>
                   {order.isDelivered ? (
-                    order.deliverAt.substring(0, 10)
+                    order.deliveredAt.substring(11, 19) +
+                    ' : ' +
+                    order.deliveredAt.substring(0, 10)
                   ) : (
                     <i className='fas fa-times' style={{ color: 'red' }}></i>
                   )}
                 </td>
                 <td>
                   <LinkContainer to={`/admin/order/${order._id}/edit`}>
-                    <Button variant='info' className='btn-sm'>
+                    <Button variant='dark' className='btn-sm btn-unique'>
                       DETAILS
                     </Button>
                   </LinkContainer>

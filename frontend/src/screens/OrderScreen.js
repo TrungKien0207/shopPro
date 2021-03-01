@@ -1,6 +1,6 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
-import { Card, Col, Image, ListGroup, Row, Button } from 'react-bootstrap'
+import { Button, Card, Col, Image, ListGroup, Row } from 'react-bootstrap'
 import { PayPalButton } from 'react-paypal-button-v2'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
@@ -121,7 +121,7 @@ const OrderScreen = ({ match, history }) => {
 
               {order.isDelivered ? (
                 <Announcement variant='success'>
-                  Delivered on {order.DeliveredAt}
+                  Delivered on {order.deliveredAt}
                 </Announcement>
               ) : (
                 <Announcement variant='danger'>No Delivered</Announcement>

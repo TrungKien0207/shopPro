@@ -105,7 +105,8 @@ export const CartScreen = ({ match, location, history }) => {
                         type='number'
                         size='sm'
                         min='0'
-                        defaultValue='1'
+                        // defaultValue='1'
+                        value={item.qty}
                         onChange={(e) =>
                           Number(e.target.value) !== 0
                             ? dispatch(

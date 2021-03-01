@@ -4,8 +4,8 @@ import {
   ORDER_CREATE_SUCCESS,
   ORDER_DELIVER_FAIL,
   ORDER_DELIVER_REQUEST,
-  ORDER_DELIVER_SUCCESS,
   ORDER_DELIVER_RESET,
+  ORDER_DELIVER_SUCCESS,
   ORDER_DETAILS_FAIL,
   ORDER_DETAILS_REQUEST,
   ORDER_DETAILS_SUCCESS,
@@ -136,7 +136,7 @@ export const orderListMyReducer = (state = { orders: [] }, action) => {
         error: action.payload,
       }
     case ORDER_LIST_MY_RESET:
-      return {orders: []}
+      return { orders: [] }
 
     default:
       return state
@@ -159,7 +159,8 @@ export const orderListReducer = (state = { orders: [] }, action) => {
         loading: false,
         error: action.payload,
       }
-
+    // case ORDER_LIST_RESET:
+    //   return {orders: []}
     default:
       return state
   }
