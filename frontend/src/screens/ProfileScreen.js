@@ -1,35 +1,16 @@
-import { set } from 'mongoose'
-import React, { useEffect, useState } from 'react'
-import {
-  Button,
-  Col,
-  Form,
-  Row,
-  Table,
-  Image,
-  ListGroup,
-} from 'react-bootstrap'
-import { useDispatch, useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
-import { LinkContainer } from 'react-router-bootstrap'
-import {
-  register,
-  login,
-  getUserDetails,
-  updateUserProfile,
-} from '../actions/userActions'
-import FormContainer from '../components/FormContainer'
-import Loader from '../components/Loader'
-import Message from '../components/Message'
-import { ToastContainer, toast } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
-import ErrorIcon from '@material-ui/icons/Error'
-import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline'
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline'
-import { useSnackbar } from 'notistack'
-import '../toast.css'
+import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline'
+import React, { useEffect, useState } from 'react'
+import { Button, Col, Form, Image, Row, Table } from 'react-bootstrap'
+import { useDispatch, useSelector } from 'react-redux'
+import { LinkContainer } from 'react-router-bootstrap'
+import { toast, ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 import { listMyOrders } from '../actions/orderActions'
+import { getUserDetails, updateUserProfile } from '../actions/userActions'
 import Announcement from '../components/Announcement'
+import Loader from '../components/Loader'
+import '../toast.css'
 ProfileScreen.propTypes = {}
 
 function ProfileScreen({ location, history }) {
@@ -218,13 +199,13 @@ function ProfileScreen({ location, history }) {
                     ))}
                   </td>
                   <td>
-                    {order.createdAt.substring(11, 19)} <br/>{' '}
+                    {order.createdAt.substring(11, 19)} <br />{' '}
                     {order.createdAt.substring(0, 10)}
                   </td>
                   <td>
                     {order.isPaid ? (
                       order.paidAt.substring(11, 19) +
-                      ' : '  +
+                      ' : ' +
                       order.paidAt.substring(0, 10)
                     ) : (
                       <i className='fas fa-times' style={{ color: 'red' }} />

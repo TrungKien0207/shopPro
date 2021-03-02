@@ -3,6 +3,7 @@ import { Button, Form } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { saveShippingAddress } from '../actions/cartActions'
 import CheckoutSteps from '../components/CheckoutSteps'
+import Step from '../components/Step'
 import FormContainer from '../components/FormContainer'
 
 export const ShippingScreen = ({ history }) => {
@@ -23,58 +24,61 @@ export const ShippingScreen = ({ history }) => {
   }
 
   return (
-    <FormContainer>
-      <CheckoutSteps step1 step2 />
-      <h3>Shipping</h3>
-      <Form onSubmit={submitHandler}>
-        <Form.Group controlId='address'>
-          <Form.Label>Address</Form.Label>
-          <Form.Control
-            type='text'
-            required
-            placeholder='Enter address'
-            value={address}
-            onChange={(e) => setAddress(e.target.value)}
-          ></Form.Control>
-        </Form.Group>
+    <>
+      <Step step1 step2 />
+      <FormContainer>
+        {/* <CheckoutSteps step1 step2 /> */}
+        <h3>Shipping</h3>
+        <Form onSubmit={submitHandler}>
+          <Form.Group controlId='address'>
+            <Form.Label>Address</Form.Label>
+            <Form.Control
+              type='text'
+              required
+              placeholder='Enter address'
+              value={address}
+              onChange={(e) => setAddress(e.target.value)}
+            ></Form.Control>
+          </Form.Group>
 
-        <Form.Group controlId='city'>
-          <Form.Label>City</Form.Label>
-          <Form.Control
-            type='text'
-            required
-            placeholder='Enter city'
-            value={city}
-            onChange={(e) => setCity(e.target.value)}
-          ></Form.Control>
-        </Form.Group>
+          <Form.Group controlId='city'>
+            <Form.Label>City</Form.Label>
+            <Form.Control
+              type='text'
+              required
+              placeholder='Enter city'
+              value={city}
+              onChange={(e) => setCity(e.target.value)}
+            ></Form.Control>
+          </Form.Group>
 
-        <Form.Group controlId='postalCode'>
-          <Form.Label>PostalCode</Form.Label>
-          <Form.Control
-            type='text'
-            required
-            placeholder='Enter postalCode'
-            value={postalCode}
-            onChange={(e) => setPostalCode(e.target.value)}
-          ></Form.Control>
-        </Form.Group>
+          <Form.Group controlId='postalCode'>
+            <Form.Label>PostalCode</Form.Label>
+            <Form.Control
+              type='text'
+              required
+              placeholder='Enter postalCode'
+              value={postalCode}
+              onChange={(e) => setPostalCode(e.target.value)}
+            ></Form.Control>
+          </Form.Group>
 
-        <Form.Group controlId='country'>
-          <Form.Label>Country</Form.Label>
-          <Form.Control
-            type='text'
-            required
-            placeholder='Enter country'
-            value={country}
-            onChange={(e) => setCountry(e.target.value)}
-          ></Form.Control>
-        </Form.Group>
+          <Form.Group controlId='country'>
+            <Form.Label>Country</Form.Label>
+            <Form.Control
+              type='text'
+              required
+              placeholder='Enter country'
+              value={country}
+              onChange={(e) => setCountry(e.target.value)}
+            ></Form.Control>
+          </Form.Group>
 
-        <Button type='submit' variant='danger'>
-          Continue
-        </Button>
-      </Form>
-    </FormContainer>
+          <Button type='submit' variant='danger'>
+            Continue
+          </Button>
+        </Form>
+      </FormContainer>
+    </>
   )
 }

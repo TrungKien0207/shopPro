@@ -8,14 +8,14 @@ import '../../src/notisfied.css'
 import {
   deliverOrder,
   getOrderDetails,
-  payOrder,
+  payOrder
 } from '../actions/orderActions'
 import Announcement from '../components/Announcement'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
 import {
   ORDER_DELIVER_RESET,
-  ORDER_PAY_RESET,
+  ORDER_PAY_RESET
 } from '../constants/orderConstants'
 
 const OrderScreen = ({ match, history }) => {

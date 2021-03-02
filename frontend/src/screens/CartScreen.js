@@ -1,18 +1,9 @@
 import React, { useEffect } from 'react'
+import { Button, Card, Col, Form, Image, ListGroup, Row } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
-import Announcement from '../components/Announcement'
 import { Link } from 'react-router-dom'
-import {
-  Button,
-  Card,
-  Col,
-  Form,
-  Alert,
-  Image,
-  ListGroup,
-  Row,
-} from 'react-bootstrap'
 import { addToCart, removeFromCart } from '../actions/cartActions.js'
+import Announcement from '../components/Announcement'
 
 export const CartScreen = ({ match, location, history }) => {
   const productId = match.params.id

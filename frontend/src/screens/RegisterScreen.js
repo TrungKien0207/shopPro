@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
-import { Form, Button, Row, Col } from 'react-bootstrap'
+import { Button, Col, Form, Row } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
-import FormContainer from '../components/FormContainer'
+import { Link } from 'react-router-dom'
 import { register } from '../actions/userActions'
-import Message from '../components/Message'
+import FormContainer from '../components/FormContainer'
 import Loader from '../components/Loader'
-import { SnackbarProvider } from 'notistack'
+import Message from '../components/Message'
 
 RegisterScreen.propTypes = {}
 

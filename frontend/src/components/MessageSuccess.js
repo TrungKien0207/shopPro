@@ -1,9 +1,7 @@
-import React from 'react'
-import { Alert } from 'react-bootstrap'
-import '../toast.css'
-import { ToastContainer, toast } from 'react-toastify'
-import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline'
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline'
+import React from 'react'
+import { toast, ToastContainer } from 'react-toastify'
+import '../toast.css'
 
 MessageSuccess.propTypes = {}
 
