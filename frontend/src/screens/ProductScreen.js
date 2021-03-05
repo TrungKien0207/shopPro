@@ -1,3 +1,4 @@
+import SendIcon from '@material-ui/icons/Send'
 import React, { useEffect, useState } from 'react'
 import { Button, Col, Form, Image, ListGroup, Row } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
@@ -6,15 +7,12 @@ import {
   createProductReview,
   listProductDetails,
 } from '../actions/productActions.js'
+import ActiveRating from '../components/ActiveRating'
 import Announcement from '../components/Announcement.js'
+import ButtonComponent from '../components/ButtonComponent'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
-import MessageSuccess from '../components/MessageSuccess'
 import Rating from '../components/Rating'
-import ActiveRating from '../components/ActiveRating'
-import ButtonComponent from '../components/ButtonComponent'
-import SendIcon from '@material-ui/icons/Send'
-import { blue } from '@material-ui/core/colors'
 import { PRODUCT_CREATE_REVIEW_RESET } from '../constants/productConstants.js'
 
 function ProductScreen({ history, match }) {
@@ -100,7 +98,7 @@ function ProductScreen({ history, match }) {
                   </ListGroup.Item>
                 </ListGroup>
 
-                <ListGroup variant='flush' className='border-0 pt-0'>
+                <ListGroup variant='flush' className='border-0 pt-0 '>
                   <div className='group-items p-1 ml-4'>
                     <ListGroup.Item className='border-0 pt-0 pb-0 mb-0 group-items'>
                       <h2>${product.price}</h2>

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Button, Form } from 'react-bootstrap'
+import { Button, Form, Container } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { saveShippingAddress } from '../actions/cartActions'
 import CheckoutSteps from '../components/CheckoutSteps'
@@ -25,10 +25,13 @@ export const ShippingScreen = ({ history }) => {
 
   return (
     <>
-      <Step step1 step2 />
+      {/* <Container className='pl-5 pr-5 mb-2 '>
+        <Step step1 step2 className='p-5' />
+      </Container> */}
       <FormContainer>
-        {/* <CheckoutSteps step1 step2 /> */}
-        <h3>Shipping</h3>
+        <Step step1 step2 />
+
+        <h3 className='pt-3 text-center'>Shipping</h3>
         <Form onSubmit={submitHandler}>
           <Form.Group controlId='address'>
             <Form.Label>Address</Form.Label>

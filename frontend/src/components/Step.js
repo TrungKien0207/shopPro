@@ -1,23 +1,15 @@
-import React from 'react'
-import { makeStyles } from '@material-ui/core/styles'
-import Stepper from '@material-ui/core/Stepper'
+import Link from '@material-ui/core/Link'
 import Step from '@material-ui/core/Step'
 import StepLabel from '@material-ui/core/StepLabel'
-import Button from '@material-ui/core/Button'
-import Typography from '@material-ui/core/Typography'
-import { Nav } from 'react-bootstrap'
+import Stepper from '@material-ui/core/Stepper'
+import { makeStyles } from '@material-ui/core/styles'
+import React from 'react'
 import { LinkContainer } from 'react-router-bootstrap'
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    width: '100%',
-  },
-  button: {
-    marginRight: theme.spacing(1),
-  },
-  instructions: {
-    marginTop: theme.spacing(1),
-    marginBottom: theme.spacing(1),
+  stepIcon: {
+    color: '#3F51B5',
+    size: 'large',
   },
 }))
 
@@ -27,58 +19,96 @@ export default function HorizontalLinearStepper({
   step3,
   step4,
 }) {
+  const classes = useStyles()
+
   return (
     <div>
-      <Stepper alternativeLabel>
+      <Stepper
+        alternativeLabel
+        className='pt-4 pb-4 rounded'
+        style={{ backgroundColor: 'rgb(208,208,208,0.4)' }}
+      >
         <Step>
           {step1 ? (
             <LinkContainer to='/login'>
-              <StepLabel>
-                <Nav.Link>Sign In</Nav.Link>
+              <StepLabel
+                StepIconProps={{
+                  classes: { root: classes.stepIcon },
+                }}
+              >
+                <Link component='button'>
+                  <strong>Sign In</strong>
+                </Link>
               </StepLabel>
             </LinkContainer>
           ) : (
             <StepLabel>
-              <Nav.Link disabled>Sign In</Nav.Link>
+              <Link disabled component='button'>
+                <strong>Sign In</strong>
+              </Link>
             </StepLabel>
           )}
         </Step>
         <Step>
           {step2 ? (
-            <LinkContainer to='/login'>
-              <StepLabel>
-                <Nav.Link>Shipping</Nav.Link>
+            <LinkContainer to='/shipping'>
+              <StepLabel
+                StepIconProps={{
+                  classes: { root: classes.stepIcon },
+                }}
+              >
+                <Link component='button'>
+                  <strong>Shipping</strong>
+                </Link>
               </StepLabel>
             </LinkContainer>
           ) : (
             <StepLabel>
-              <Nav.Link disabled>Shipping</Nav.Link>
+              <Link disabled component='button'>
+                <strong>Shipping</strong>
+              </Link>
             </StepLabel>
           )}
         </Step>
         <Step>
           {step3 ? (
-            <LinkContainer to='/login'>
-              <StepLabel>
-                <Nav.Link>Payment</Nav.Link>
+            <LinkContainer to='/payment'>
+              <StepLabel
+                StepIconProps={{
+                  classes: { root: classes.stepIcon },
+                }}
+              >
+                <Link component='button'>
+                  <strong>Payment</strong>
+                </Link>
               </StepLabel>
             </LinkContainer>
           ) : (
             <StepLabel>
-              <Nav.Link disabled>Payment</Nav.Link>
+              <Link disabled component='button'>
+                <strong>Payment</strong>
+              </Link>
             </StepLabel>
           )}
         </Step>
         <Step>
           {step4 ? (
-            <LinkContainer to='/login'>
-              <StepLabel>
-                <Nav.Link>Place Order</Nav.Link>
+            <LinkContainer to='/placeoreder'>
+              <StepLabel
+                StepIconProps={{
+                  classes: { root: classes.stepIcon },
+                }}
+              >
+                <Link component='button'>
+                  <strong>Place Order</strong>
+                </Link>
               </StepLabel>
             </LinkContainer>
           ) : (
             <StepLabel>
-              <Nav.Link disabled>Place Order</Nav.Link>
+              <Link disabled component='button'>
+                <strong>Place Order</strong>
+              </Link>
             </StepLabel>
           )}
         </Step>

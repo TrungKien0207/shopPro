@@ -1,9 +1,16 @@
 import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { Button, Row, Col, ListGroup, Image, Card } from 'react-bootstrap'
+import {
+  Button,
+  Row,
+  Col,
+  ListGroup,
+  Image,
+  Card,
+  Container,
+} from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
-import CheckoutSteps from '../components/CheckoutSteps'
 import Step from '../components/Step'
 import { createOrder } from '../actions/orderActions'
 import { ORDER_CREATE_RESET } from '../constants/orderConstants'
@@ -59,17 +66,11 @@ function PlaceOrderScreen({ history }) {
 
   return (
     <>
+      <Container></Container>
       <Row className='justify-content-center'>
-        <CheckoutSteps
-          step1
-          step2
-          step3
-          step4
-          className='justify-content-center'
-        />
-
         <Col md={7} className='ml-3 mr-3 pl-0 pr-0 mt-2'>
-          <ListGroup variant='flush' className='shadow'>
+          <Step step1 step2 step3 step4 />
+          <ListGroup variant='flush' className='shadow pt-2'>
             <ListGroup.Item className='border-0'>
               <h5 className='text-uppercase'>Shiping</h5>
               <p className='mb-1'>

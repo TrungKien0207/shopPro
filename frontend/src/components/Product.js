@@ -18,8 +18,8 @@ function Product({ product }) {
           to={`/product/${product._id}`}
           className='text-decoration-none title-product'
         >
-          <Card.Title as='div'>
-            <strong>{product.name.substring(0, 40)}...</strong>
+          <Card.Title as='div' style={{ fontSize: '0.9rem' }}>
+            <strong>{product.name.substring(0, 30)}...</strong>
           </Card.Title>
         </Link>
 

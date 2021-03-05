@@ -30,13 +30,13 @@ export const CartScreen = ({ match, location, history }) => {
     history.push('/login?redirect=shipping')
   }
 
-  const test = (e) => {
-    const value = e.target.value
-    if (parseInt(value) === 0) {
-      alert('sai')
-    }
-    console.log(value)
-  }
+  // const test = (e) => {
+  //   const value = e.target.value
+  //   if (parseInt(value) === 0) {
+  //     alert('sai')
+  //   }
+  //   console.log(value)
+  // }
 
   return (
     <Col>
@@ -125,7 +125,7 @@ export const CartScreen = ({ match, location, history }) => {
         </Col>
 
         <Col md={3} className='p-0'>
-          <Card className='border-0 shadow mt-2'>
+          <Card className='border-0 shadow mt-3'>
             <ListGroup variant='flush'>
               <ListGroup.Item className='d-flex justify-content-around '>
                 <div>

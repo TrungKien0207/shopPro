@@ -1,9 +1,13 @@
+import FormControlLabel from '@material-ui/core/FormControlLabel'
+import Radio from '@material-ui/core/Radio'
+import RadioGroup from '@material-ui/core/RadioGroup'
 import React, { useState } from 'react'
-import { Button, Form, Col, Image } from 'react-bootstrap'
+import { Button, Col, Form } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { savePaymentMethod } from '../actions/cartActions'
-import CheckoutSteps from '../components/CheckoutSteps'
 import FormContainer from '../components/FormContainer'
+import Step from '../components/Step'
+import ButtonComponent from '../components/ButtonComponent'
 
 export const PaymentScreen = ({ history }) => {
   const cart = useSelector((state) => state.cart)
@@ -13,7 +17,7 @@ export const PaymentScreen = ({ history }) => {
     history.push('/shipping')
   }
 
-  const [paymentMethod, setPaymentMethod] = useState('Paypal')
+  const [paymentMethod, setPaymentMethod] = useState('PayPal')
 
   const dispatch = useDispatch()
 
@@ -25,31 +29,30 @@ export const PaymentScreen = ({ history }) => {
 
   return (
     <FormContainer>
-      <CheckoutSteps step1 step2 step3 />
-      <h3>Payment Method</h3>
+      <Step step1 step2 step3 />
+      <h3 className='pt-3 text-center'>Payment Method</h3>
       <Form onSubmit={submitHandler}>
         <Form.Group>
-          <Form.Label as='legend'>Select Method</Form.Label>
+          <Form.Label as='legend'>
+            <h5>Select Method</h5>
+          </Form.Label>
 
           <Col>
-            <Form.Check
-              type='radio'
-              label='PayPal or Credit Card'
-              id='PayPal'
-              value='PayPal'
-              name='paymentMethod'
-              checked
+            <RadioGroup
+              value={paymentMethod}
               onChange={(e) => setPaymentMethod(e.target.value)}
-            ></Form.Check>
-            
-            <Form.Check
-              type='radio'
-              label='Stripe'
-              id='Stripe'
-              value='Stripe'
-              name='paymentMethod'
-              onChange={(e) => setPaymentMethod(e.target.value)}
-            ></Form.Check>
+            >
+              <FormControlLabel
+                value='PayPal'
+                control={<Radio />}
+                label='PayPal or Credit Card'
+              />
+              <FormControlLabel
+                value='Stripe'
+                control={<Radio />}
+                label='Stripe'
+              />
+            </RadioGroup>
           </Col>
         </Form.Group>
 
