@@ -1,11 +1,39 @@
+import Buttonn from '@material-ui/core/Button'
+import ButtonGroupp from '@material-ui/core/ButtonGroup'
+import { makeStyles } from '@material-ui/core/styles'
+import TextField from '@material-ui/core/TextField'
+import AddIcon from '@material-ui/icons/Add'
+import RemoveIcon from '@material-ui/icons/Remove'
 import React, { useEffect } from 'react'
-import { Button, Card, Col, Form, Image, ListGroup, Row } from 'react-bootstrap'
+import { Button, Card, Col, Image, ListGroup, Row } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { addToCart, removeFromCart } from '../actions/cartActions.js'
 import Announcement from '../components/Announcement'
 
+const useStyles = makeStyles((theme) => ({
+  root: {
+    '& .MuiTextField-root': {
+      margin: theme.spacing(0),
+    },
+
+    '& .MuiInputBase-input': {
+      padding: theme.spacing(2),
+    },
+
+    '& .MuiFilledInput-input': {
+      padding: theme.spacing(2),
+    },
+
+    '& .MuiFilledInput-inputMarginDense': {
+      padding: theme.spacing(1),
+      textAlign: 'center',
+    },
+  },
+}))
+
 export const CartScreen = ({ match, location, history }) => {
+  const classes = useStyles()
   const productId = match.params.id
   const qty = location.search ? Number(location.search.split('=')[1]) : 1
 
@@ -14,7 +42,7 @@ export const CartScreen = ({ match, location, history }) => {
   const cart = useSelector((state) => state.cart)
   const { cartItems } = cart
 
-  console.log(cartItems)
+  console.log(cartItems.product)
 
   useEffect(() => {
     if (productId) {
@@ -46,7 +74,7 @@ export const CartScreen = ({ match, location, history }) => {
       </Link>
       <h3>Shopping Cart</h3>
       <Row>
-        <Col md={9} className='p-0 pr-4 mt-2 text-center text-uppercase'>
+        <Col md={9} className='p-0 pr-4 mt-2 text-uppercase'>
           {cartItems.length === 0 ? (
             <Announcement variant='warning'>
               <b className='text-light fs-1'>Your cart is empty </b>
@@ -61,11 +89,11 @@ export const CartScreen = ({ match, location, history }) => {
               {cartItems.map((item) => (
                 <ListGroup.Item
                   key={item.product}
-                  className='border-0 mt-2 shadow '
+                  className='border-0 mt-2 shadow rounded'
                   rounded
                 >
                   <h6>
-                    NSX <i class='fas fa-angle-right'></i>
+                    {item.brand} <i class='fas fa-angle-right'></i>
                   </h6>
                   <Row>
                     <Col md={3}>
@@ -91,21 +119,63 @@ export const CartScreen = ({ match, location, history }) => {
                     </Col>
 
                     <Col md={2}>
-                      <Form.Control
-                        className='text-center'
-                        type='number'
-                        size='sm'
-                        min='0'
-                        // defaultValue='1'
-                        value={item.qty}
-                        onChange={(e) =>
-                          Number(e.target.value) !== 0
-                            ? dispatch(
-                                addToCart(item.product, Number(e.target.value))
-                              )
-                            : () => removeFromCartHandler(item.product)
-                        }
-                      ></Form.Control>
+                      <ButtonGroupp size='small' aria-label='small '>
+                        <Buttonn
+                          aria-label='reduce'
+                          size='small'
+                          color='secondary'
+                          onClick={() =>
+                            item.qty !== 0
+                              ? dispatch(
+                                  addToCart(
+                                    item.product,
+                                    Math.max(item.qty - 1, 1)
+                                  )
+                                )
+                              : () => removeFromCartHandler(item.product)
+                          }
+                          variant='contained'
+                        >
+                          <RemoveIcon fontSize='small' />
+                        </Buttonn>
+
+                        {/* <Buttonn variant='contained'>{item.qty}</Buttonn> */}
+                        <div>
+                          <TextField
+                            className={classes.root}
+                            id='filled-size-small'
+                            value={item.qty}
+                            variant='filled'
+                            size='small'
+                            onChange={(e) =>
+                              Number(e.target.value) !== 0
+                                ? dispatch(
+                                    addToCart(
+                                      item.product,
+                                      Number(e.target.value)
+                                    )
+                                  )
+                                : dispatch(
+                                    addToCart(
+                                      item.product,
+                                      Number((e.target.value = ''))
+                                    )
+                                  )
+                            }
+                          />
+                        </div>
+                        <Buttonn
+                          aria-label='increase'
+                          size='small'
+                          onClick={() =>
+                            dispatch(addToCart(item.product, item.qty + 1))
+                          }
+                          variant='contained'
+                          color='secondary'
+                        >
+                          <AddIcon fontSize='small' />
+                        </Buttonn>
+                      </ButtonGroupp>
                     </Col>
 
                     <Col md={1}>

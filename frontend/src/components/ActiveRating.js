@@ -19,12 +19,19 @@ const useStyles = makeStyles({
   },
 })
 
-export default function HoverRating({ value, hover, setValue, setHover }) {
+export default function HoverRating({
+  value,
+  hover,
+  setValue,
+  setHover,
+  size,
+}) {
   const classes = useStyles()
 
   return (
     <div className={classes.root}>
       <Rating
+        size={size}
         name='hover-feedback'
         value={value}
         precision={1}
