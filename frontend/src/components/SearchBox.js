@@ -1,5 +1,6 @@
 import { React, useState } from 'react'
 import { Form, Button } from 'react-bootstrap'
+import SearchIcon from '@material-ui/icons/Search'
 
 const SearchBox = ({ history }) => {
   const [keyword, setKeyword] = useState('')
@@ -23,6 +24,7 @@ const SearchBox = ({ history }) => {
         onChange={(e) => setKeyword(e.target.value)}
       ></Form.Control>
       <Button type='submit' variant='outline-success' className='p-2'>
+        <SearchIcon />
         Search
       </Button>
     </Form>

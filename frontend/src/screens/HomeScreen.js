@@ -45,17 +45,13 @@ function HomeScreen({ match }) {
               </Col>
             ))}
           </Row>
-          <Paginate
-            pages={pages}
-            page={page}
-            keyword={keyword ? keyword : ''}
-          />
-          {/* <Pagination
-            color='primary'
-            count={pages}
-            page={page}
-            keyword={keyword ? keyword : ''}
-          /> */}
+          <div className='d-flex justify-content-center'>
+            <Paginate
+              pages={pages}
+              page={page}
+              keyword={keyword ? keyword : ''}
+            />
+          </div>
         </>
       )}
     </>

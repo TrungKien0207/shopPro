@@ -18,8 +18,8 @@ function Product({ product }) {
           to={`/product/${product._id}`}
           className='text-decoration-none title-product'
         >
-          <Card.Title as='div' style={{ fontSize: '0.9rem' }}>
-            <strong>{product.name.substring(0, 30)}...</strong>
+          <Card.Title as='div'>
+            <h6 className='fw-bolder'>{product.name}</h6>
           </Card.Title>
         </Link>
 
@@ -38,7 +38,7 @@ function Product({ product }) {
           to={`/product/${product._id}`}
           className='text-decoration-none title-product'
         >
-          <Card.Text as='h6'>${product.price}</Card.Text>
+          <Card.Text as='h4'>${product.price}</Card.Text>
         </Link>
       </Card.Body>
     </Card>

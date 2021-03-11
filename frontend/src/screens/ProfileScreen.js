@@ -104,8 +104,8 @@ function ProfileScreen({ location, history }) {
   }, [dispatch, history, userInfo, user])
 
   return (
-    <Row>
-      <Col md={3}>
+    <Row className='justify-content-center'>
+      <Col md={3} className='rounded bg-light shadow pt-2 pb-2 mr-1 '>
         <h2>User Profile</h2>
         {/* {message && <Message variant='danger'>{message}</Message>}
         {error && <Message variant='danger'>{error}</Message>} */}
@@ -151,13 +151,15 @@ function ProfileScreen({ location, history }) {
             ></Form.Control>
           </Form.Group>
 
-          <Button type='submit' variant='success'>
-            Update
-          </Button>
+          <div>
+            <Button type='submit' variant='success'>
+              Update
+            </Button>
+          </div>
           <ToastContainer />
         </Form>
       </Col>
-      <Col md={9}>
+      <Col md={8} className='rounded bg-light shadow pt-2 pb-2 '>
         <h2>My Order</h2>
         {loadingOrders ? (
           <Loader />

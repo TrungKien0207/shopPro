@@ -7,7 +7,9 @@ import SendIcon from '@material-ui/icons/Send'
 import React, { useEffect, useState } from 'react'
 import { Button, Col, Form, Image, ListGroup, Row } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
+import { makeStyles, withStyles } from '@material-ui/core/styles'
 import { Link } from 'react-router-dom'
+import CreateIcon from '@material-ui/icons/Create'
 import {
   createProductReview,
   listProductDetails,
@@ -19,9 +21,10 @@ import Loader from '../components/Loader'
 import Message from '../components/Message'
 import Meta from '../components/Meta'
 import Rating from '../components/Rating'
-import { makeStyles } from '@material-ui/core/styles'
+import { deepOrange } from '@material-ui/core/colors'
 import TextField from '@material-ui/core/TextField'
 import { PRODUCT_CREATE_REVIEW_RESET } from '../constants/productConstants.js'
+import Avatar from '@material-ui/core/Avatar'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -41,6 +44,16 @@ const useStyles = makeStyles((theme) => ({
       padding: theme.spacing(1),
       textAlign: 'center',
     },
+  },
+  orange: {
+    color: theme.palette.getContrastText(deepOrange[500]),
+    backgroundColor: deepOrange[500],
+    width: theme.spacing(4),
+    height: theme.spacing(4),
+    textAlign: 'center',
+  },
+  form: {
+    width: 1030,
   },
 }))
 
@@ -135,8 +148,8 @@ function ProductScreen({ history, match }) {
                   </ListGroup.Item>
                 </ListGroup>
 
-                <ListGroup variant='flush' className='border-0 pt-0 '>
-                  <div className='group-items pt-2 pb-2 ml-4 mr-4'>
+                <ListGroup variant='flush' className='border-0 pt-0'>
+                  <div className='group-items pt-2 pb-2 ml-4 mr-4 rounded shadow'>
                     <ListGroup.Item className='border-0 pt-0 pb-0 mb-0 pr-0 group-items'>
                       <h2>${product.price}</h2>
                     </ListGroup.Item>
@@ -146,12 +159,14 @@ function ProductScreen({ history, match }) {
                       {product.countInStock > 0 ? (
                         'In Stock'
                       ) : (
-                        <b className='danger'>Out of Stock</b>
+                        <b className='danger'>
+                          <Image src='https://img.icons8.com/fluent/35/000000/close-sign.png' />
+                        </b>
                       )}
                     </ListGroup.Item>
 
                     {product.countInStock > 0 && (
-                      <ListGroup.Item className='border-0 pt-0 pb-0 group-items'>
+                      <ListGroup.Item className='border-0 pt-0 pb-0 group-items '>
                         <Row>
                           <Col md={3}>Qty:</Col>
                           <Col md={4} className='d-flex'>
@@ -200,7 +215,7 @@ function ProductScreen({ history, match }) {
                     )}
                   </div>
 
-                  <ListGroup.Item className='ml-4 pl-0 pr-0 pb-0'>
+                  <ListGroup.Item className='ml-4 pl-0 pr-0 pb-0 mr-4'>
                     <Button
                       onClick={addToCartHandler}
                       className='btn-block btn-danger'
@@ -224,7 +239,7 @@ function ProductScreen({ history, match }) {
                 <Announcement variant='dark'>No reviews</Announcement>
               )}
               <div
-                className=' rounded text-center circle-rate pt-1 pb-1'
+                className=' rounded text-center circle-rate pt-2 pb-1'
                 style={{ width: '14rem' }}
               >
                 <h5 className=''>Điểm</h5>
@@ -234,28 +249,40 @@ function ProductScreen({ history, match }) {
               <ListGroup variant='flush'>
                 {product.reviews.map((review) => (
                   <ListGroup.Item key={review._id}>
-                    <div>
-                      <Row>
-                        <div className='col-sm-6 col-md-8 d-flex'>
-                          <h6 className='mb-0'>{review.name}</h6>
+                    <div className='d-flex justify-content-start'>
+                      {/* <Row>
+                        <Col md={1} className=''> */}
+                      <div className='pr-2'>
+                        {' '}
+                        <Avatar className={classes.orange}>
+                          {review.name.substring(0, 1)}
+                        </Avatar>
+                      </div>
+                      {/* </Col>
+                        <Col> */}
+                      <div>
+                        <div className='d-flex'>
+                          <h5 className='mb-0'>{review.name}</h5>
                           <span className='pl-2'>
                             <Rating value={review.rating} />
                           </span>
                         </div>
-                      </Row>
-                      <div
-                        style={{
-                          fontWeight: '200',
-                          color: 'gray',
-                          fontSize: '0.65rem',
-                        }}
-                      >
-                        <p className='mb-1'>
-                          {review.createdAt.substring(11, 19)}
-                          {' : '}
-                          {review.createdAt.substring(0, 10)}
-                        </p>
+                        <div
+                          style={{
+                            fontWeight: '200',
+                            color: 'gray',
+                            fontSize: '0.65rem',
+                          }}
+                        >
+                          <p className='mb-1'>
+                            {review.createdAt.substring(11, 19)}
+                            {' : '}
+                            {review.createdAt.substring(0, 10)}
+                          </p>
+                        </div>
                       </div>
+                      {/* </Col>
+                      </Row> */}
                     </div>
                     <strong style={{ fontWeight: '500', color: 'black' }}>
                       {review.comment}
@@ -264,7 +291,9 @@ function ProductScreen({ history, match }) {
                 ))}
 
                 <ListGroup.Item shadow>
-                  <h6>Write a Customer Review</h6>
+                  <h4>
+                    ĐÁNH GIÁ VÀ BÌNH LUẬN <i class='fas fa-pencil-alt'></i>
+                  </h4>
                   {loadingProductReview && <Loader />}
                   {errorProductReview && (
                     <Message>{errorProductReview}</Message>
@@ -272,7 +301,7 @@ function ProductScreen({ history, match }) {
                   {userInfo ? (
                     <Form onSubmit={submitHandle}>
                       <Form.Group controlId='rating'>
-                        <Form.Label>Rating</Form.Label>
+                        <Form.Label as='h5'>ĐÁNH GIÁ</Form.Label>
                         <ActiveRating
                           value={rating}
                           hover={hover}
@@ -283,13 +312,16 @@ function ProductScreen({ history, match }) {
                       </Form.Group>
 
                       <Form.Group controlId='comment'>
-                        <Form.Label>Comment</Form.Label>
-                        <Form.Control
-                          as='textarea'
-                          row='3'
-                          value={comment}
+                        <TextField
+                          className={classes.form}
+                          id='outlined-multiline-static'
+                          label='Bình luận'
+                          multiline
+                          rows={3}
+                          // defaultValue='Default Value'
+                          variant='outlined'
                           onChange={(e) => setComment(e.target.value)}
-                        ></Form.Control>
+                        />
                       </Form.Group>
                       <ButtonComponent
                         type='submit'

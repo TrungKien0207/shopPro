@@ -32,7 +32,13 @@ function OrderListScreen({ history }) {
       ) : error ? (
         <Announcement variant='danger'>{error}</Announcement>
       ) : (
-        <Table striped bordered hover response className='table-sm text-center'>
+        <Table
+          striped
+          bordered
+          hover
+          response
+          className='table-sm text-center rounded shadow bg-light'
+        >
           <thead>
             <tr>
               <th>ID</th>
@@ -54,7 +60,7 @@ function OrderListScreen({ history }) {
                   {order.createdAt.substring(0, 10)}
                 </td>
                 <td>${order.totalPrice}</td>
-                <td style={{color: '#fd7e14' , fontWeight: 'bold'}}>
+                <td style={{ color: '#fd7e14', fontWeight: 'bold' }}>
                   {order.isPaid ? (
                     order.paidAt.substring(11, 19) +
                     ' : ' +
@@ -63,7 +69,7 @@ function OrderListScreen({ history }) {
                     <i className='fas fa-times' style={{ color: 'red' }}></i>
                   )}
                 </td>
-                <td style={{color: 'green', fontWeight: 'bold'}}>
+                <td style={{ color: 'green', fontWeight: 'bold' }}>
                   {order.isDelivered ? (
                     order.deliveredAt.substring(11, 19) +
                     ' : ' +

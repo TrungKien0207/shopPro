@@ -7,6 +7,7 @@ body {
   background-color: rgb(239, 239, 239);
   color: rgb(36, 36, 36);
   border: 1px solid rgba(211, 211, 211, 0.993);
+  overflow: hidden;
 }
 
 html {

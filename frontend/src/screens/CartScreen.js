@@ -74,10 +74,10 @@ export const CartScreen = ({ match, location, history }) => {
       </Link>
       <h3>Shopping Cart</h3>
       <Row>
-        <Col md={9} className='p-0 pr-4 mt-2 text-uppercase'>
+        <Col md={9} className='p-0 pr-4 mt-3 text-uppercase'>
           {cartItems.length === 0 ? (
-            <Announcement variant='warning'>
-              <b className='text-light fs-1'>Your cart is empty </b>
+            <Announcement variant='danger'>
+              <b className='fs-1'>Your cart is empty </b>
               <Link to='/'>
                 <Button variant='light' className='text-uppercase'>
                   Shop now
@@ -89,7 +89,7 @@ export const CartScreen = ({ match, location, history }) => {
               {cartItems.map((item) => (
                 <ListGroup.Item
                   key={item.product}
-                  className='border-0 mt-2 shadow rounded'
+                  className='border-0 mt-1 shadow rounded'
                   rounded
                 >
                   <h6>
@@ -199,19 +199,19 @@ export const CartScreen = ({ match, location, history }) => {
             <ListGroup variant='flush'>
               <ListGroup.Item className='d-flex justify-content-around '>
                 <div>
-                  <p className='title-bill'>Subtotal: </p>
-                  <p className='title-bill'>Price: </p>
+                  <h5 className='title-bill'>Subtotal: </h5>
+                  <h5 className='title-bill'>Price: </h5>
                 </div>
                 <div>
-                  <h6 className='title-bill-value'>
+                  <h5 className='title-bill-value'>
                     {cartItems.reduce((acc, item) => acc + item.qty, 0)} items
-                  </h6>
-                  <h6 className='title-bill-value'>
+                  </h5>
+                  <h5 className='title-bill-value'>
                     $
                     {cartItems
                       .reduce((acc, item) => acc + item.qty * item.price, 0)
                       .toFixed(2)}
-                  </h6>
+                  </h5>
                 </div>
               </ListGroup.Item>
             </ListGroup>
@@ -219,13 +219,17 @@ export const CartScreen = ({ match, location, history }) => {
           <Card className='mt-3 border-0 btn-proceed'>
             <Button
               type='button'
-              className='btn-block btn-danger text-uppercase p-2'
+              className='btn-block btn-danger text-uppercase p-3 text-light'
               disabled={cartItems === 0}
               onClick={checkoutHandler}
               size='sm'
-              style={{ fontFamily: 'Montserrat', fontSize: '0.78em' }}
+              style={{
+                fontFamily: 'Montserrat',
+                fontSize: '0.78em',
+                color: '#fff',
+              }}
             >
-              Proceed To Checkout
+              <h6 className='text-light m-0'>Proceed To Checkout</h6>
             </Button>
           </Card>
         </Col>

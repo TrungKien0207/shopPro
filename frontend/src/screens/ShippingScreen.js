@@ -31,8 +31,11 @@ export const ShippingScreen = ({ history }) => {
       <FormContainer>
         <Step step1 step2 />
 
-        <h3 className='pt-3 text-center'>Shipping</h3>
-        <Form onSubmit={submitHandler}>
+        <Form
+          onSubmit={submitHandler}
+          className='rounded bg-light shadow p-4 mt-2'
+        >
+          <h3 className='pt-3 text-center'>Shipping</h3>
           <Form.Group controlId='address'>
             <Form.Label>Address</Form.Label>
             <Form.Control
@@ -77,9 +80,11 @@ export const ShippingScreen = ({ history }) => {
             ></Form.Control>
           </Form.Group>
 
-          <Button type='submit' variant='danger'>
-            Continue
-          </Button>
+          <div>
+            <Button type='submit' variant='danger' className='btn-block'>
+              Continue
+            </Button>
+          </div>
         </Form>
       </FormContainer>
     </>

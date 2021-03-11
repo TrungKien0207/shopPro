@@ -103,7 +103,7 @@ function ProductListScreen({ history, match }) {
             bordered
             hover
             response
-            className='table-sm text-center'
+            className='table-sm text-center rounded shadow bg-light'
           >
             <thead>
               <tr>
@@ -143,12 +143,9 @@ function ProductListScreen({ history, match }) {
               ))}
             </tbody>
           </Table>
-          <Paginate
-            pages={pages}
-            page={page}
-            isAdmin={true}
-            className=''
-          />
+          <div className='d-flex justify-content-center'>
+            <Paginate pages={pages} page={page} isAdmin={true}></Paginate>
+          </div>
         </>
       )}
     </>
