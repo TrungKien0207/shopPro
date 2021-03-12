@@ -3,8 +3,6 @@ import { Card } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import Rating from './Rating'
 
-Product.propTypes = {}
-
 function Product({ product }) {
   return (
     <Card className='my-3 rounded  product-card'>

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Col, Row } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { listProducts } from '../actions/productActions'
@@ -17,10 +17,16 @@ function HomeScreen({ match }) {
 
   const productList = useSelector((state) => state.productList)
   const { loading, error, products, pages, page } = productList
-  // console.log('Product1: ', loading)
-  // console.log('producList: ', productList)
+
+  const [isloading, setIsloading] = useState(loading)
 
   useEffect(() => {
+    if (loading) {
+      setIsloading(true)
+      setTimeout(() => {
+        setIsloading(false)
+      }, 500)
+    }
     dispatch(listProducts(keyword, pageNumber))
   }, [dispatch, keyword, pageNumber])
 
@@ -28,9 +34,9 @@ function HomeScreen({ match }) {
     <>
       <Meta />
       {!keyword && <ProductCarousel />}
-      <h3 className='mt-4'>Latest Product</h3>
+      <h3 className='mt-5'>Latest Product</h3>
 
-      {loading ? (
+      {isloading ? (
         <Loader />
       ) : error ? (
         <Message variant='danger'>{error}</Message>

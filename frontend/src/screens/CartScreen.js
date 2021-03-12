@@ -115,10 +115,10 @@ export const CartScreen = ({ match, location, history }) => {
                     </Col>
 
                     <Col md={2} className='pt-2'>
-                      <h6>${item.price}</h6>
+                      <h4>${item.price}</h4>
                     </Col>
 
-                    <Col md={2}>
+                    <Col md={2} className='pt-2'>
                       <ButtonGroupp size='small' aria-label='small '>
                         <Buttonn
                           aria-label='reduce'
@@ -181,10 +181,11 @@ export const CartScreen = ({ match, location, history }) => {
                     <Col md={1}>
                       <Button
                         type='button'
+                        className='pl-2 pr-2 rounded'
                         variant='light'
                         onClick={() => removeFromCartHandler(item.product)}
                       >
-                        <i className='fas fa-trash'></i>
+                        <Image src='https://img.icons8.com/fluent/28/000000/filled-trash.png' />
                       </Button>
                     </Col>
                   </Row>
@@ -195,7 +196,7 @@ export const CartScreen = ({ match, location, history }) => {
         </Col>
 
         <Col md={3} className='p-0'>
-          <Card className='border-0 shadow mt-3'>
+          <Card className='border-0 shadow mt-4 rounded'>
             <ListGroup variant='flush'>
               <ListGroup.Item className='d-flex justify-content-around '>
                 <div>

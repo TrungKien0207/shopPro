@@ -15,6 +15,7 @@ import Step from '../components/Step'
 import { createOrder } from '../actions/orderActions'
 import { ORDER_CREATE_RESET } from '../constants/orderConstants'
 import { USER_DETAILS_RESET } from '../constants/userConstants'
+import Announcement from '../components/Announcement'
 
 PlaceOrderScreen.propTypes = {}
 
@@ -136,38 +137,42 @@ function PlaceOrderScreen({ history }) {
               </ListGroup.Item>
               <ListGroup.Item>
                 <Row>
-                  <Col>Items</Col>
-                  <Col>
+                  <Col className='pl-5 mr-5'>Items</Col>
+                  <Col className='pl-5 pr-0'>
                     <strong>${cart.itemsPrice}</strong>
                   </Col>
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
                 <Row>
-                  <Col>Shipping</Col>
-                  <Col>
+                  <Col className='pl-5 mr-5'>Shipping</Col>
+                  <Col className='pl-5 pr-0'>
                     <strong>${cart.shippingPrice}</strong>
                   </Col>
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
                 <Row>
-                  <Col>Tax</Col>
-                  <Col>
+                  <Col className='pl-5 mr-5'>Tax</Col>
+                  <Col className='pl-5 pr-0'>
                     <strong>${cart.taxPrice}</strong>
                   </Col>
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
                 <Row>
-                  <Col>Total</Col>
-                  <Col>
+                  <Col className='pl-5 mr-5'>Total</Col>
+                  <Col className='pl-5 pr-0'>
                     <strong>${cart.totalPrice}</strong>
                   </Col>
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
-                {error && <Message variant='danger'>{error}</Message>}
+                {error && (
+                  <Announcement variant='danger'>
+                    Vui lòng chọn phương thức thanh toán
+                  </Announcement>
+                )}
               </ListGroup.Item>
               <ListGroup.Item>
                 <Button

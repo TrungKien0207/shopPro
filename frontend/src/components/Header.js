@@ -14,7 +14,14 @@ import { makeStyles, withStyles } from '@material-ui/core/styles'
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart'
 import { black } from 'colors'
 import React from 'react'
-import { Container, Nav, Navbar, NavDropdown, Image } from 'react-bootstrap'
+import {
+  Container,
+  Nav,
+  Navbar,
+  NavDropdown,
+  Image,
+  Dropdown,
+} from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { LinkContainer } from 'react-router-bootstrap'
 import { Route } from 'react-router-dom'
@@ -301,44 +308,50 @@ function Header(props) {
                   </Popper>
                 </>
               )}
+
               {userInfo && userInfo.isAdmin && (
-                <NavDropdown
-                  title={
-                    <Image src='https://img.icons8.com/fluent/28/000000/microsoft-admin.png' />
-                  }
-                  id='dropdown-basic-button'
-                  className='pt-2 justify-content-center'
-                  style={{ fontSize: '0.865625rem', zIndex: '2' }}
-                  menuAlign={{ lg: 'left' }}
-                >
-                  <LinkContainer to='/admin/userlist'>
-                    <NavDropdown.Item>
-                      <Image
-                        className='pr-1'
-                        src='https://img.icons8.com/fluent/24/000000/user-menu-male.png'
-                      />
-                      <strong>USER</strong>
-                    </NavDropdown.Item>
-                  </LinkContainer>
-                  <LinkContainer to='/admin/productlist'>
-                    <NavDropdown.Item>
-                      <Image
-                        className='pr-1'
-                        src='https://img.icons8.com/fluent/24/000000/box-settings-1.png'
-                      />
-                      <strong>PRODUCTS</strong>
-                    </NavDropdown.Item>
-                  </LinkContainer>
-                  <LinkContainer to='/admin/orderlist'>
-                    <NavDropdown.Item>
-                      <Image
-                        className='pr-1'
-                        src='https://img.icons8.com/fluent/24/000000/purchase-order.png'
-                      />
-                      <strong>ORDERS</strong>
-                    </NavDropdown.Item>
-                  </LinkContainer>
-                </NavDropdown>
+                <>
+                  <NavDropdown
+                    title={
+                      <Image src='https://img.icons8.com/fluent/38/000000/favorites-shield.png' />
+                    }
+                    id='nav-dropdown'
+                    className='pt-1 navbar-right'
+                    style={{ fontSize: '0.865625rem', zIndex: '2' }}
+                    alignRight
+                    variant='light'
+                  >
+                    <div>
+                      <LinkContainer to='/admin/userlist'>
+                        <NavDropdown.Item>
+                          <Image
+                            className='pr-1'
+                            src='https://img.icons8.com/fluent/24/000000/user-menu-male.png'
+                          />
+                          <strong>USER</strong>
+                        </NavDropdown.Item>
+                      </LinkContainer>
+                      <LinkContainer to='/admin/productlist'>
+                        <NavDropdown.Item>
+                          <Image
+                            className='pr-1'
+                            src='https://img.icons8.com/fluent/24/000000/box-settings-1.png'
+                          />
+                          <strong>PRODUCTS</strong>
+                        </NavDropdown.Item>
+                      </LinkContainer>
+                      <LinkContainer to='/admin/orderlist'>
+                        <NavDropdown.Item>
+                          <Image
+                            className='pr-1'
+                            src='https://img.icons8.com/fluent/24/000000/purchase-order.png'
+                          />
+                          <strong>ORDERS</strong>
+                        </NavDropdown.Item>
+                      </LinkContainer>
+                    </div>
+                  </NavDropdown>
+                </>
               )}
             </Nav>
           </Navbar.Collapse>

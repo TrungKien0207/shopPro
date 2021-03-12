@@ -37,46 +37,50 @@ export const ShippingScreen = ({ history }) => {
         >
           <h3 className='pt-3 text-center'>Shipping</h3>
           <Form.Group controlId='address'>
-            <Form.Label>Address</Form.Label>
+            <Form.Label as='p'>Address</Form.Label>
             <Form.Control
               type='text'
               required
               placeholder='Enter address'
               value={address}
               onChange={(e) => setAddress(e.target.value)}
+              className='border border-gray'
             ></Form.Control>
           </Form.Group>
 
           <Form.Group controlId='city'>
-            <Form.Label>City</Form.Label>
+            <Form.Label as='p'>City</Form.Label>
             <Form.Control
               type='text'
               required
               placeholder='Enter city'
               value={city}
               onChange={(e) => setCity(e.target.value)}
+              className='border border-gray'
             ></Form.Control>
           </Form.Group>
 
           <Form.Group controlId='postalCode'>
-            <Form.Label>PostalCode</Form.Label>
+            <Form.Label as='p'>PostalCode</Form.Label>
             <Form.Control
               type='text'
               required
               placeholder='Enter postalCode'
               value={postalCode}
               onChange={(e) => setPostalCode(e.target.value)}
+              className='border border-gray'
             ></Form.Control>
           </Form.Group>
 
           <Form.Group controlId='country'>
-            <Form.Label>Country</Form.Label>
+            <Form.Label as='p'>Country</Form.Label>
             <Form.Control
               type='text'
               required
               placeholder='Enter country'
               value={country}
               onChange={(e) => setCountry(e.target.value)}
+              className='border border-gray'
             ></Form.Control>
           </Form.Group>
 

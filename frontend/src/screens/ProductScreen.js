@@ -1,5 +1,9 @@
+import Avatar from '@material-ui/core/Avatar'
 import Buttonn from '@material-ui/core/Button'
 import ButtonGroupp from '@material-ui/core/ButtonGroup'
+import { deepOrange } from '@material-ui/core/colors'
+import { makeStyles } from '@material-ui/core/styles'
+import TextField from '@material-ui/core/TextField'
 import AddIcon from '@material-ui/icons/Add'
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart'
 import RemoveIcon from '@material-ui/icons/Remove'
@@ -7,9 +11,7 @@ import SendIcon from '@material-ui/icons/Send'
 import React, { useEffect, useState } from 'react'
 import { Button, Col, Form, Image, ListGroup, Row } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
-import { makeStyles, withStyles } from '@material-ui/core/styles'
 import { Link } from 'react-router-dom'
-import CreateIcon from '@material-ui/icons/Create'
 import {
   createProductReview,
   listProductDetails,
@@ -21,10 +23,7 @@ import Loader from '../components/Loader'
 import Message from '../components/Message'
 import Meta from '../components/Meta'
 import Rating from '../components/Rating'
-import { deepOrange } from '@material-ui/core/colors'
-import TextField from '@material-ui/core/TextField'
 import { PRODUCT_CREATE_REVIEW_RESET } from '../constants/productConstants.js'
-import Avatar from '@material-ui/core/Avatar'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -69,6 +68,8 @@ function ProductScreen({ history, match }) {
   const productDetails = useSelector((state) => state.productDetails)
   const { loading, error, product } = productDetails
 
+  const [isloading, setIsloading] = useState(loading)
+
   const userLogin = useSelector((state) => state.userLogin)
   const { userInfo } = userLogin
 
@@ -79,6 +80,8 @@ function ProductScreen({ history, match }) {
     error: errorProductReview,
   } = productReviewCreate
 
+  const [review, setReview] = useState(loading)
+
   useEffect(() => {
     if (successProductReview) {
       ;<Announcement variant='success'>Review Submited</Announcement>
@@ -86,8 +89,23 @@ function ProductScreen({ history, match }) {
       setComment('')
       dispatch({ type: PRODUCT_CREATE_REVIEW_RESET })
     }
+
+    if (loading) {
+      setIsloading(true)
+      setTimeout(() => {
+        setIsloading(false)
+      }, 2000)
+    }
+
+    if (loading) {
+      setReview(true)
+      setTimeout(() => {
+        setReview(false)
+      }, 4000)
+    }
+
     dispatch(listProductDetails(match.params.id))
-  }, [dispatch, match, successProductReview])
+  }, [dispatch, match, successProductReview, loading])
 
   const submitHandle = (e) => {
     e.preventDefault()
@@ -110,7 +128,7 @@ function ProductScreen({ history, match }) {
         Go back
       </Link>
 
-      {loading ? (
+      {isloading ? (
         <Loader />
       ) : error ? (
         <Message variant='danger'>{error}</Message>
@@ -232,126 +250,131 @@ function ProductScreen({ history, match }) {
             </Col>
           </Row>
 
-          <Row>
-            <Col className='mt-3 pt-3 pl-5 pr-5 background-light rounded shadow'>
-              <h5 className='text-uppercase'>Đánh giá sản phẩm</h5>
-              {product.reviews.length === 0 && (
-                <Announcement variant='dark'>No reviews</Announcement>
-              )}
-              <div
-                className=' rounded text-center circle-rate pt-2 pb-1'
-                style={{ width: '14rem' }}
-              >
-                <h5 className=''>Điểm</h5>
-                <h4 className='mb-0'>{product.rating + ' trên 5'}</h4>
-              </div>
+          {isloading ? (
+            <Loader />
+          ) : (
+            <Row>
+              <Col className='mt-3 pt-3 pl-5 pr-5 background-light rounded shadow'>
+                <h5 className='text-uppercase'>Đánh giá sản phẩm</h5>
+                {product.reviews.length === 0 && (
+                  <Announcement variant='dark'>No reviews</Announcement>
+                )}
+                <div
+                  className=' rounded text-center circle-rate pt-2 pb-1'
+                  style={{ width: '14rem' }}
+                >
+                  <h5 className=''>Điểm</h5>
+                  <h4 className='mb-0'>{product.rating + ' trên 5'}</h4>
+                </div>
 
-              <ListGroup variant='flush'>
-                {product.reviews.map((review) => (
-                  <ListGroup.Item key={review._id}>
-                    <div className='d-flex justify-content-start'>
-                      {/* <Row>
+                <ListGroup variant='flush'>
+                  {product.reviews.map((review) => (
+                    <ListGroup.Item key={review._id}>
+                      <div className='d-flex justify-content-start'>
+                        {/* <Row>
                         <Col md={1} className=''> */}
-                      <div className='pr-2'>
-                        {' '}
-                        <Avatar className={classes.orange}>
-                          {review.name.substring(0, 1)}
-                        </Avatar>
-                      </div>
-                      {/* </Col>
-                        <Col> */}
-                      <div>
-                        <div className='d-flex'>
-                          <h5 className='mb-0'>{review.name}</h5>
-                          <span className='pl-2'>
-                            <Rating value={review.rating} />
-                          </span>
+                        <div className='pr-2'>
+                          {' '}
+                          <Avatar className={classes.orange}>
+                            {review.name.substring(0, 1)}
+                          </Avatar>
                         </div>
-                        <div
+                        {/* </Col>
+                        <Col> */}
+                        <div>
+                          <div className='d-flex'>
+                            <h5 className='mb-0'>{review.name}</h5>
+                            <span className='pl-2'>
+                              <Rating value={review.rating} />
+                            </span>
+                          </div>
+                          <div
+                            style={{
+                              fontWeight: '200',
+                              color: 'gray',
+                              fontSize: '0.65rem',
+                            }}
+                          >
+                            <p className='mb-1'>
+                              {review.createdAt.substring(11, 19)}
+                              {' : '}
+                              {review.createdAt.substring(0, 10)}
+                            </p>
+                          </div>
+                        </div>
+                        {/* </Col>
+                      </Row> */}
+                      </div>
+                      <strong style={{ fontWeight: '500', color: 'black' }}>
+                        {review.comment}
+                      </strong>
+                    </ListGroup.Item>
+                  ))}
+
+                  <ListGroup.Item shadow>
+                    <h4>
+                      ĐÁNH GIÁ VÀ BÌNH LUẬN{' '}
+                      <Image src='https://img.icons8.com/fluent/28/000000/favorite-chat.png' />
+                    </h4>
+                    {review && <Loader />}
+                    {errorProductReview && (
+                      <Message>{errorProductReview}</Message>
+                    )}
+                    {userInfo ? (
+                      <Form onSubmit={submitHandle}>
+                        <Form.Group controlId='rating'>
+                          <Form.Label as='h5'>ĐÁNH GIÁ</Form.Label>
+                          <ActiveRating
+                            value={rating}
+                            hover={hover}
+                            setValue={setRating}
+                            setHover={setHover}
+                            size='large'
+                          />
+                        </Form.Group>
+
+                        <Form.Group controlId='comment'>
+                          <TextField
+                            className={classes.form}
+                            id='outlined-multiline-static'
+                            label='Bình luận'
+                            multiline
+                            rows={3}
+                            // defaultValue='Default Value'
+                            variant='outlined'
+                            onChange={(e) => setComment(e.target.value)}
+                          />
+                        </Form.Group>
+                        <ButtonComponent
+                          type='submit'
+                          color='secondary'
+                          size='large'
+                          value='GỬI'
+                          disabled={loadingProductReview}
+                          endIcon={<SendIcon />}
+                        ></ButtonComponent>
+                      </Form>
+                    ) : (
+                      <Announcement variant='dark' style={{ color: '#82FF9E' }}>
+                        Please{' '}
+                        <Link
+                          to='/login'
                           style={{
-                            fontWeight: '200',
-                            color: 'gray',
-                            fontSize: '0.65rem',
+                            color: '#5FAD41',
+                            textDecoration: 'none',
+                            fontWeight: '700',
                           }}
                         >
-                          <p className='mb-1'>
-                            {review.createdAt.substring(11, 19)}
-                            {' : '}
-                            {review.createdAt.substring(0, 10)}
-                          </p>
-                        </div>
-                      </div>
-                      {/* </Col>
-                      </Row> */}
-                    </div>
-                    <strong style={{ fontWeight: '500', color: 'black' }}>
-                      {review.comment}
-                    </strong>
+                          Sign in
+                        </Link>{' '}
+                        to write a review
+                      </Announcement>
+                    )}
                   </ListGroup.Item>
-                ))}
-
-                <ListGroup.Item shadow>
-                  <h4>
-                    ĐÁNH GIÁ VÀ BÌNH LUẬN <i class='fas fa-pencil-alt'></i>
-                  </h4>
-                  {loadingProductReview && <Loader />}
-                  {errorProductReview && (
-                    <Message>{errorProductReview}</Message>
-                  )}
-                  {userInfo ? (
-                    <Form onSubmit={submitHandle}>
-                      <Form.Group controlId='rating'>
-                        <Form.Label as='h5'>ĐÁNH GIÁ</Form.Label>
-                        <ActiveRating
-                          value={rating}
-                          hover={hover}
-                          setValue={setRating}
-                          setHover={setHover}
-                          size='large'
-                        />
-                      </Form.Group>
-
-                      <Form.Group controlId='comment'>
-                        <TextField
-                          className={classes.form}
-                          id='outlined-multiline-static'
-                          label='Bình luận'
-                          multiline
-                          rows={3}
-                          // defaultValue='Default Value'
-                          variant='outlined'
-                          onChange={(e) => setComment(e.target.value)}
-                        />
-                      </Form.Group>
-                      <ButtonComponent
-                        type='submit'
-                        color='secondary'
-                        size='large'
-                        value='GỬI'
-                        disabled={loadingProductReview}
-                        endIcon={<SendIcon />}
-                      ></ButtonComponent>
-                    </Form>
-                  ) : (
-                    <Announcement variant='dark' style={{ color: '#82FF9E' }}>
-                      Please{' '}
-                      <Link
-                        to='/login'
-                        style={{
-                          color: '#5FAD41',
-                          textDecoration: 'none',
-                          fontWeight: '700',
-                        }}
-                      >
-                        Sign in
-                      </Link>{' '}
-                      to write a review
-                    </Announcement>
-                  )}
-                </ListGroup.Item>
-              </ListGroup>
-            </Col>
-          </Row>
+                </ListGroup>
+              </Col>
+            </Row>
+          )}
         </>
       )}
     </>

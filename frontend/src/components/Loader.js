@@ -1,22 +1,22 @@
-import React from 'react'
-import { Spinner } from 'react-bootstrap'
+import { useState } from 'react'
+import { css } from '@emotion/core'
+import SyncLoader from 'react-spinners/SyncLoader'
 
-Loader.propTypes = {}
+// Can be a string as well. Need to ensure each key-value pair ends with ;
+const override = css`
+  display: block;
+  margin: 2 auto;
+  border-color: red;
+`
 
-function Loader(props) {
+function Loader() {
+  let [loading, setLoading] = useState(true)
+  let [color, setColor] = useState('orange')
+
   return (
-    <Spinner
-      animation='border'
-      role='status'
-      style={{
-        width: '100px',
-        height: '100px',
-        margin: 'auto',
-        display: 'block',
-      }}
-    >
-      <span className='sr-only'>Loading...</span>
-    </Spinner>
+    <div className='sweet-loading text-center'>
+      <SyncLoader color={color} loading={loading} css={override} size={15} />
+    </div>
   )
 }
 
