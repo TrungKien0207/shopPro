@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { addToCart, removeFromCart } from '../actions/cartActions.js'
 import Announcement from '../components/Announcement'
+import Loader from '../components/Loader'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -185,7 +186,7 @@ export const CartScreen = ({ match, location, history }) => {
                         variant='light'
                         onClick={() => removeFromCartHandler(item.product)}
                       >
-                        <Image src='https://img.icons8.com/fluent/28/000000/filled-trash.png' />
+                        <Image src='https://img.icons8.com/fluent/28/000000/delete-forever.png' />
                       </Button>
                     </Col>
                   </Row>

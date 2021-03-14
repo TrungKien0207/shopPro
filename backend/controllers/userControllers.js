@@ -15,6 +15,7 @@ const authUser = asyncHandler(async (req, res) => {
       _id: user._id,
       name: user.name,
       email: user.email,
+      avatar: user.avatar,
       isAdmin: user.isAdmin,
       token: generateToken(user._id),
     })
@@ -58,18 +59,21 @@ const registerUser = asyncHandler(async (req, res) => {
 })
 
 //* @desc       Get user profile
-//* @route      POST /api/users/profile
+//* @route      GET /api/users/profile
 //* @access     Public
 const getUserProfile = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user._id)
 
   if (user) {
-    res.json({
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-      isAdmin: user.isAdmin,
-    })
+    setTimeout(() => {
+      res.json({
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        avatar: user.avatar,
+        isAdmin: user.isAdmin,
+      })
+    }, 200)
   } else {
     res.status(404)
     throw new Error('User not found')
@@ -85,6 +89,7 @@ const updateUserProfile = asyncHandler(async (req, res) => {
   if (user) {
     user.name = req.body.name || user.name
     user.email = req.body.email || user.email
+    user.avatar = req.body.avatar || user.avatar
     if (req.body.password) {
       user.password = req.body.password
     }
@@ -95,6 +100,7 @@ const updateUserProfile = asyncHandler(async (req, res) => {
       _id: updateUser._id,
       name: updateUser.name,
       email: updateUser.email,
+      avatar: updateUser.avatar,
       isAdmin: updateUser.isAdmin,
       token: generateToken(updateUser._id),
     })
@@ -109,7 +115,9 @@ const updateUserProfile = asyncHandler(async (req, res) => {
 //* @access     Private/Admin
 const getUsers = asyncHandler(async (req, res) => {
   const users = await User.find({})
-  res.json(users)
+  setTimeout(() => {
+    res.json(users)
+  }, 1000)
 })
 
 //* @desc       Delete user user
@@ -143,7 +151,7 @@ const getUsersById = asyncHandler(async (req, res) => {
 //* @desc       Update user by ID
 //* @route      PUT /api/users/:id
 //* @access     Private/Admin
-const updateUser= asyncHandler(async (req, res) => {
+const updateUser = asyncHandler(async (req, res) => {
   const user = await User.findById(req.params.id)
 
   if (user) {
@@ -157,6 +165,7 @@ const updateUser= asyncHandler(async (req, res) => {
       _id: updateUser._id,
       name: updateUser.name,
       email: updateUser.email,
+      avatar: updateUser.avatar,
       isAdmin: updateUser.isAdmin,
     })
   } else {
@@ -172,6 +181,6 @@ export {
   registerUser,
   getUsers,
   deleteUsers,
-  getUsersById, 
-  updateUser
+  getUsersById,
+  updateUser,
 }

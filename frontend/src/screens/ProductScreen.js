@@ -68,8 +68,6 @@ function ProductScreen({ history, match }) {
   const productDetails = useSelector((state) => state.productDetails)
   const { loading, error, product } = productDetails
 
-  const [isloading, setIsloading] = useState(loading)
-
   const userLogin = useSelector((state) => state.userLogin)
   const { userInfo } = userLogin
 
@@ -80,8 +78,6 @@ function ProductScreen({ history, match }) {
     error: errorProductReview,
   } = productReviewCreate
 
-  const [review, setReview] = useState(loading)
-
   useEffect(() => {
     if (successProductReview) {
       ;<Announcement variant='success'>Review Submited</Announcement>
@@ -90,22 +86,8 @@ function ProductScreen({ history, match }) {
       dispatch({ type: PRODUCT_CREATE_REVIEW_RESET })
     }
 
-    if (loading) {
-      setIsloading(true)
-      setTimeout(() => {
-        setIsloading(false)
-      }, 2000)
-    }
-
-    if (loading) {
-      setReview(true)
-      setTimeout(() => {
-        setReview(false)
-      }, 4000)
-    }
-
     dispatch(listProductDetails(match.params.id))
-  }, [dispatch, match, successProductReview, loading])
+  }, [dispatch, match, successProductReview])
 
   const submitHandle = (e) => {
     e.preventDefault()
@@ -128,7 +110,7 @@ function ProductScreen({ history, match }) {
         Go back
       </Link>
 
-      {isloading ? (
+      {loading ? (
         <Loader />
       ) : error ? (
         <Message variant='danger'>{error}</Message>
@@ -250,14 +232,17 @@ function ProductScreen({ history, match }) {
             </Col>
           </Row>
 
-          {isloading ? (
+          {loading ? (
             <Loader />
           ) : (
             <Row>
               <Col className='mt-3 pt-3 pl-5 pr-5 background-light rounded shadow'>
                 <h5 className='text-uppercase'>Đánh giá sản phẩm</h5>
                 {product.reviews.length === 0 && (
-                  <Announcement variant='dark'>No reviews</Announcement>
+                  <Announcement variant='warning'>
+                    No reviews{' '}
+                    <Image src='https://img.icons8.com/fluent/24/000000/box-important.png' />
+                  </Announcement>
                 )}
                 <div
                   className=' rounded text-center circle-rate pt-2 pb-1'
@@ -314,9 +299,9 @@ function ProductScreen({ history, match }) {
                   <ListGroup.Item shadow>
                     <h4>
                       ĐÁNH GIÁ VÀ BÌNH LUẬN{' '}
-                      <Image src='https://img.icons8.com/fluent/28/000000/favorite-chat.png' />
+                      <Image src='https://img.icons8.com/fluent/24/000000/favorite-chat.png' />
                     </h4>
-                    {review && <Loader />}
+                    {loadingProductReview && <Loader />}
                     {errorProductReview && (
                       <Message>{errorProductReview}</Message>
                     )}

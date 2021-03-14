@@ -91,7 +91,7 @@ function ProductListScreen({ history, match }) {
       {errorDelete && <Message>{errorDelete}</Message>}
       {loadingCreate && <Loader />}
       {errorCreate && <Message>{errorCreate}</Message>}
-      <h5 className='text-uppercase'>Users List</h5>
+
       {loading ? (
         <Loader />
       ) : error ? (

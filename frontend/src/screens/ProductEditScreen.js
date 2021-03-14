@@ -1,6 +1,6 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
-import { Button, Form } from 'react-bootstrap'
+import { Button, Form, Row, Col } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { getUserDetails, updateUser } from '../actions/userActions'
@@ -105,7 +105,6 @@ function ProductEditScreen({ match, history }) {
         Go back
       </Link>
       <FormContainer>
-        <h2>Edit Product</h2>
         {loadingUpdate && <Loader />}
         {errorUpdate && <Message>{errorUpdate}</Message>}
         {loading ? (
@@ -113,91 +112,130 @@ function ProductEditScreen({ match, history }) {
         ) : error ? (
           <Message>{error}</Message>
         ) : (
-          <Form
-            onSubmit={submitHandler}
-            className='p-4 bg-light shadow rounded'
-          >
-            <Form.Group controlId='name'>
-              <Form.Label>Name</Form.Label>
-              <Form.Control
-                type='name'
-                placeholder='Enter name'
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-              ></Form.Control>
-            </Form.Group>
+          <>
+            <Form
+              onSubmit={submitHandler}
+              className='p-4 bg-light shadow rounded'
+            >
+              <h2 className='text-center'>Edit Product</h2>
+              <Form.Group controlId='name' className='pl-3 pr-3 pt-3'>
+                <Form.Label as='p' className='mb-1'>
+                  Name
+                </Form.Label>
+                <Form.Control
+                  className='border border-grey'
+                  type='name'
+                  placeholder='Enter name'
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                ></Form.Control>
+              </Form.Group>
 
-            <Form.Group controlId='price'>
-              <Form.Label>Price</Form.Label>
-              <Form.Control
-                type='number'
-                placeholder='Enter price'
-                value={price}
-                onChange={(e) => setPrice(e.target.value)}
-              ></Form.Control>
-            </Form.Group>
+              <Form.Group controlId='price' className='pl-3 pr-3'>
+                <Form.Label as='p' className='mb-1'>
+                  Price
+                </Form.Label>
+                <Form.Control
+                  className='border border-grey'
+                  type='number'
+                  placeholder='Enter price'
+                  value={price}
+                  onChange={(e) => setPrice(e.target.value)}
+                ></Form.Control>
+              </Form.Group>
 
-            <Form.Group controlId='image'>
-              <Form.Label>Image</Form.Label>
-              <Form.Control
-                type='text'
-                placeholder='Enter image url'
-                value={image}
-                onChange={(e) => setImage(e.target.value)}
-              ></Form.Control>
-              <Form.File
-                id='image-file'
-                label='Choose File'
-                custom
-                onChange={uploadFileHandler}
-              ></Form.File>
-              {uploading && <Loader />}
-            </Form.Group>
+              <Form.Group controlId='image' className='pl-3 pr-3'>
+                <Form.Label as='p' className='mb-1'>
+                  Image
+                </Form.Label>
+                <Form.Control
+                  className='border border-grey'
+                  type='text'
+                  placeholder='Enter image url'
+                  value={image}
+                  onChange={(e) => setImage(e.target.value)}
+                ></Form.Control>
+                <Form.File
+                  className='border border-grey'
+                  id='image-file'
+                  label='Choose File'
+                  custom
+                  onChange={uploadFileHandler}
+                ></Form.File>
+                {uploading && <Loader />}
+              </Form.Group>
 
-            <Form.Group controlId='brand'>
-              <Form.Label>Brand</Form.Label>
-              <Form.Control
-                type='text'
-                placeholder='Enter brand'
-                value={brand}
-                onChange={(e) => setBrand(e.target.value)}
-              ></Form.Control>
-            </Form.Group>
+              <Row>
+                <Col>
+                  <Form.Group controlId='brand' className='pl-3 pr-3'>
+                    <Form.Label as='p' className='mb-1'>
+                      Brand
+                    </Form.Label>
+                    <Form.Control
+                      className='border border-grey'
+                      type='text'
+                      placeholder='Enter brand'
+                      value={brand}
+                      onChange={(e) => setBrand(e.target.value)}
+                    ></Form.Control>
+                  </Form.Group>
+                </Col>
+                <Col md={5}>
+                  <Form.Group controlId='countInStock' className='pl-3 pr-3'>
+                    <Form.Label as='p' className='mb-1'>
+                      Count In Stock
+                    </Form.Label>
+                    <Form.Control
+                      className='border border-grey'
+                      type='number'
+                      placeholder='Enter countInStock'
+                      value={countInStock}
+                      onChange={(e) => setCountInStock(e.target.value)}
+                    ></Form.Control>
+                  </Form.Group>
+                </Col>
+              </Row>
 
-            <Form.Group controlId='countInStock'>
-              <Form.Label>Count In Stock</Form.Label>
-              <Form.Control
-                type='number'
-                placeholder='Enter countInStock'
-                value={countInStock}
-                onChange={(e) => setCountInStock(e.target.value)}
-              ></Form.Control>
-            </Form.Group>
+              <Form.Group controlId='category' className='pl-3 pr-3'>
+                <Form.Label as='p' className='mb-1'>
+                  Category
+                </Form.Label>
+                <Form.Control
+                  className='border border-grey'
+                  type='text'
+                  placeholder='Enter category'
+                  value={category}
+                  onChange={(e) => setCategory(e.target.value)}
+                ></Form.Control>
+              </Form.Group>
 
-            <Form.Group controlId='category'>
-              <Form.Label>Category</Form.Label>
-              <Form.Control
-                type='text'
-                placeholder='Enter category'
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
-              ></Form.Control>
-            </Form.Group>
+              <Form.Group controlId='description' className='pl-3 pr-3'>
+                <Form.Label as='p' className='mb-1'>
+                  Description
+                </Form.Label>
+                <Form.Control
+                  className='border border-grey'
+                  type='text'
+                  rows={3}
+                  as='textarea'
+                  placeholder='Enter description'
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                ></Form.Control>
+              </Form.Group>
 
-            <Form.Group controlId='description'>
-              <Form.Label>Description</Form.Label>
-              <Form.Control
-                type='text'
-                placeholder='Enter description'
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-              ></Form.Control>
-            </Form.Group>
-
-            <Button type='submit' variant='primary'>
-              Update
-            </Button>
-          </Form>
+              <div className='pl-3 pr-3'>
+                <Button
+                  type='submit'
+                  variant='outline-success'
+                  className='btn-block'
+                  style={{ fontSize: '1rem', letterSpacing: '0.25rem' }}
+                >
+                  Update
+                </Button>
+              </div>
+            </Form>
+          </>
         )}
       </FormContainer>
     </>

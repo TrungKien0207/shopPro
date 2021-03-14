@@ -8,14 +8,14 @@ import '../../src/notisfied.css'
 import {
   deliverOrder,
   getOrderDetails,
-  payOrder
+  payOrder,
 } from '../actions/orderActions'
 import Announcement from '../components/Announcement'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
 import {
   ORDER_DELIVER_RESET,
-  ORDER_PAY_RESET
+  ORDER_PAY_RESET,
 } from '../constants/orderConstants'
 
 const OrderScreen = ({ match, history }) => {
@@ -163,24 +163,25 @@ const OrderScreen = ({ match, history }) => {
                               alt={item.name}
                               fluid
                               rounded
+                              className='border border-gray'
                             />
                           </Link>
                         </Col>
 
-                        <Col>
+                        <Col className='d-flex align-items-center' md={5}>
                           <Link
                             to={`/product/${item.product}`}
-                            className='link-product'
+                            className='text-decoration-none '
                           >
-                            {item.name}
+                            <p>{item.name}</p>
                           </Link>
                         </Col>
 
-                        <Col md={4}>
-                          <b>
+                        <Col md={5} className='d-flex align-items-center'>
+                          <h5>
                             {item.qty} x ${item.price} = $
                             {item.qty * item.price}
-                          </b>
+                          </h5>
                         </Col>
                       </Row>
                     </ListGroup.Item>

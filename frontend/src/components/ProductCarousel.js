@@ -57,20 +57,6 @@ const ProductCarousel = () => {
         </Carousel.Item>
       ))}
     </Slider>
-    // <Carousel pause='hover' className='bg-dark border-0'>
-    //   {products.map((product) => (
-    //     <Carousel.Item key={product._id}>
-    //       <Link to={`/product/${product._id}`}>
-    //         <Image src={product.image} alt={product.name} fluid />
-    //         <Carousel.Caption className='carousel-caption'>
-    //           <h5>
-    //             {product.name} (${product.price})
-    //           </h5>
-    //         </Carousel.Caption>
-    //       </Link>
-    //     </Carousel.Item>
-    //   ))}
-    // </Carousel>
   )
 }
 

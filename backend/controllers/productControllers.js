@@ -22,7 +22,9 @@ const getProducts = asyncHandler(async (req, res) => {
     .limit(pageSize)
     .skip(pageSize * (page - 1))
 
-  res.json({ products, page, pages: Math.ceil(count / pageSize) })
+  setTimeout(() => {
+    res.json({ products, page, pages: Math.ceil(count / pageSize) })
+  }, 100)
 })
 
 //* @desc       Fetch all products
@@ -33,7 +35,9 @@ const getProductById = asyncHandler(async (req, res) => {
   const product = await Product.findById(req.params.id)
 
   if (product) {
-    res.json(product)
+    setTimeout(() => {
+      res.json(product)
+    }, 1000)
   } else {
     res.status(404)
     throw new Error('Product not found')
@@ -156,7 +160,9 @@ const createProductReview = asyncHandler(async (req, res) => {
 const getTopProducts = asyncHandler(async (req, res) => {
   const products = await Product.find({}).sort({ rating: -1 }).limit(3)
 
-  res.json(products)
+  setTimeout(() => {
+    res.json(products)
+  }, 100)
 })
 
 export {

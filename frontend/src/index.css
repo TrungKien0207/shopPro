@@ -240,3 +240,15 @@ p {
   border: 0.15rem dashed #4bb543;
   color: #f45b69;
 }
+
+/* Avatar  */
+.d {
+  position: relative;
+  visibility: hidden;
+  z-index: 2;
+  margin-top: -15%;
+}
+
+.a:hover .d {
+  visibility: visible;
+}

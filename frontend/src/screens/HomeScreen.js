@@ -18,15 +18,7 @@ function HomeScreen({ match }) {
   const productList = useSelector((state) => state.productList)
   const { loading, error, products, pages, page } = productList
 
-  const [isloading, setIsloading] = useState(loading)
-
   useEffect(() => {
-    if (loading) {
-      setIsloading(true)
-      setTimeout(() => {
-        setIsloading(false)
-      }, 500)
-    }
     dispatch(listProducts(keyword, pageNumber))
   }, [dispatch, keyword, pageNumber])
 
@@ -36,7 +28,7 @@ function HomeScreen({ match }) {
       {!keyword && <ProductCarousel />}
       <h3 className='mt-5'>Latest Product</h3>
 
-      {isloading ? (
+      {loading ? (
         <Loader />
       ) : error ? (
         <Message variant='danger'>{error}</Message>

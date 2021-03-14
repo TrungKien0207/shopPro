@@ -8,7 +8,7 @@ import FormContainer from '../components/FormContainer'
 
 export const ShippingScreen = ({ history }) => {
   const cart = useSelector((state) => state.cart)
-  const { shippingAddress } = cart
+  const { shippingAddress, loading } = cart
 
   const [address, setAddress] = useState(shippingAddress.address)
   const [city, setCity] = useState(shippingAddress.city)

@@ -164,9 +164,19 @@ function Header(props) {
                     onClick={handleToggle}
                     className='ml-2 mr-2 mt-1 mb-1 rounded-circle'
                   >
-                    <Avatar className={classes.orange}>
-                      {userInfo.name.substring(0, 1)}
-                    </Avatar>
+                    {userInfo.avatar ? (
+                      <Image
+                        className='rounded-circle'
+                        src={userInfo.avatar}
+                        alt={userInfo.avatar}
+                        style={{ width: '2.5rem', height: '2.5rem' }}
+                        fluid
+                      />
+                    ) : (
+                      <Avatar className={classes.orange}>
+                        {userInfo.name.substring(0, 1)}
+                      </Avatar>
+                    )}
                   </Button>
                   <Popper
                     open={open}
@@ -203,11 +213,26 @@ function Header(props) {
                                     letterSpacing: '0.05rem',
                                   }}
                                 >
+                                  
+                                  <strong>PROFILE</strong>
+                                </Link>
+                              </MenuItem>
+
+                              <MenuItem onClick={handleClose}>
+                                <Link
+                                  href='/myorders'
+                                  className={classes.link}
+                                  style={{
+                                    color: 'black',
+                                    fontSize: '0.8rem',
+                                    letterSpacing: '0.05rem',
+                                  }}
+                                >
                                   <Image
-                                    src='https://img.icons8.com/fluent/24/000000/user-male-circle.png'
+                                    src='https://img.icons8.com/fluent/24/000000/receipt-dollar.png'
                                     className='pr-1'
                                   />
-                                  <strong>PROFILE</strong>
+                                  <strong>MY ORDERS</strong>
                                 </Link>
                               </MenuItem>
 
