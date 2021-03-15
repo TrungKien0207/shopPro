@@ -13,19 +13,12 @@ import Popper from '@material-ui/core/Popper'
 import { makeStyles, withStyles } from '@material-ui/core/styles'
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart'
 import { black } from 'colors'
-import React from 'react'
-import {
-  Container,
-  Nav,
-  Navbar,
-  NavDropdown,
-  Image,
-  Dropdown,
-} from 'react-bootstrap'
+import React, { useEffect, useState } from 'react'
+import { Container, Image, Nav, Navbar, NavDropdown } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { LinkContainer } from 'react-router-bootstrap'
 import { Route } from 'react-router-dom'
-import { logout } from '../actions/userActions'
+import { getUserDetails, logout } from '../actions/userActions'
 import SearchBox from './SearchBox'
 
 const useStyles = makeStyles((theme) => ({
@@ -73,14 +66,18 @@ function Header(props) {
   const [open, setOpen] = React.useState(false)
   const anchorRef = React.useRef(null)
 
-  const [anchorEl, setAnchorEl] = React.useState(null)
+  const [anchorEl, setAnchorEl] = useState(null)
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget)
   }
 
+  const userDetails = useSelector((state) => state.userDetails)
+  const { user } = userDetails
+
   const userLogin = useSelector((state) => state.userLogin)
   const { userInfo } = userLogin
+
   const dispatch = useDispatch()
 
   const cart = useSelector((state) => state.cart)
@@ -111,22 +108,21 @@ function Header(props) {
 
   // return focus to the button when we transitioned from !open -> open
   const prevOpen = React.useRef(open)
-  React.useEffect(() => {
+  useEffect(() => {
     if (prevOpen.current === true && open === false) {
       anchorRef.current.focus()
     }
 
     prevOpen.current = open
-  }, [open])
+  }, [open, userInfo, user])
 
   return (
     <>
       <Navbar
-        bg='light'
-        variant='light'
         expand='lg'
         collapseOnSelect
-        className='p-0 pl-5 pr-4'
+        className='p-0 pl-5 pr-5'
+        style={{ backgroundColor: '#FFFFFF' }}
       >
         <Container fluid>
           <LinkContainer to='/' className=''>
@@ -143,10 +139,7 @@ function Header(props) {
                 <Nav.Link className='text-uppercase'>
                   <IconButton aria-label='cart'>
                     <StyledBadge
-                      badgeContent={cartItems.reduce(
-                        (acc, item) => acc + item.qty,
-                        0
-                      )}
+                      badgeContent={cartItems.length}
                       color='secondary'
                     >
                       <ShoppingCartIcon />
@@ -162,13 +155,13 @@ function Header(props) {
                     aria-controls={open ? 'menu-list-grow' : undefined}
                     aria-haspopup='true'
                     onClick={handleToggle}
-                    className='ml-2 mr-2 mt-1 mb-1 rounded-circle'
+                    className='ml-2  mt-1 mb-1 rounded-circle'
                   >
-                    {userInfo.avatar ? (
+                    {userInfo ? (
                       <Image
-                        className='rounded-circle'
-                        src={userInfo.avatar}
-                        alt={userInfo.avatar}
+                        className='rounded-circle border border-grey'
+                        src={user.avatar}
+                        alt={userDetails.user?.avatar}
                         style={{ width: '2.5rem', height: '2.5rem' }}
                         fluid
                       />
@@ -213,7 +206,10 @@ function Header(props) {
                                     letterSpacing: '0.05rem',
                                   }}
                                 >
-                                  
+                                  <Image
+                                    src='https://img.icons8.com/fluent/24/000000/user-male-circle.png'
+                                    className='pr-1'
+                                  />
                                   <strong>PROFILE</strong>
                                 </Link>
                               </MenuItem>
@@ -244,11 +240,21 @@ function Header(props) {
                                   letterSpacing: '0.05rem',
                                 }}
                               >
-                                <Image
-                                  className='pr-1'
-                                  src='https://img.icons8.com/fluent/24/000000/exit.png'
-                                />
-                                <strong>LOG OUT</strong>
+                                <Link
+                                  href='/'
+                                  className={classes.link}
+                                  style={{
+                                    color: 'black',
+                                    fontSize: '0.8rem',
+                                    letterSpacing: '0.05rem',
+                                  }}
+                                >
+                                  <Image
+                                    className='pr-1'
+                                    src='https://img.icons8.com/fluent/24/000000/exit.png'
+                                  />
+                                  <strong>LOG OUT</strong>
+                                </Link>
                               </MenuItem>
                             </MenuList>
                           </ClickAwayListener>
@@ -264,7 +270,7 @@ function Header(props) {
                     aria-controls={open ? 'menu-list-grow' : undefined}
                     aria-haspopup='true'
                     onClick={handleToggle}
-                    className='ml-2 mr-2 mt-1 mb-1 rounded-circle'
+                    className='ml-2 mt-1 mb-1 rounded-circle'
                   >
                     <Image src='https://img.icons8.com/fluent/30/000000/circled-menu.png' />
                   </Button>

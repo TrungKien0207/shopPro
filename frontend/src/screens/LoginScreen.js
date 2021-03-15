@@ -14,8 +14,8 @@ function LoginScreen({ location, history }) {
   const [password, setPassword] = useState('')
 
   const dispatch = useDispatch()
-  
-  const userLogin = useSelector(state => state.userLogin)
+
+  const userLogin = useSelector((state) => state.userLogin)
   const { loading, error, userInfo } = userLogin
 
   const redirect = location.search ? location.search.split('=')[1] : '/'
@@ -32,13 +32,19 @@ function LoginScreen({ location, history }) {
 
   return (
     <FormContainer>
-      <h2>Sign in</h2>
       {error && <Message variant='danger'>{error}</Message>}
-      {loading && <Loader/>}
-      <Form onSubmit={submitHandler}>
-        <Form.Group controlId='email'>
-          <Form.Label>Email address</Form.Label>
+      {loading && <Loader />}
+      <Form
+        onSubmit={submitHandler}
+        className='bg-light rounded shadow p-5 mt-4'
+      >
+        <h2 className='text-center'>Sign in</h2>
+        <Form.Group controlId='email' className='pt-3'>
+          <Form.Label as='p' className='mb-1'>
+            Email address
+          </Form.Label>
           <Form.Control
+            className='border border-grey rounded-pill'
             type='email'
             placeholder='Enter email'
             value={email}
@@ -47,8 +53,11 @@ function LoginScreen({ location, history }) {
         </Form.Group>
 
         <Form.Group controlId='password'>
-          <Form.Label>Password</Form.Label>
+          <Form.Label as='p' className='mb-1'>
+            Password
+          </Form.Label>
           <Form.Control
+            className='border border-grey rounded-pill'
             type='password'
             placeholder='Enter password'
             value={password}
@@ -56,17 +65,34 @@ function LoginScreen({ location, history }) {
           ></Form.Control>
         </Form.Group>
 
-        <Button type='submit' variant='success'>
-          Sign In
-        </Button>
+        <div>
+          <Button
+            type='submit'
+            variant='outline-success'
+            className='btn-block shadow rounded-pill'
+            style={{ fontSize: '1rem', letterSpacing: '0.25rem' }}
+          >
+            LOGIN
+          </Button>
+        </div>
 
-        <Row className='py-3 '>
-          <Col>
+        <Row className='py-3'>
+          <Col
+            className='d-flex align-items-center'
+            style={{ fontSize: '1rem', letterSpacing: '0.15rem' }}
+          >
             New Customer?{' '}
-            <Link className='text-decoration-none text-dark'
+            <Link
+              className='text-decoration-none text-danger pl-1 '
               to={redirect ? `/register?redirect=${redirect}` : '/register'}
             >
-              <strong>Register</strong>
+              <Button
+                className='p-1 rounded-pill shadow'
+                variant='outline-warning'
+                style={{ letterSpacing: '0.15rem' }}
+              >
+                Register
+              </Button>
             </Link>
           </Col>
         </Row>

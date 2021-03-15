@@ -35,10 +35,7 @@ const ProductCarousel = () => {
   ) : error ? (
     <Message variant='danger'>{error}</Message>
   ) : (
-    <Slider
-      {...settings}
-      className='bg-light ml-5 mr-5 border-0 shadow rounded'
-    >
+    <Slider {...settings} className='bg-light border-0 shadow rounded'>
       {products.map((product) => (
         <Carousel.Item key={product._id} className='slick-slide'>
           <Link to={`/product/${product._id}`} className='text-decoration-none'>

@@ -69,28 +69,41 @@ export const CartScreen = ({ match, location, history }) => {
 
   return (
     <Col>
-      <Link className='btn btn-light my-3' to='/'>
+      {/* <Link className='btn btn-light my-3 rounded-pill' to='/'>
         <i class='fas fa-arrow-left pr-2'></i>
         Go back
-      </Link>
-      <h3>Shopping Cart</h3>
+      </Link> */}
+
       <Row>
         <Col md={9} className='p-0 pr-4 mt-3 text-uppercase'>
           {cartItems.length === 0 ? (
-            <Announcement variant='danger'>
-              <b className='fs-1'>Your cart is empty </b>
-              <Link to='/'>
-                <Button variant='light' className='text-uppercase'>
-                  Shop now
-                </Button>
-              </Link>
-            </Announcement>
+            // <Announcement variant='danger'>
+            <>
+              {/* <Row>
+                <Col className='mb-2'> */}
+              <div className='mb-1'>
+                <Link to='/'>
+                  <Button className='text-uppercase btn_color rounded-pill'>
+                    Shop now
+                  </Button>
+                </Link>
+              </div>
+              {/* </Col>
+                <Col md={12}> */}
+              <div>
+                <Image className=' p-5' src='/images/cart_empty.png' fluid />
+              </div>
+              {/* </Col>
+              </Row> */}
+            </>
           ) : (
-            <ListGroup variant='flush' className=''>
+            // </Announcement>
+            <ListGroup variant='flush'>
+              <h3>Shopping Cart</h3>
               {cartItems.map((item) => (
                 <ListGroup.Item
                   key={item.product}
-                  className='border-0 mt-1 shadow rounded'
+                  className='border-0 mt-1 shadow card_color'
                   rounded
                 >
                   <h6>
@@ -197,7 +210,7 @@ export const CartScreen = ({ match, location, history }) => {
         </Col>
 
         <Col md={3} className='p-0'>
-          <Card className='border-0 shadow mt-4 rounded'>
+          <Card className='border-0 shadow mt-4 card_color p-3'>
             <ListGroup variant='flush'>
               <ListGroup.Item className='d-flex justify-content-around '>
                 <div>
@@ -218,18 +231,13 @@ export const CartScreen = ({ match, location, history }) => {
               </ListGroup.Item>
             </ListGroup>
           </Card>
-          <Card className='mt-3 border-0 btn-proceed'>
+          <Card className='mt-3 border-0'>
             <Button
               type='button'
-              className='btn-block btn-danger text-uppercase p-3 text-light'
+              className='btn-block btn_color rounded-pill text-uppercase p-3 text-light'
               disabled={cartItems === 0}
               onClick={checkoutHandler}
               size='sm'
-              style={{
-                fontFamily: 'Montserrat',
-                fontSize: '0.78em',
-                color: '#fff',
-              }}
             >
               <h6 className='text-light m-0'>Proceed To Checkout</h6>
             </Button>

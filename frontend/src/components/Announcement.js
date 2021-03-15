@@ -2,7 +2,11 @@ import React from 'react'
 import { Alert } from 'react-bootstrap'
 
 const Announcement = ({ variant, children }) => {
-  return <Alert variant={variant}>{children}</Alert>
+  return (
+    <Alert className='rounded-pill' variant={variant}>
+      {children}
+    </Alert>
+  )
 }
 
 Announcement.defaultProps = {

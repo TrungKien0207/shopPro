@@ -1,0 +1,27 @@
+.btn_color {
+  background-color: #7563c8;
+  font-size: 0.9rem;
+  color: #fff;
+  letter-spacing: 0.25rem;
+  transition: 300ms;
+}
+
+.btn_color:hover,
+.btn_color:active,
+.btn_color:visited,
+.btn_color:focus {
+  background-color: #6353a7 !important;
+  border: 0px !important;
+  box-shadow: 0 0 0 0.2rem #6351aa70 !important;
+}
+
+.card_color {
+  background-color: #fff;
+  border-radius: 1rem !important;
+}
+
+.card_color_bill {
+  background-color: #fff;
+  border-radius: 1rem !important;
+  box-shadow: 0 0 0 0.6rem #6351aa70 !important;
+}

@@ -25,7 +25,7 @@ function HomeScreen({ match }) {
   return (
     <>
       <Meta />
-      {!keyword && <ProductCarousel />}
+      {!keyword && <ProductCarousel className='m-0' />}
       <h3 className='mt-5'>Latest Product</h3>
 
       {loading ? (

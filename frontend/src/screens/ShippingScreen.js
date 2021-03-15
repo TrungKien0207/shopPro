@@ -33,59 +33,67 @@ export const ShippingScreen = ({ history }) => {
 
         <Form
           onSubmit={submitHandler}
-          className='rounded bg-light shadow p-4 mt-2'
+          className='rounded bg-light shadow p-4 mt-2 border-0'
         >
           <h3 className='pt-3 text-center'>Shipping</h3>
           <Form.Group controlId='address'>
-            <Form.Label as='p'>Address</Form.Label>
+            <Form.Label as='p' className='mb-1'>
+              Address
+            </Form.Label>
             <Form.Control
               type='text'
               required
               placeholder='Enter address'
               value={address}
               onChange={(e) => setAddress(e.target.value)}
-              className='border border-gray'
+              className='border border-gray rounded-pill'
             ></Form.Control>
           </Form.Group>
 
           <Form.Group controlId='city'>
-            <Form.Label as='p'>City</Form.Label>
+            <Form.Label as='p' className='mb-1'>
+              City
+            </Form.Label>
             <Form.Control
               type='text'
               required
               placeholder='Enter city'
               value={city}
               onChange={(e) => setCity(e.target.value)}
-              className='border border-gray'
+              className='border border-gray rounded-pill'
             ></Form.Control>
           </Form.Group>
 
           <Form.Group controlId='postalCode'>
-            <Form.Label as='p'>PostalCode</Form.Label>
+            <Form.Label as='p' className='mb-1'>
+              PostalCode
+            </Form.Label>
             <Form.Control
               type='text'
               required
               placeholder='Enter postalCode'
               value={postalCode}
               onChange={(e) => setPostalCode(e.target.value)}
-              className='border border-gray'
+              className='border border-gray rounded-pill'
             ></Form.Control>
           </Form.Group>
 
           <Form.Group controlId='country'>
-            <Form.Label as='p'>Country</Form.Label>
+            <Form.Label as='p' className='mb-1'>
+              Country
+            </Form.Label>
             <Form.Control
               type='text'
               required
               placeholder='Enter country'
               value={country}
               onChange={(e) => setCountry(e.target.value)}
-              className='border border-gray'
+              className='border border-gray rounded-pill'
             ></Form.Control>
           </Form.Group>
 
           <div>
-            <Button type='submit' variant='danger' className='btn-block'>
+            <Button type='submit' className='btn-block btn_color rounded-pill'>
               Continue
             </Button>
           </div>

@@ -93,10 +93,12 @@ const OrderScreen = ({ match, history }) => {
     <Message>{error}</Message>
   ) : (
     <>
-      <h2>Order {order._id}</h2>
       <Row className='justify-content-center'>
         <Col md={7} className='ml-3 mr-3 pl-0 pr-0 mt-2'>
-          <ListGroup variant='flush' className='shadow'>
+          <ListGroup variant='flush' className='card_color_bill p-3'>
+            <h2 className='text-center' style={{ color: '#7563c8' }}>
+              Order {order._id}
+            </h2>
             <ListGroup.Item>
               <h5 className='text-uppercase'>Shiping</h5>
               <p>
@@ -136,7 +138,7 @@ const OrderScreen = ({ match, history }) => {
               </p>
 
               {order.isPaid ? (
-                <Announcement variant='success'>
+                <Announcement variant='success' className='rounded-pill'>
                   Paid on {order.paidAt}
                 </Announcement>
               ) : (
@@ -192,40 +194,43 @@ const OrderScreen = ({ match, history }) => {
           </ListGroup>
         </Col>
         <Col md={4}>
-          <Card className='shadow mt-2'>
-            <ListGroup variant='flush'>
+          <Card className='mt-2 border-0'>
+            <ListGroup variant='flush' className='card_color_bill p-3 '>
               <ListGroup.Item>
                 <h4 className='text-uppercase text-center'>Order Summary</h4>
               </ListGroup.Item>
               <ListGroup.Item>
                 <Row>
-                  <Col>Items</Col>
-                  <Col>
+                  <Col className='pl-5 mr-4'>Items</Col>
+                  <Col className='pl-5 mr-4'>
                     <strong>${order.itemsPrice}</strong>
                   </Col>
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
                 <Row>
-                  <Col>Shipping</Col>
-                  <Col>
+                  <Col className='pl-5 mr-4'>Shipping</Col>
+                  <Col className='pl-5 mr-4'>
                     <strong>${order.shippingPrice}</strong>
                   </Col>
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
                 <Row>
-                  <Col>Tax</Col>
-                  <Col>
+                  <Col className='pl-5 mr-4'>Tax</Col>
+                  <Col className='pl-5 mr-4'>
                     <strong>${order.taxPrice}</strong>
                   </Col>
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
                 <Row>
-                  <Col>Total</Col>
-                  <Col>
-                    <strong>${order.totalPrice}</strong>
+                  <Col className='pl-5 mr-4 text-danger '>
+                    {' '}
+                    <h5 className='mb-0'>TOTAL</h5>
+                  </Col>
+                  <Col className='pl-5 mr-3'>
+                    <h5 className='mb-0 text-danger'>${order.totalPrice}</h5>
                   </Col>
                 </Row>
               </ListGroup.Item>
@@ -252,7 +257,7 @@ const OrderScreen = ({ match, history }) => {
                   <ListGroup.Item>
                     <Button
                       type='button'
-                      className='btn btn-block'
+                      className='btn_color btn-block rounded-pill'
                       onClick={deliverHandler}
                     >
                       Mark As Delivered

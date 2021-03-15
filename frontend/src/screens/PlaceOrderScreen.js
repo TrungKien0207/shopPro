@@ -71,7 +71,10 @@ function PlaceOrderScreen({ history }) {
       <Row className='justify-content-center'>
         <Col md={7} className='ml-3 mr-3 pl-0 pr-0 mt-2'>
           <Step step1 step2 step3 step4 />
-          <ListGroup variant='flush' className='shadow pt-2'>
+          <ListGroup
+            variant='flush'
+            className='shadow pt-3 mt-3 card_color pb-3'
+          >
             <ListGroup.Item className='border-0'>
               <h5 className='text-uppercase'>Shiping</h5>
               <p className='mb-1'>
@@ -130,8 +133,8 @@ function PlaceOrderScreen({ history }) {
           </ListGroup>
         </Col>
         <Col md={4}>
-          <Card className='shadow mt-2'>
-            <ListGroup variant='flush'>
+          <Card className='shadow mt-2 border-0 card_color pt-3 pb-3'>
+            <ListGroup variant='flush' className='card_color'>
               <ListGroup.Item>
                 <h4 className='text-uppercase text-center'>Order Summary</h4>
               </ListGroup.Item>
@@ -177,7 +180,7 @@ function PlaceOrderScreen({ history }) {
               <ListGroup.Item>
                 <Button
                   type='button'
-                  className='btn-block btn-dark text-uppercase btn-apply'
+                  className='btn-block  text-uppercase btn-apply btn_color rounded-pill '
                   disabled={cart.cartItems === 0}
                   onClick={placeOrderHandler}
                 >

@@ -19,13 +19,10 @@ const theme = createMuiTheme({
 
     secondary: {
       light: '#57975b',
-      main: '#2e7d32',
-      dark: '#205723',
+      main: '#7563c8',
+      dark: '#6353a7',
       contrastText: '#fff',
-    },
-
-    success: {
-      main: '#bac778',
+      borderRadius: '1rem',
     },
   },
 })
@@ -61,6 +58,7 @@ export default function IconLabelButtons({
           onClick={onClick}
           disabled={disabled}
           type={type}
+          borderRadius={16}
         >
           {value}
         </Button>

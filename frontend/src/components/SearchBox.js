@@ -23,18 +23,17 @@ const SearchBox = ({ history }) => {
           type='text'
           name='q'
           placeholder='Search Product...'
-          className='mr-sm-2 ml-sm-5'
+          className='mr-sm-2 ml-sm-5 rounded-pill'
           onChange={(e) => setKeyword(e.target.value)}
         ></Form.Control>
-
-        {/* <Button type='reset' value='hello' variant='light'>
-          <Image src='https://img.icons8.com/fluent/18/000000/delete-sign.png' />
-        </Button> */}
       </div>
 
-      <Button type='submit' variant='outline-success' className='p-2'>
+      <Button
+        type='submit'
+        className='p-2 btn_color rounded-pill'
+        style={{ fontSize: '0.7rem' }}
+      >
         <SearchIcon />
-        Search
       </Button>
     </Form>
   )

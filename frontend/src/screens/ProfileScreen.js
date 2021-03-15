@@ -1,3 +1,5 @@
+import Avatar from '@material-ui/core/Avatar'
+import Link from '@material-ui/core/Link'
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline'
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline'
 import axios from 'axios'
@@ -10,8 +12,26 @@ import { getUserDetails, updateUserProfile } from '../actions/userActions'
 import Announcement from '../components/Announcement'
 import Loader from '../components/Loader'
 import '../toast.css'
+import { makeStyles, withStyles } from '@material-ui/core/styles'
+import { deepOrange } from '@material-ui/core/colors'
+import { USER_UPDATE_PROFILE_RESET } from '../constants/userConstants'
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    display: 'flex',
+  },
+  orange: {
+    color: theme.palette.getContrastText(deepOrange[500]),
+    backgroundColor: deepOrange[500],
+    width: theme.spacing(59),
+    height: theme.spacing(60),
+    fontSize: '20rem',
+  },
+}))
 
 function ProfileScreen({ location, history }) {
+  const classes = useStyles()
+
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [avatar, setAvatar] = useState('')
@@ -29,6 +49,7 @@ function ProfileScreen({ location, history }) {
   const { userInfo } = userLogin
 
   const userUpdateProfile = useSelector((state) => state.userUpdateProfile)
+  // console.log('hello anh em', userUpdateProfile)
   const { success } = userUpdateProfile
 
   const submitHandler = (e) => {
@@ -69,6 +90,7 @@ function ProfileScreen({ location, history }) {
       dispatch(
         updateUserProfile({ id: user._id, email, name, avatar, password })
       )
+
       toast.success(
         <div>
           <CheckCircleOutlineIcon className='pr-1' fontSize='large' />
@@ -113,9 +135,10 @@ function ProfileScreen({ location, history }) {
 
   useEffect(() => {
     if (!userInfo) {
-      history.push()
+      history.push('/login')
     } else {
-      if (!user.name) {
+      if (!user || !user.name || success) {
+        dispatch({ type: USER_UPDATE_PROFILE_RESET })
         dispatch(getUserDetails('profile'))
       } else {
         setName(user.name)
@@ -126,37 +149,77 @@ function ProfileScreen({ location, history }) {
   }, [dispatch, history, userInfo, user])
 
   return (
-    <>
+    <div>
       {message && <Announcement variant='danger'>{message}</Announcement>}
       {error && <Announcement variant='danger'>{error}</Announcement>}
-      {loading ? (
-        <Loader />
-      ) : (
-        <Row className='justify-content-center d-flex bg-light rounded shadow'>
-          <Col md={5} className='mt-5 pt-4'>
+      {/* {loading && <Loader />} */}
+      <div className='card_color border-0'>
+        <Row className='justify-content-center '>
+          <Col
+            md={7}
+            className='pt-5 shadow '
+            style={{
+              backgroundColor: '#977bd5',
+              // borderTopLeftRadius: '0.8rem',
+              // borderBottomLeftRadius: '0.8rem',
+            }}
+          >
             <div
-              className='mb-5'
+              className='m-auto text-center'
               style={{
-                border: '5px solid red',
+                border: '5px solid #55595c',
                 borderRadius: '50%',
-                width: '25rem',
-                height: '25.6rem',
+                width: '30rem',
+                height: '30.6rem',
               }}
             >
-              <div className='text-center a'>
-                <Image
+              <div className='text-center mb-3'>
+                {user.avatar ? (
+                  <Image
+                    style={{
+                      width: '30rem',
+                      height: '30rem',
+                    }}
+                    src={avatar}
+                    className='rounded-circle'
+                    fluid
+                  />
+                ) : (
+                  <Avatar className={classes.orange}>
+                    {userInfo.name.substring(0, 1)}
+                  </Avatar>
+                )}
+              </div>
+              <div className='text-center'>
+                <Link
+                  href='/myorders'
                   style={{
-                    width: '25rem',
-                    height: '25rem',
+                    fontSize: '0.8rem',
+                    letterSpacing: '0.05rem',
                   }}
-                  src={avatar ? avatar : userInfo.avatar}
-                  className='rounded-circle shadow'
-                  fluid
-                />
+                  className='text-decoration-none shadow'
+                >
+                  <Button
+                    variant='outline-light'
+                    className='rounded-pill shadow'
+                    style={{ fontSize: '1rem', letterSpacing: '0.25rem' }}
+                  >
+                    MY ORDERS
+                  </Button>
+                </Link>
               </div>
             </div>
           </Col>
-          <Col md={6} className='pt-4 pb-4 mr-1  '>
+          <Col
+            md={4}
+            className='pt-4 pb-4 mr-1 bg-light shadow border-0'
+            style={{
+              backgroundColor:
+                'radial-gradient(circle, rgba(238,174,202,1) 0%, rgba(148,187,233,1) 100%);',
+              // borderTopRightRadius: '0.8rem',
+              // borderBottomRightRadius: '0.8rem',
+            }}
+          >
             <h2 className='text-center'>User Profile</h2>
             <Form onSubmit={submitHandler} className='pl-4 pr-4 pt-3'>
               <Form.Group controlId='name'>
@@ -164,7 +227,7 @@ function ProfileScreen({ location, history }) {
                   Name
                 </Form.Label>
                 <Form.Control
-                  className='border border-grey'
+                  className='border border-grey rounded-pill'
                   type='name'
                   placeholder='Enter name'
                   value={name}
@@ -177,7 +240,7 @@ function ProfileScreen({ location, history }) {
                   Email address
                 </Form.Label>
                 <Form.Control
-                  className='border border-grey'
+                  className='border border-grey rounded-pill'
                   type='email'
                   placeholder='Enter email'
                   value={email}
@@ -211,7 +274,7 @@ function ProfileScreen({ location, history }) {
                   Password
                 </Form.Label>
                 <Form.Control
-                  className='border border-grey'
+                  className='border border-grey rounded-pill'
                   type='password'
                   placeholder='Enter password'
                   value={password}
@@ -224,7 +287,7 @@ function ProfileScreen({ location, history }) {
                   Confirm Password
                 </Form.Label>
                 <Form.Control
-                  className='border border-grey'
+                  className='border border-grey rounded-pill'
                   type='password'
                   placeholder='Enter Confirm Password'
                   value={confirmPassword}
@@ -236,7 +299,7 @@ function ProfileScreen({ location, history }) {
                 <Button
                   type='submit'
                   variant='outline-success'
-                  className='btn-block'
+                  className='btn-block shadow rounded-pill'
                   style={{ fontSize: '1rem', letterSpacing: '0.25rem' }}
                 >
                   Update
@@ -246,8 +309,8 @@ function ProfileScreen({ location, history }) {
             </Form>{' '}
           </Col>
         </Row>
-      )}
-    </>
+      </div>
+    </div>
   )
 }
 

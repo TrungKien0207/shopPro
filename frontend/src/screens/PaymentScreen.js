@@ -59,7 +59,11 @@ export const PaymentScreen = ({ history }) => {
           </Col>
         </Form.Group>
 
-        <Button type='submit' variant='danger' className='btn-block'>
+        <Button
+          type='submit'
+          variant='danger'
+          className='btn-block btn_color rounded-pill'
+        >
           Continue
         </Button>
       </Form>

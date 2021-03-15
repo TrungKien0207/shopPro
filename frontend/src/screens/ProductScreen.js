@@ -68,6 +68,9 @@ function ProductScreen({ history, match }) {
   const productDetails = useSelector((state) => state.productDetails)
   const { loading, error, product } = productDetails
 
+  const userDetails = useSelector((state) => state.userDetails)
+  const { user } = userDetails
+
   const userLogin = useSelector((state) => state.userLogin)
   const { userInfo } = userLogin
 
@@ -117,7 +120,7 @@ function ProductScreen({ history, match }) {
       ) : (
         <>
           <Meta title={product.name} />
-          <Row className='container-productGreen mb-2 rounded shadow'>
+          <Row className='container-productGreen mb-2 rounded shadow card_color'>
             <Col md={5} className='p-3 img-productGreen'>
               <Image
                 className='rounded'
@@ -218,13 +221,14 @@ function ProductScreen({ history, match }) {
                   <ListGroup.Item className='ml-4 pl-0 pr-0 pb-0 mr-4'>
                     <Button
                       onClick={addToCartHandler}
-                      className='btn-block btn-danger'
+                      className='btn-block btn_color rounded-pill'
                       type='button'
                       disabled={product.countInStock === 0}
                       style={{ fontSize: '1em' }}
                     >
                       <AddShoppingCartIcon />
-                      <strong className='pl-1'>Add to Cart</strong>
+                      <strong className='pl-1 '>Add to Cart</strong>
+                      <div className='wave'></div>
                     </Button>
                   </ListGroup.Item>
                 </ListGroup>
@@ -236,7 +240,7 @@ function ProductScreen({ history, match }) {
             <Loader />
           ) : (
             <Row>
-              <Col className='mt-3 pt-3 pl-5 pr-5 background-light rounded shadow'>
+              <Col className='mt-3 p-3 pl-5 pr-5 background-light rounded shadow card_color'>
                 <h5 className='text-uppercase'>Đánh giá sản phẩm</h5>
                 {product.reviews.length === 0 && (
                   <Announcement variant='warning'>
@@ -245,7 +249,7 @@ function ProductScreen({ history, match }) {
                   </Announcement>
                 )}
                 <div
-                  className=' rounded text-center circle-rate pt-2 pb-1'
+                  className=' rounded text-center circle-rate pt-2 pb-1 ml-3'
                   style={{ width: '14rem' }}
                 >
                   <h5 className=''>Điểm</h5>
@@ -259,10 +263,17 @@ function ProductScreen({ history, match }) {
                         {/* <Row>
                         <Col md={1} className=''> */}
                         <div className='pr-2'>
-                          {' '}
-                          <Avatar className={classes.orange}>
-                            {review.name.substring(0, 1)}
-                          </Avatar>
+                          {review ? (
+                            <Image
+                              className='rounded-circle'
+                              src={user.avatar}
+                              style={{ height: '2rem', width: '2rem' }}
+                            />
+                          ) : (
+                            <Avatar className={classes.orange}>
+                              {review.name.substring(0, 1)}
+                            </Avatar>
+                          )}
                         </div>
                         {/* </Col>
                         <Col> */}

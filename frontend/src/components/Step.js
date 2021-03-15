@@ -25,8 +25,7 @@ export default function HorizontalLinearStepper({
     <div>
       <Stepper
         alternativeLabel
-        className='pt-4 pb-4 rounded shadow'
-        style={{ backgroundColor: 'rgb(208,208,208,0.4)' }}
+        className='pt-4 pb-4 shadow bg-light border-0 card_color'
       >
         <Step>
           {step1 ? (

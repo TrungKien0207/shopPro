@@ -29,7 +29,7 @@ const authUser = asyncHandler(async (req, res) => {
 //* @route      POST /api/users
 //* @access     Public
 const registerUser = asyncHandler(async (req, res) => {
-  const { name, email, password } = req.body
+  const { name, email, avatar, password } = req.body
 
   const userExists = await User.findOne({ email })
 
@@ -41,6 +41,7 @@ const registerUser = asyncHandler(async (req, res) => {
   const user = await User.create({
     name,
     email,
+    avatar,
     password,
   })
 
@@ -49,6 +50,7 @@ const registerUser = asyncHandler(async (req, res) => {
       _id: user._id,
       name: user.name,
       email: user.email,
+      avatar: user.avatar,
       isAdmin: user.isAdmin,
       token: generateToken(user._id),
     })
@@ -65,15 +67,13 @@ const getUserProfile = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user._id)
 
   if (user) {
-    setTimeout(() => {
-      res.json({
-        _id: user._id,
-        name: user.name,
-        email: user.email,
-        avatar: user.avatar,
-        isAdmin: user.isAdmin,
-      })
-    }, 200)
+    res.json({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      avatar: user.avatar,
+      isAdmin: user.isAdmin,
+    })
   } else {
     res.status(404)
     throw new Error('User not found')

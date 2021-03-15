@@ -5,7 +5,7 @@ import Product from '../models/productModel.js'
 //* @route      GET /api/products/:id
 //* @access     Public
 const getProducts = asyncHandler(async (req, res) => {
-  const pageSize = 4
+  const pageSize = 8
   const page = Number(req.query.pageNumber) || 1
 
   const keyword = req.query.keyword
@@ -133,6 +133,7 @@ const createProductReview = asyncHandler(async (req, res) => {
     const review = {
       name: req.user.name,
       rating: Number(rating),
+      avatar: req.user.avatar,
       comment,
       user: req.user._id,
     }
