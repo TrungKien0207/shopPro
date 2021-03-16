@@ -175,7 +175,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-function UserListScreen({ history }) {
+function UScreen({ history }) {
   const classes = useStyles()
   const [order, setOrder] = React.useState('asc')
   const [orderBy, setOrderBy] = React.useState('calories')
@@ -330,17 +330,9 @@ function UserListScreen({ history }) {
           <div className={classes.root}>
             <Paper
               className={classes.paper + 'shadow'}
-              style={{
-                borderRadius: '1rem',
-                border: '0.25px solid #ddd',
-              }}
+              style={{ borderRadius: '1rem', border: '0.25px solid #ddd' }}
             >
-              <TableContainer
-                className='text-center p-5'
-                style={{
-                  borderRadius: '1rem',
-                }}
-              >
+              <TableContainer className='text-center'>
                 <EnhancedTableToolbar numSelected={selected.length} />
                 <Table
                   className={classes.table}
@@ -456,4 +448,4 @@ function UserListScreen({ history }) {
   )
 }
 
-export default UserListScreen
+export default UScreen
