@@ -119,7 +119,7 @@ const getOrders = asyncHandler(async (req, res) => {
 })
 
 //* @desc       Delete orders
-//* @route      PUT /api/orders
+//* @route      DELETE /api/orders/:id
 //* @access     Private/Admin
 const deleteOrder = asyncHandler(async (req, res) => {
   const order = await Order.findById(req.params.id)

@@ -3,6 +3,9 @@ import {
   ORDER_CREATE_FAIL,
   ORDER_CREATE_REQUEST,
   ORDER_CREATE_SUCCESS,
+  ORDER_DELETE_FAIL,
+  ORDER_DELETE_REQUEST,
+  ORDER_DELETE_SUCCESS,
   ORDER_DELIVER_FAIL,
   ORDER_DELIVER_REQUEST,
   ORDER_DELIVER_SUCCESS,
@@ -234,7 +237,7 @@ export const listOrders = () => async (dispatch, getState) => {
 export const deleteOrder = (id) => async (dispatch, getState) => {
   try {
     dispatch({
-      type: USER_DELETE_REQUEST,
+      type: ORDER_DELETE_REQUEST,
     })
 
     const {
@@ -247,14 +250,14 @@ export const deleteOrder = (id) => async (dispatch, getState) => {
       },
     }
 
-    await axios.delete(`/api/users/${id}`, config)
+    await axios.delete(`/api/orders/${id}`, config)
 
     dispatch({
-      type: USER_DELETE_SUCCESS,
+      type: ORDER_DELETE_SUCCESS,
     })
   } catch (error) {
     dispatch({
-      type: USER_DELETE_FAIL,
+      type: ORDER_DELETE_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

@@ -25,16 +25,17 @@ function HomeScreen({ match }) {
   return (
     <>
       <Meta />
-      {!keyword && <ProductCarousel className='m-0' />}
-      <h3 className='mt-5'>Latest Product</h3>
-
+      {!keyword && (
+        <ProductCarousel className='m-0' style={{ width: '100vh' }} />
+      )}
+      <h3 className='m-5 mb-0'>Latest Product</h3>
       {loading ? (
         <Loader />
       ) : error ? (
         <Message variant='danger'>{error}</Message>
       ) : (
         <>
-          <Row>
+          <Row className='ml-5 mr-5'>
             {products?.map((
               product // phai co ? de kiem tra product === null
             ) => (

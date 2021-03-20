@@ -23,8 +23,9 @@ import { Button, Table } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { LinkContainer } from 'react-router-bootstrap'
 import '../../src/notisfied.css'
-import { listOrders } from '../actions/orderActions'
+import { listOrders, deleteOrder } from '../actions/orderActions'
 import Announcement from '../components/Announcement'
+import Message from '../components/Message'
 import Loader from '../components/Loader'
 
 function descendingComparator(a, b, orderBy) {
@@ -60,9 +61,10 @@ const headCells = [
     disablePadding: true,
     label: 'ID',
   },
-  { id: 'user', numeric: false, disablePadding: false, label: 'USER' },
+  { id: 'user', numeric: true, disablePadding: false, label: 'USER' },
   { id: 'date', numeric: true, disablePadding: false, label: 'DATE' },
   { id: 'total', numeric: true, disablePadding: false, label: 'TOTAL' },
+  { id: 'product', numeric: true, disablePadding: false, label: 'PRODUCT' },
   { id: 'paid', numeric: true, disablePadding: false, label: 'PAID' },
   { id: 'delivered', numeric: true, disablePadding: false, label: 'DELIVERED' },
   { id: 'action', numeric: false, disablePadding: false, label: 'ACTION' },
@@ -176,7 +178,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-function OrderListScreen({ history }) {
+function OrderListScreen({ history, match }) {
   const classes = useStyles()
   const [order, setOrder] = React.useState('asc')
   const [orderBy, setOrderBy] = React.useState('calories')
@@ -234,11 +236,18 @@ function OrderListScreen({ history }) {
   }
 
   const isSelected = (name) => selected.indexOf(name) !== -1
-  const pageNumber = match.params.pageNumber || 1
+
   const dispatch = useDispatch()
 
   const orderList = useSelector((state) => state.orderList)
   const { loading, error, orders } = orderList
+
+  const orderDelete = useSelector((state) => state.orderDelete)
+  const {
+    loading: loadingDelete,
+    error: errorDelete,
+    success: successDelete,
+  } = orderDelete
 
   const emptyRows =
     orders !== undefined &&
@@ -253,11 +262,11 @@ function OrderListScreen({ history }) {
     } else {
       history.push('/login')
     }
-  }, [dispatch, history, userInfo])
+  }, [dispatch, history, userInfo, successDelete])
 
   const deleteHandle = (id) => {
     if (window.confirm('You are sure?')) {
-      dispatch(deleteUser(id))
+      dispatch(deleteOrder(id))
     }
   }
 
@@ -286,7 +295,10 @@ function OrderListScreen({ history }) {
             variant='h6'
             id='tableTitle'
             component='div'
-          ></Typography>
+          >
+            {' '}
+            <h2>Orders List</h2>
+          </Typography>
         )}
 
         {numSelected > 0 ? (
@@ -295,6 +307,7 @@ function OrderListScreen({ history }) {
               aria-label='delete'
               onClick={() => deleteHandle(selected)}
             >
+              {console.log(selected)}
               <DeleteIcon />
             </IconButton>
           </Tooltip>
@@ -315,7 +328,8 @@ function OrderListScreen({ history }) {
 
   return (
     <>
-      <h2>Orders List</h2>
+      {loadingDelete && <Loader />}
+      {errorDelete && <Message>{errorDelete}</Message>}
       {loading ? (
         <Loader />
       ) : error ? (
@@ -330,7 +344,7 @@ function OrderListScreen({ history }) {
             }}
           >
             <TableContainer
-              className='text-center p-2'
+              className='text-center'
               style={{
                 borderRadius: '1rem',
               }}
@@ -395,8 +409,20 @@ function OrderListScreen({ history }) {
                             {order.createdAt.substring(11, 19)} {' : '}
                             {order.createdAt.substring(0, 10)}
                           </TableCell>
-                          <TableCell align='center'>${order.total}</TableCell>
                           <TableCell align='center'>
+                            ${order.totalPrice}
+                          </TableCell>
+                          <TableCell align='center'>
+                            {order.orderItems &&
+                              order.orderItems.map(
+                                (q) => q.name + ' ( ' + q.qty + ' product) -'
+                              )}
+                          </TableCell>
+
+                          <TableCell
+                            align='center'
+                            style={{ color: 'green', fontWeight: '700' }}
+                          >
                             {order.isPaid ? (
                               order.paidAt.substring(11, 19) +
                               ' : ' +
@@ -408,7 +434,10 @@ function OrderListScreen({ history }) {
                               ></i>
                             )}
                           </TableCell>
-                          <TableCell align='center'>
+                          <TableCell
+                            align='center'
+                            style={{ color: 'pink', fontWeight: '700' }}
+                          >
                             {order.isDelivered ? (
                               order.deliveredAt.substring(11, 19) +
                               ' : ' +
@@ -444,9 +473,9 @@ function OrderListScreen({ history }) {
               </Table>
             </TableContainer>
             <TablePagination
-              rowsPerPageOptions={[5, 10, 25]}
+              rowsPerPageOptions={[5, 10, 15, 20, 25]}
               component='div'
-              count={products.length}
+              count={orders.length}
               rowsPerPage={rowsPerPage}
               page={page}
               onChangePage={handleChangePage}

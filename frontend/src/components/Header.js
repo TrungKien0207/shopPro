@@ -17,9 +17,10 @@ import React, { useEffect, useState } from 'react'
 import { Container, Image, Nav, Navbar, NavDropdown } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { LinkContainer } from 'react-router-bootstrap'
-import { Route } from 'react-router-dom'
+import { Route, useHistory } from 'react-router-dom'
 import { getUserDetails, logout } from '../actions/userActions'
 import SearchBox from './SearchBox'
+import firebase from 'firebase'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -65,7 +66,7 @@ function Header(props) {
   const classes = useStyles()
   const [open, setOpen] = React.useState(false)
   const anchorRef = React.useRef(null)
-
+  const history = useHistory()
   const [anchorEl, setAnchorEl] = useState(null)
 
   const handleClick = (event) => {
@@ -84,7 +85,9 @@ function Header(props) {
   const { cartItems } = cart
 
   const logoutHandler = () => {
+    firebase.auth().signOut()
     dispatch(logout())
+    history.push('/')
   }
 
   const handleToggle = () => {
