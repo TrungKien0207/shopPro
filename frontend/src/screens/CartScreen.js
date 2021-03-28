@@ -9,8 +9,6 @@ import { Button, Card, Col, Image, ListGroup, Row } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { addToCart, removeFromCart } from '../actions/cartActions.js'
-import Announcement from '../components/Announcement'
-import Loader from '../components/Loader'
 
 const useStyles = makeStyles((theme) => ({
   root: {

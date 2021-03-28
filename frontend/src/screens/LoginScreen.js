@@ -84,7 +84,7 @@ function LoginScreen({ location, history }) {
       {loading && <Loader />}
       <Form
         onSubmit={submitHandler}
-        className='bg-light rounded shadow p-5 mt-4'
+        className='bg-light rounded shadow p-5 mt-4 card_color'
       >
         <h2 className='text-center'>Sign in</h2>
         <Form.Group controlId='email' className='pt-3'>
@@ -113,27 +113,43 @@ function LoginScreen({ location, history }) {
           ></Form.Control>
         </Form.Group>
 
-        <div>
+        <div className='mt-2'>
           <Button
             type='submit'
             variant='outline-success'
-            className='btn-block shadow rounded-pill'
+            className='btn-block shadow rounded-pill mb-3'
             style={{ fontSize: '0.875rem', letterSpacing: '0.25rem' }}
             size='sm'
           >
             LOGIN
           </Button>
-          {isLogin === false && (
+          {isLogin === false ? (
             <Button
               variant='outline-light'
-              className='btn-block shadow rounded-pill'
+              className='btn-block shadow rounded-pill btn_gg'
               style={{
                 fontSize: '0.875rem',
                 letterSpacing: '0.25rem',
-                borderTop: '2px dashed #ef4f4f',
-                borderLeft: '2px dashed #ffcc29',
-                borderBottom: '2px dashed #beca5c',
-                borderRight: '2px dashed #007580',
+                border: '1px solid #ddd',
+                color: '#1a1a1a',
+              }}
+              onClick={onSubmit}
+              size='sm'
+            >
+              <Image
+                src='https://img.icons8.com/fluent/20/000000/google-logo.png'
+                className='pr-1'
+              />
+              Login with Google
+            </Button>
+          ) : (
+            <Button
+              variant='outline-light'
+              className='btn-block shadow rounded-pill btn_gg'
+              style={{
+                fontSize: '0.875rem',
+                letterSpacing: '0.25rem',
+                border: '1px solid #ddd',
                 color: '#1a1a1a',
               }}
               onClick={onSubmit}
@@ -150,22 +166,22 @@ function LoginScreen({ location, history }) {
 
         <Row className='py-3'>
           <Col
-            className='d-flex align-items-center'
-            style={{ fontSize: '1rem', letterSpacing: '0.15rem' }}
+            className='d-flex align-items-center justify-content-center'
+            style={{
+              fontSize: '1rem',
+              letterSpacing: '0.15rem',
+            }}
           >
-            New Customer?{' '}
-            <Link
-              className='text-decoration-none text-danger pl-1 '
-              to={redirect ? `/register?redirect=${redirect}` : '/register'}
-            >
-              <Button
-                className='p-1 rounded-pill shadow'
-                variant='outline-warning'
-                style={{ letterSpacing: '0.15rem' }}
+            <div>
+              New Customer?{' '}
+              <Link
+                className='text-decoration-none text-info pl-1'
+                to={redirect ? `/register?redirect=${redirect}` : '/register'}
+                style={{ fontWeight: '700' }}
               >
                 Register
-              </Button>
-            </Link>
+              </Link>
+            </div>
           </Col>
         </Row>
       </Form>

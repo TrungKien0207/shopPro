@@ -11,7 +11,7 @@
 .btn_color:visited,
 .btn_color:focus {
   background-color: #6353a7 !important;
-  border: 0px !important;
+  /* border: 0px !important; */
   box-shadow: 0 0 0 0.2rem #6351aa70 !important;
 }
 
@@ -24,4 +24,31 @@
   background-color: #fff;
   border-radius: 1rem !important;
   box-shadow: 0 0 0 0.6rem #6351aa70 !important;
+}
+
+.img_color {
+  transition: 300ms;
+}
+
+.img_container:hover img {
+  transform: scale(1.4);
+  border-radius: 50% !important;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+}
+
+.btn_color_pink {
+  background-color: #ffc1b6;
+  font-size: 0.9rem;
+  color: #fff;
+  letter-spacing: 0.25rem;
+  transition: 300ms;
+}
+
+.btn_color_pink:hover,
+.btn_color_pink:active,
+.btn_color_pink:visited,
+.btn_color_pink:focus {
+  background-color: #ffc1b6 !important;
+  color: #fff;
+  box-shadow: 0 0 0 0.2rem #ffc1b6 !important;
 }

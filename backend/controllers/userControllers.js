@@ -16,6 +16,7 @@ const authUser = asyncHandler(async (req, res) => {
       name: user.name,
       email: user.email,
       avatar: user.avatar,
+      sex: user.sex,
       isAdmin: user.isAdmin,
       token: generateToken(user._id),
     })
@@ -69,12 +70,18 @@ const registerUser = asyncHandler(async (req, res) => {
 const getUserProfile = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user._id)
 
+  console.log(user)
+
   if (user) {
     res.json({
       _id: user._id,
       name: user.name,
       email: user.email,
       avatar: user.avatar,
+      sex: user.sex,
+      birthDay: user.birthDay,
+      sex: user.sex,
+      address: user.address,
       isAdmin: user.isAdmin,
     })
   } else {
@@ -93,9 +100,15 @@ const updateUserProfile = asyncHandler(async (req, res) => {
     user.name = req.body.name || user.name
     user.email = req.body.email || user.email
     user.avatar = req.body.avatar || user.avatar
+    user.birthDay = req.body.birthDay || user.birthDay
+    user.sex = req.body.sex || user.sex
+    user.birthDay = req.body.selectedDate || user.birthDay
+    user.address = req.body.address || user.address
     if (req.body.password) {
       user.password = req.body.password
     }
+
+    console.log('user', user)
 
     const updateUser = await user.save()
 
@@ -104,6 +117,15 @@ const updateUserProfile = asyncHandler(async (req, res) => {
       name: updateUser.name,
       email: updateUser.email,
       avatar: updateUser.avatar,
+      birthDay: updateUser.birthDay,
+      sex: updateUser.sex,
+      address: updateUser.address,
+      // '' +
+      // updateUser.xa +
+      // '' +
+      // updateUser.huyen +
+      // '' +
+      // updateUser.thanhPho,
       isAdmin: updateUser.isAdmin,
       token: generateToken(updateUser._id),
     })

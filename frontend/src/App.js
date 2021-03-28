@@ -9,6 +9,7 @@ import CartScreen from './screens/CartScreen.js'
 import HomeScreen from './screens/HomeScreen'
 import LoginScreen from './screens/LoginScreen'
 import MyOrdersScreen from './screens/MyOrdersScreen'
+import OrderEditScreen from './screens/OrderEditScreen'
 import OrderListScreen from './screens/OrderListScreen'
 import OrderScreen from './screens/OrderScreen.js'
 import { PaymentScreen } from './screens/PaymentScreen'
@@ -35,6 +36,29 @@ const App = () => {
         <Header />
         <main className='py-3'>
           <Route path='/' component={HomeScreen} exact />
+          <div className='ml-5 mr-5 mt-2'>
+            <Route path='/admin/orderlist' component={OrderListScreen} exact />
+            <Route
+              path='/admin/order/:id/edit'
+              component={OrderEditScreen}
+              exact
+            />
+            <Route
+              path='/admin/product/:id/edit'
+              component={ProductEditScreen}
+              exact
+            />
+            <Route
+              path='/admin/user/:id/edit'
+              component={UserEditScreen}
+              exact
+            />
+            <Route
+              path='/admin/productlist'
+              component={ProductListScreen}
+              exact
+            />
+          </div>
           <Container>
             <Route path='/product/:id' component={ProductScreen} exact />
             <Route path='/profile' component={ProfileScreen} exact />
@@ -47,27 +71,13 @@ const App = () => {
             <Route path='/placeorder' component={PlaceOrderScreen} exact />
             <Route path='/cart/:id?' component={CartScreen} exact />
             <Route path='/admin/userlist' component={UserListScreen} exact />
-            <Route
-              path='/admin/user/:id/edit'
-              component={UserEditScreen}
-              exact
-            />
-            <Route
-              path='/admin/productlist'
-              component={ProductListScreen}
-              exact
-            />
+
             <Route
               path='/admin/productlist/:pageNumber'
               component={ProductListScreen}
               exact
             />
-            <Route
-              path='/admin/product/:id/edit'
-              component={ProductEditScreen}
-              exact
-            />
-            <Route path='/admin/orderlist' component={OrderListScreen} exact />
+
             <Route path='/search/:keyword' component={HomeScreen} exact />
             <Route path='/page/:pageNumber' component={HomeScreen} exact />
             <Route

@@ -133,6 +133,35 @@ const deleteOrder = asyncHandler(async (req, res) => {
   }
 })
 
+//* @desc       Update orders status
+//* @route      PUT /api/orders/:id
+//* @access     Private/Admin
+const updateStatus = asyncHandler(async (req, res) => {
+  const { orderStatus } = req.body
+
+  console.log(req.body)
+
+  const order = await Order.findById(req.params.id)
+
+  try {
+    let updateOrderStatus = await Order.findByIdAndUpdate(
+      order,
+      {
+        orderStatus,
+      },
+      { new: true }
+    ).exec()
+    setTimeout(() => {
+      res
+        .status(200)
+        .json({ updateOrderStatus, message: 'Update Success Order Status' })
+    }, 2000)
+  } catch (error) {
+    res.status(404)
+    throw new Error('Order not found')
+  }
+})
+
 export {
   addOrderItems,
   getOrderById,
@@ -141,4 +170,5 @@ export {
   getOrders,
   updateOrderToDelivered,
   deleteOrder,
+  updateStatus,
 }

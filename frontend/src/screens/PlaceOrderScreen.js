@@ -1,21 +1,11 @@
 import React, { useEffect } from 'react'
-import { Link } from 'react-router-dom'
-import {
-  Button,
-  Row,
-  Col,
-  ListGroup,
-  Image,
-  Card,
-  Container,
-} from 'react-bootstrap'
+import { Button, Card, Col, Image, ListGroup, Row } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
+import { createOrder } from '../actions/orderActions'
+import Announcement from '../components/Announcement'
 import Message from '../components/Message'
 import Step from '../components/Step'
-import { createOrder } from '../actions/orderActions'
-import { ORDER_CREATE_RESET } from '../constants/orderConstants'
-import { USER_DETAILS_RESET } from '../constants/userConstants'
-import Announcement from '../components/Announcement'
 
 PlaceOrderScreen.propTypes = {}
 
@@ -67,7 +57,6 @@ function PlaceOrderScreen({ history }) {
 
   return (
     <>
-      <Container></Container>
       <Row className='justify-content-center'>
         <Col md={7} className='ml-3 mr-3 pl-0 pr-0 mt-2'>
           <Step step1 step2 step3 step4 />
@@ -78,10 +67,9 @@ function PlaceOrderScreen({ history }) {
             <ListGroup.Item className='border-0'>
               <h5 className='text-uppercase'>Shiping</h5>
               <p className='mb-1'>
-                <strong>Address: </strong>
-                {cart.shippingAddress.address}, {cart.shippingAddress.city},{' '}
-                {cart.shippingAddress.postalCode},{' '}
-                {cart.shippingAddress.country},
+                <strong>Địa chỉ: </strong>
+                {cart.shippingAddress.diaChi}, {cart.shippingAddress.xa},{' '}
+                {cart.shippingAddress.huyen}, {cart.shippingAddress.thanhPho},
               </p>
             </ListGroup.Item>
 

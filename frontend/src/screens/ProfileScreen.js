@@ -1,7 +1,19 @@
+import DateFnsUtils from '@date-io/date-fns'
 import Avatar from '@material-ui/core/Avatar'
+import { deepOrange } from '@material-ui/core/colors'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
+import Grid from '@material-ui/core/Grid'
 import Link from '@material-ui/core/Link'
+import Radio from '@material-ui/core/Radio'
+import RadioGroup from '@material-ui/core/RadioGroup'
+import { makeStyles } from '@material-ui/core/styles'
+import Switch from '@material-ui/core/Switch'
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline'
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline'
+import {
+  KeyboardDatePicker,
+  MuiPickersUtilsProvider,
+} from '@material-ui/pickers'
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { Button, Col, Form, Image, Row } from 'react-bootstrap'
@@ -11,10 +23,9 @@ import 'react-toastify/dist/ReactToastify.css'
 import { getUserDetails, updateUserProfile } from '../actions/userActions'
 import Announcement from '../components/Announcement'
 import Loader from '../components/Loader'
-import '../toast.css'
-import { makeStyles, withStyles } from '@material-ui/core/styles'
-import { deepOrange } from '@material-ui/core/colors'
 import { USER_UPDATE_PROFILE_RESET } from '../constants/userConstants'
+import data from '../data.json'
+import '../toast.css'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -23,14 +34,33 @@ const useStyles = makeStyles((theme) => ({
   orange: {
     color: theme.palette.getContrastText(deepOrange[500]),
     backgroundColor: deepOrange[500],
-    width: theme.spacing(59),
-    height: theme.spacing(60),
+    width: theme.spacing(48.8),
+    height: theme.spacing(50),
     fontSize: '20rem',
   },
 }))
 
 function ProfileScreen({ location, history }) {
   const classes = useStyles()
+
+  const [state, setState] = useState(false)
+
+  const handleChange = () => {
+    setState(!state)
+  }
+
+  const [selectedDate, setSelectedDate] = useState(
+    new Date('2021-03-22T21:11:54')
+  )
+
+  const handleDateChange = (date) => {
+    setSelectedDate(date)
+  }
+
+  const userDetails = useSelector((state) => state.userDetails)
+  const { loading, error, user } = userDetails
+
+  console.log('user', user)
 
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
@@ -39,21 +69,24 @@ function ProfileScreen({ location, history }) {
   const [confirmPassword, setConfirmPassword] = useState('')
   const [uploading, setUploading] = useState(false)
   const [message, setMessage] = useState(null)
+  const [sex, setSex] = useState('Nữ')
+  const [thanhPho, setThanhPho] = useState('')
+  const [huyen, setHuyen] = useState('')
+  const [xa, setXa] = useState('')
+  const [diaChi, setDiachi] = useState('')
+  const [address, setAddress] = useState({ diaChi, xa, huyen, thanhPho })
 
   const dispatch = useDispatch()
-
-  const userDetails = useSelector((state) => state.userDetails)
-  const { loading, error, user } = userDetails
 
   const userLogin = useSelector((state) => state.userLogin)
   const { userInfo } = userLogin
 
   const userUpdateProfile = useSelector((state) => state.userUpdateProfile)
-  // console.log('hello anh em', userUpdateProfile)
   const { success } = userUpdateProfile
 
   const submitHandler = (e) => {
     e.preventDefault()
+    setAddress({ diaChi, xa, huyen, thanhPho })
     error &&
       toast.error(
         <div>
@@ -88,7 +121,16 @@ function ProfileScreen({ location, history }) {
       )
     } else {
       dispatch(
-        updateUserProfile({ id: user._id, email, name, avatar, password })
+        updateUserProfile({
+          id: user._id,
+          email,
+          name,
+          avatar,
+          password,
+          sex,
+          selectedDate,
+          address,
+        })
       )
 
       toast.success(
@@ -144,6 +186,9 @@ function ProfileScreen({ location, history }) {
         setName(user.name)
         setEmail(user.email)
         setAvatar(user.avatar)
+        setAddress(user.address)
+        setSelectedDate(user.birthDay)
+        setSex(user.sex)
       }
     }
   }, [dispatch, history, userInfo, user])
@@ -153,15 +198,15 @@ function ProfileScreen({ location, history }) {
       {message && <Announcement variant='danger'>{message}</Announcement>}
       {error && <Announcement variant='danger'>{error}</Announcement>}
       {/* {loading && <Loader />} */}
-      <div className='card_color border-0'>
-        <Row className='justify-content-center '>
+      <div className=' border-0'>
+        <Row className='justify-content-center m-0'>
           <Col
-            md={7}
+            md={5}
             className='pt-5 shadow '
             style={{
               backgroundColor: '#977bd5',
-              // borderTopLeftRadius: '0.8rem',
-              // borderBottomLeftRadius: '0.8rem',
+              borderTopLeftRadius: '1rem',
+              borderBottomLeftRadius: '1rem',
             }}
           >
             <div
@@ -169,16 +214,16 @@ function ProfileScreen({ location, history }) {
               style={{
                 border: '5px solid #55595c',
                 borderRadius: '50%',
-                width: '30rem',
-                height: '30.6rem',
+                width: '25rem',
+                height: '25.6rem',
               }}
             >
               <div className='text-center mb-3'>
                 {user.avatar ? (
                   <Image
                     style={{
-                      width: '30rem',
-                      height: '30rem',
+                      width: '25rem',
+                      height: '25rem',
                     }}
                     src={avatar}
                     className='rounded-circle'
@@ -201,7 +246,7 @@ function ProfileScreen({ location, history }) {
                 >
                   <Button
                     variant='outline-light'
-                    className='rounded-pill shadow'
+                    className='rounded-pill shadow '
                     style={{ fontSize: '1rem', letterSpacing: '0.25rem' }}
                   >
                     MY ORDERS
@@ -211,42 +256,197 @@ function ProfileScreen({ location, history }) {
             </div>
           </Col>
           <Col
-            md={4}
+            md={6}
             className='pt-4 pb-4 mr-1 bg-light shadow border-0'
             style={{
               backgroundColor:
                 'radial-gradient(circle, rgba(238,174,202,1) 0%, rgba(148,187,233,1) 100%);',
-              // borderTopRightRadius: '0.8rem',
-              // borderBottomRightRadius: '0.8rem',
+              borderTopRightRadius: '1rem',
+              borderBottomRightRadius: '1rem',
             }}
           >
             <h2 className='text-center'>User Profile</h2>
             <Form onSubmit={submitHandler} className='pl-4 pr-4 pt-3'>
-              <Form.Group controlId='name'>
-                <Form.Label as='p' className='mb-1'>
-                  Name
-                </Form.Label>
-                <Form.Control
-                  className='border border-grey rounded-pill'
-                  type='name'
-                  placeholder='Enter name'
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                ></Form.Control>
+              <Row>
+                <Col md={6}>
+                  <Form.Group controlId='name'>
+                    <Form.Label as='p' className='mb-1'>
+                      Họ và tên
+                    </Form.Label>
+                    <Form.Control
+                      className='border border-grey rounded-pill'
+                      type='name'
+                      placeholder='Enter name'
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                    ></Form.Control>
+                  </Form.Group>
+                </Col>
+
+                <Col md={6}>
+                  <Form.Group controlId='email'>
+                    <Form.Label as='p' className='mb-1'>
+                      Địa chỉ email
+                    </Form.Label>
+                    <Form.Control
+                      className='border border-grey rounded-pill'
+                      type='email'
+                      placeholder='Enter email'
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                    ></Form.Control>
+                  </Form.Group>
+                </Col>
+              </Row>
+              <Form.Group>
+                <Row>
+                  <Col md={6}>
+                    <p>Ngày sinh</p>
+                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                      <Grid container justify='space-start'>
+                        <KeyboardDatePicker
+                          className='m-0'
+                          margin='normal'
+                          id='date-picker-dialog'
+                          label='Ngày sinh'
+                          format='MM/dd/yyyy'
+                          value={selectedDate}
+                          onChange={handleDateChange}
+                          KeyboardButtonProps={{
+                            'aria-label': 'change date',
+                          }}
+                        />
+                      </Grid>
+                    </MuiPickersUtilsProvider>
+                  </Col>
+                  <Col md={6}>
+                    <p>Giới tính: {user.sex}</p>
+                    <RadioGroup>
+                      <Row
+                        className='justify-content-center align-items-center'
+                        quired
+                        value={sex}
+                        onChange={(e) => setSex(e.target.value)}
+                      >
+                        <FormControlLabel
+                          value='Nam'
+                          control={<Radio size='small' />}
+                          label='Nam'
+                        />
+                        <FormControlLabel
+                          value='Nữ'
+                          control={<Radio size='small' />}
+                          label='Nữ'
+                        />
+                      </Row>
+                    </RadioGroup>
+                  </Col>
+                </Row>
+              </Form.Group>
+              <Form.Group>
+                <Row>
+                  <Col md={6}>
+                    <Form.Group controlId='address'>
+                      <Form.Label as='p' className='mb-1'>
+                        Thành Phố / Tỉnh
+                      </Form.Label>
+                      <Form.Control
+                        type='text'
+                        as='select'
+                        placeholder='Enter address'
+                        value={thanhPho}
+                        onChange={(e) => setThanhPho(e.target.value)}
+                        className='border border-gray rounded-pill'
+                      >
+                        {data.map((tp) => (
+                          <option
+                            style={{ color: 'black' }}
+                            key={tp.Id}
+                            value={tp.Name}
+                          >
+                            {tp.Name}
+                          </option>
+                        ))}
+                      </Form.Control>
+                    </Form.Group>
+                  </Col>
+                  <Col md={6}>
+                    <Form.Group controlId='city'>
+                      <Form.Label as='p' className='mb-1'>
+                        Quận / Huyện
+                      </Form.Label>
+                      <Form.Control
+                        type='text'
+                        as='select'
+                        placeholder='Enter city'
+                        value={huyen}
+                        onChange={(e) => setHuyen(e.target.value)}
+                        className='border border-gray rounded-pill'
+                      >
+                        {data.map(
+                          (a) =>
+                            a.Name === thanhPho &&
+                            a.Districts.map((b) => (
+                              <option
+                                key={b.Id}
+                                style={{ color: 'black' }}
+                                value={b.Name}
+                              >
+                                {b.Name}
+                              </option>
+                            ))
+                        )}
+                      </Form.Control>
+                    </Form.Group>
+                  </Col>
+                </Row>
               </Form.Group>
 
-              <Form.Group controlId='email'>
-                <Form.Label as='p' className='mb-1'>
-                  Email address
-                </Form.Label>
-                <Form.Control
-                  className='border border-grey rounded-pill'
-                  type='email'
-                  placeholder='Enter email'
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                ></Form.Control>
-              </Form.Group>
+              <Row>
+                <Col md={6}>
+                  <Form.Group controlId='postalCode'>
+                    <Form.Label as='p' className='mb-1'>
+                      Phường / Xã
+                    </Form.Label>
+                    <Form.Control
+                      type='text'
+                      as='select'
+                      placeholder='Enter postalCode'
+                      value={xa}
+                      onChange={(e) => setXa(e.target.value)}
+                      className='border border-gray rounded-pill'
+                    >
+                      {data.map(
+                        (a) =>
+                          a.Name === thanhPho &&
+                          a.Districts.map(
+                            (b) =>
+                              b.Name === huyen &&
+                              b.Wards.map((c) => (
+                                <option style={{ color: 'black' }}>
+                                  {c.Name}
+                                </option>
+                              ))
+                          )
+                      )}
+                    </Form.Control>
+                  </Form.Group>
+                </Col>
+                <Col md={6}>
+                  <Form.Group controlId='country'>
+                    <Form.Label as='p' className='mb-1'>
+                      Địa chỉ chi tiết
+                    </Form.Label>
+                    <Form.Control
+                      type='text'
+                      placeholder='Enter country'
+                      value={diaChi}
+                      onChange={(e) => setDiachi(e.target.value)}
+                      className='border border-gray rounded-pill'
+                    ></Form.Control>
+                  </Form.Group>
+                </Col>
+              </Row>
 
               <Form.Group controlId='image'>
                 <Form.Label as='p' className='mb-1'>
@@ -268,33 +468,84 @@ function ProfileScreen({ location, history }) {
                 ></Form.File>
                 {uploading && <Loader />}
               </Form.Group>
-
-              <Form.Group controlId='password'>
-                <Form.Label as='p' className='mb-1'>
-                  Password
-                </Form.Label>
-                <Form.Control
-                  className='border border-grey rounded-pill'
-                  type='password'
-                  placeholder='Enter password'
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                ></Form.Control>
-              </Form.Group>
-
-              <Form.Group controlId='password'>
-                <Form.Label as='p' className='mb-1'>
-                  Confirm Password
-                </Form.Label>
-                <Form.Control
-                  className='border border-grey rounded-pill'
-                  type='password'
-                  placeholder='Enter Confirm Password'
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                ></Form.Control>
-              </Form.Group>
-
+              <div className='d-flex align-items-center'>
+                <Switch
+                  value={state}
+                  onChange={handleChange}
+                  color='secondary'
+                  name='checkedB'
+                  inputProps={{ 'aria-label': 'primary checkbox' }}
+                />
+                {state === true ? (
+                  <p className='mb-0' style={{ opacity: '1' }}>
+                    Đổi mật khẩu
+                    <Image
+                      style={{ opacity: '1' }}
+                      src='https://img.icons8.com/fluent/32/000000/unlock-2.png'
+                    />
+                  </p>
+                ) : (
+                  <p className='mb-0' style={{ opacity: '0.7' }}>
+                    Đổi mật khẩu
+                    <Image
+                      style={{ opacity: '1' }}
+                      src='https://img.icons8.com/fluent/32/000000/lock-2.png'
+                    />
+                  </p>
+                )}
+              </div>
+              <Row>
+                <Col md={6}>
+                  <Form.Group controlId='password' fluid>
+                    <Form.Label as='p' className='mb-1'>
+                      Mật khẩu
+                    </Form.Label>
+                    {state === true ? (
+                      <Form.Control
+                        className='border border-grey rounded-pill '
+                        type='password'
+                        placeholder='Nhập mật khẩu'
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                      ></Form.Control>
+                    ) : (
+                      <Form.Control
+                        className='border border-grey rounded-pill '
+                        type='password'
+                        placeholder='Nhập mật khẩu'
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        disabled
+                      ></Form.Control>
+                    )}
+                  </Form.Group>
+                </Col>
+                <Col md={6}>
+                  <Form.Group controlId='password'>
+                    <Form.Label as='p' className='mb-1'>
+                      Nhập lại mật khẩu
+                    </Form.Label>
+                    {state === true ? (
+                      <Form.Control
+                        className='border border-grey rounded-pill'
+                        type='password'
+                        placeholder='Nhập mật khẩu'
+                        value={confirmPassword}
+                        onChange={(e) => setConfirmPassword(e.target.value)}
+                      ></Form.Control>
+                    ) : (
+                      <Form.Control
+                        className='border border-grey rounded-pill'
+                        type='password'
+                        placeholder='Nhập mật khẩu'
+                        value={confirmPassword}
+                        onChange={(e) => setConfirmPassword(e.target.value)}
+                        disabled
+                      ></Form.Control>
+                    )}
+                  </Form.Group>
+                </Col>
+              </Row>
               <div>
                 <Button
                   type='submit'
@@ -302,7 +553,7 @@ function ProfileScreen({ location, history }) {
                   className='btn-block shadow rounded-pill'
                   style={{ fontSize: '1rem', letterSpacing: '0.25rem' }}
                 >
-                  Update
+                  Lưu
                 </Button>
               </div>
               <ToastContainer />

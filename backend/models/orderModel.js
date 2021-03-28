@@ -23,10 +23,10 @@ const orderSchema = mongoose.Schema(
     ],
 
     shippingAddress: {
-      address: { type: String, required: true },
-      city: { type: String, required: true },
-      postalCode: { type: String, required: true },
-      country: { type: String, required: true },
+      thanhPho: { type: String, required: false },
+      huyen: { type: String, required: false },
+      xa: { type: String, required: false },
+      diaChi: { type: String, required: false },
     },
 
     paymentMethod: {
@@ -79,6 +79,12 @@ const orderSchema = mongoose.Schema(
     deliveredAt: {
       type: Date,
       default: Date.now,
+    },
+
+    orderStatus: {
+      type: String,
+      default: 'Đang chờ xác nhận',
+      enum: ['Đang chờ xác nhận', 'Đang xử lý', 'Đã bàn giao', 'Huỷ'],
     },
   },
   {

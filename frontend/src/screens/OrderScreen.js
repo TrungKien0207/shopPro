@@ -115,10 +115,9 @@ const OrderScreen = ({ match, history }) => {
               </p>
 
               <p className='mb-3'>
-                <strong>Address: </strong>
-                {order.shippingAddress.address}, {order.shippingAddress.city},{' '}
-                {order.shippingAddress.postalCode},{' '}
-                {order.shippingAddress.country},
+                <strong>Địa chỉ: </strong>
+                {order.shippingAddress.diaChi}, {order.shippingAddress.xa},{' '}
+                {order.shippingAddress.huyen}, {order.shippingAddress.thanhPho},
               </p>
 
               {order.isDelivered ? (
@@ -225,7 +224,7 @@ const OrderScreen = ({ match, history }) => {
               </ListGroup.Item>
               <ListGroup.Item>
                 <Row>
-                  <Col className='pl-5 mr-4 text-danger '>
+                  <Col className='pl-4 mr-4 text-danger '>
                     {' '}
                     <h5 className='mb-0'>TOTAL</h5>
                   </Col>
@@ -244,6 +243,7 @@ const OrderScreen = ({ match, history }) => {
                     <PayPalButton
                       amount={order.totalPrice}
                       onSuccess={successPaymentHandler}
+                      className='rounded-pill'
                     />
                   )}
                 </ListGroup.Item>

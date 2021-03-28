@@ -101,8 +101,8 @@ function EnhancedTableHead(props) {
             align='center'
             padding={headCell.disablePadding ? 'none' : 'default'}
             sortDirection={orderBy === headCell.id ? order : false}
-            className='pl-5'
-            style={{ fontWeight: '700' }}
+            className='pl-4'
+            style={{ fontWeight: '700', padding: '2.5rem 0' }}
           >
             <TableSortLabel
               active={orderBy === headCell.id}
@@ -164,6 +164,7 @@ const useStyles = makeStyles((theme) => ({
   table: {
     minWidth: 750,
     align: 'center',
+    padding: theme.spacing(1),
   },
   visuallyHidden: {
     border: 0,
@@ -364,7 +365,6 @@ function OrderListScreen({ history, match }) {
                   onSelectAllClick={handleSelectAllClick}
                   onRequestSort={handleRequestSort}
                   rowCount={orders.length}
-                  colSpan={1}
                 />
                 <TableBody>
                   {stableSort(orders, getComparator(order, orderBy))

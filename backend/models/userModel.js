@@ -16,12 +16,30 @@ const userSchema = mongoose.Schema(
 
     password: {
       type: String,
-      required: false,
+      required: true,
       default: '',
+    },
+
+    birthDay: {
+      type: String,
+      required: false,
+    },
+
+    sex: {
+      type: String,
+      required: false,
+    },
+
+    address: {
+      thanhPho: { type: String, required: false },
+      huyen: { type: String, required: false },
+      xa: { type: String, required: false },
+      diaChi: { type: String, required: false },
     },
 
     avatar: {
       type: String,
+      required: false,
     },
 
     isAdmin: {

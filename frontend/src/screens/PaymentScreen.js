@@ -12,7 +12,7 @@ export const PaymentScreen = ({ history }) => {
   const cart = useSelector((state) => state.cart)
   const { shippingAddress } = cart
 
-  if (!shippingAddress.address) {
+  if (!shippingAddress) {
     history.push('/shipping')
   }
 
@@ -38,7 +38,7 @@ export const PaymentScreen = ({ history }) => {
           <Form.Label as='legend'>
             <h5>Select Method</h5>
           </Form.Label>
-          <Col md={6}>
+          <Col md={8}>
             <div>
               <RadioGroup
                 value={paymentMethod}

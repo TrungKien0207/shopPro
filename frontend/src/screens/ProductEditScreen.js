@@ -1,15 +1,11 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
-import { Button, Form, Row, Col } from 'react-bootstrap'
+import { Button, Col, Container, Form, Row } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { getUserDetails, updateUser } from '../actions/userActions'
 import { listProductDetails, updateProduct } from '../actions/productActions'
-import FormContainer from '../components/FormContainer'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
-import MessageSuccess from '../components/MessageSuccess'
-import { USER_UPDATE_RESET } from '../constants/userConstants'
 import { PRODUCT_UPDATE_RESET } from '../constants/productConstants'
 
 function ProductEditScreen({ match, history }) {
@@ -81,7 +77,7 @@ function ProductEditScreen({ match, history }) {
       dispatch({ type: PRODUCT_UPDATE_RESET })
       history.push('/admin/productlist')
     } else {
-      if (!product.name || product._id != productId) {
+      if (!product.name || product._id !== productId) {
         dispatch(listProductDetails(productId))
       } else {
         setName(product.name)
@@ -97,14 +93,14 @@ function ProductEditScreen({ match, history }) {
 
   return (
     <>
-      <Link
-        to='/admin/productlist'
-        className='btn btn-light my-3 text-uppercase'
-      >
-        <i class='fas fa-arrow-left pr-2'></i>
-        Go back
-      </Link>
-      <FormContainer>
+      <Container>
+        <Link
+          to='/admin/productlist'
+          className='btn btn-light my-3 text-uppercase rounded-pill'
+        >
+          <i class='fas fa-arrow-left pr-2'></i>
+          Go back
+        </Link>
         {loadingUpdate && <Loader />}
         {errorUpdate && <Message>{errorUpdate}</Message>}
         {loading ? (
@@ -115,32 +111,21 @@ function ProductEditScreen({ match, history }) {
           <>
             <Form
               onSubmit={submitHandler}
-              className='p-4 bg-light shadow rounded'
+              className='p-4 bg-light shadow card_color'
+              fluid
             >
-              <h2 className='text-center'>Edit Product</h2>
-              <Form.Group controlId='name' className='pl-3 pr-3 pt-3'>
+              <h2 className='text-center mb-4'>Edit Product</h2>
+
+              <Form.Group controlId='name' className='pl-3 pr-3'>
                 <Form.Label as='p' className='mb-1'>
                   Name
                 </Form.Label>
                 <Form.Control
-                  className='border border-grey'
+                  className='border border-grey rounded-pill'
                   type='name'
                   placeholder='Enter name'
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                ></Form.Control>
-              </Form.Group>
-
-              <Form.Group controlId='price' className='pl-3 pr-3'>
-                <Form.Label as='p' className='mb-1'>
-                  Price
-                </Form.Label>
-                <Form.Control
-                  className='border border-grey'
-                  type='number'
-                  placeholder='Enter price'
-                  value={price}
-                  onChange={(e) => setPrice(e.target.value)}
                 ></Form.Control>
               </Form.Group>
 
@@ -166,13 +151,13 @@ function ProductEditScreen({ match, history }) {
               </Form.Group>
 
               <Row>
-                <Col>
+                <Col md={3}>
                   <Form.Group controlId='brand' className='pl-3 pr-3'>
-                    <Form.Label as='p' className='mb-1'>
+                    <Form.Label as='p' className='mb-1 text-center'>
                       Brand
                     </Form.Label>
                     <Form.Control
-                      className='border border-grey'
+                      className='border border-grey rounded-pill'
                       type='text'
                       placeholder='Enter brand'
                       value={brand}
@@ -180,13 +165,13 @@ function ProductEditScreen({ match, history }) {
                     ></Form.Control>
                   </Form.Group>
                 </Col>
-                <Col md={5}>
+                <Col md={3}>
                   <Form.Group controlId='countInStock' className='pl-3 pr-3'>
-                    <Form.Label as='p' className='mb-1'>
+                    <Form.Label as='p' className='mb-1 text-center'>
                       Count In Stock
                     </Form.Label>
                     <Form.Control
-                      className='border border-grey'
+                      className='border border-grey rounded-pill text-center'
                       type='number'
                       placeholder='Enter countInStock'
                       value={countInStock}
@@ -194,27 +179,42 @@ function ProductEditScreen({ match, history }) {
                     ></Form.Control>
                   </Form.Group>
                 </Col>
+                <Col md={3}>
+                  <Form.Group controlId='category' className='pl-3 pr-3'>
+                    <Form.Label as='p' className='mb-1 text-center'>
+                      Category
+                    </Form.Label>
+                    <Form.Control
+                      className='border border-grey rounded-pill '
+                      type='text'
+                      placeholder='Enter category'
+                      value={category}
+                      onChange={(e) => setCategory(e.target.value)}
+                    ></Form.Control>
+                  </Form.Group>
+                </Col>
+                <Col md={3}>
+                  <Form.Group controlId='price' className='pl-3 pr-3'>
+                    <Form.Label as='p' className='mb-1 text-center'>
+                      Price
+                    </Form.Label>
+                    <Form.Control
+                      className='border border-grey rounded-pill text-center'
+                      type='number'
+                      placeholder='Enter price'
+                      value={price}
+                      onChange={(e) => setPrice(e.target.value)}
+                    ></Form.Control>
+                  </Form.Group>
+                </Col>
               </Row>
-
-              <Form.Group controlId='category' className='pl-3 pr-3'>
-                <Form.Label as='p' className='mb-1'>
-                  Category
-                </Form.Label>
-                <Form.Control
-                  className='border border-grey'
-                  type='text'
-                  placeholder='Enter category'
-                  value={category}
-                  onChange={(e) => setCategory(e.target.value)}
-                ></Form.Control>
-              </Form.Group>
 
               <Form.Group controlId='description' className='pl-3 pr-3'>
                 <Form.Label as='p' className='mb-1'>
                   Description
                 </Form.Label>
                 <Form.Control
-                  className='border border-grey'
+                  className='border border-grey rounded-pill'
                   type='text'
                   rows={3}
                   as='textarea'
@@ -224,12 +224,16 @@ function ProductEditScreen({ match, history }) {
                 ></Form.Control>
               </Form.Group>
 
-              <div className='pl-3 pr-3'>
+              <div className='pl-3 pr-3 text-center'>
                 <Button
                   type='submit'
                   variant='outline-success'
-                  className='btn-block'
-                  style={{ fontSize: '1rem', letterSpacing: '0.25rem' }}
+                  className='rounded-pill'
+                  style={{
+                    fontSize: '1rem',
+                    letterSpacing: '0.25rem',
+                    width: '20rem',
+                  }}
                 >
                   Update
                 </Button>
@@ -237,7 +241,7 @@ function ProductEditScreen({ match, history }) {
             </Form>
           </>
         )}
-      </FormContainer>
+      </Container>
     </>
   )
 }

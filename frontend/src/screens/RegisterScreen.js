@@ -66,7 +66,10 @@ function RegisterScreen({ location, history }) {
       {message && <Message variant='danger'>{message}</Message>}
       {error && <Message variant='danger'>{error}</Message>}
       {loading && <Loader />}
-      <Form onSubmit={submitHandler} className='bg-light rounded shadow p-5'>
+      <Form
+        onSubmit={submitHandler}
+        className='bg-light rounded shadow p-5 card_color'
+      >
         <h2 className='text-center'>Sign up</h2>
         <Form.Group controlId='name'>
           <Form.Label as='p' className='mb-1'>
@@ -146,7 +149,8 @@ function RegisterScreen({ location, history }) {
             type='submit'
             variant='outline-success'
             className='btn-block shadow rounded-pill'
-            style={{ fontSize: '1rem', letterSpacing: '0.25rem' }}
+            style={{ fontSize: '0.875rem', letterSpacing: '0.25rem' }}
+            size='sm'
           >
             Register
           </Button>
@@ -154,22 +158,19 @@ function RegisterScreen({ location, history }) {
 
         <Row className='py-3'>
           <Col
-            className='d-flex align-items-center'
+            className='d-flex align-items-center justify-content-center'
             style={{ fontSize: '1rem', letterSpacing: '0.15rem' }}
           >
-            Have an Account?
-            <Link
-              className='text-decoration-none text-danger pl-1 '
-              to={redirect ? `/login?redirect=${redirect}` : '/login'}
-            >
-              <Button
-                className='p-1 rounded-pill shadow'
-                variant='outline-warning'
-                style={{ letterSpacing: '0.15rem' }}
+            <div>
+              Have an Account?
+              <Link
+                className='text-decoration-none text-info pl-1 '
+                to={redirect ? `/login?redirect=${redirect}` : '/login'}
+                style={{ fontWeight: '700' }}
               >
                 Login
-              </Button>
-            </Link>
+              </Link>
+            </div>
           </Col>
         </Row>
       </Form>
