@@ -51,8 +51,8 @@ const OrderEditScreen = ({ match, history }) => {
     success: successUpdate,
   } = orderUpdate
 
-  const stateOrder = ['Đang chờ xác nhận', 'Đang xử lý', 'Đã bàn giao', 'Huỷ']
-  const [orderStatus, setOrderStatus] = useState('Đang chờ xác nhận')
+  const stateOrder = ['Chờ xác nhận', 'Đang vận chuyển', 'Đã giao hàng', 'Huỷ']
+  const [orderStatus, setOrderStatus] = useState('Chờ xác nhận')
 
   const submitHandler = (e) => {
     e.preventDefault()
@@ -63,11 +63,11 @@ const OrderEditScreen = ({ match, history }) => {
     if (successUpdate) {
       dispatch({ type: ORDER_UPDATE_RESET })
     } else {
-      // if (order._id !== orderId) {
-      dispatch(getOrderDetails(orderId))
-      // } else {
-      //   setOrderStatus(order.orderStatus)
-      // }
+      if (orderStatus || order._id !== orderId) {
+        dispatch(getOrderDetails(orderId))
+      } else {
+        setOrderStatus(order.orderStatus)
+      }
     }
   }, [dispatch, orderId, successUpdate])
 

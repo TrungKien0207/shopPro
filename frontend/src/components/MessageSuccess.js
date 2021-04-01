@@ -13,7 +13,7 @@ function MessageSuccess({ variant, children }) {
     </div>,
     {
       className: 'Toastify__toast--success',
-      position: 'top-right',
+      position: 'top-center',
       autoClose: 2500,
       hideProgressBar: true,
       closeOnClick: true,
@@ -21,12 +21,10 @@ function MessageSuccess({ variant, children }) {
       draggable: true,
       progress: undefined,
       preventDuplicates: true,
-      preventOpenDuplicates: true
+      preventOpenDuplicates: true,
     }
   )
-  return (
-    <ToastContainer></ToastContainer>
-  )
+  return <ToastContainer></ToastContainer>
 }
 
 MessageSuccess.defaultProps = {

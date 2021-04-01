@@ -11,8 +11,10 @@ import {
   payOrder,
 } from '../actions/orderActions'
 import Announcement from '../components/Announcement'
+import ImagePay from '../components/ImagePay'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
+import ProgressShipping from '../components/ProgressShipping'
 import {
   ORDER_DELIVER_RESET,
   ORDER_PAY_RESET,
@@ -100,25 +102,36 @@ const OrderScreen = ({ match, history }) => {
               Order {order._id}
             </h2>
             <ListGroup.Item>
+              <h5 className='text-uppercase'>Trạng thái đơn hàng</h5>
+              <ProgressShipping />
               <h5 className='text-uppercase'>Shiping</h5>
-              <p>
-                <strong>Name: </strong> {order.user.name}
-              </p>
-              <p>
-                <strong>Email: </strong>
-                <a
-                  className='link-product'
-                  href={`mailto: ${order.user.email}`}
-                >
-                  {order.user.email}
-                </a>
-              </p>
+              <div className='pl-4 pr-4'>
+                <Row>
+                  <Col md={6}>
+                    <p>
+                      <strong>Name: </strong> {order.user.name}
+                    </p>
+                  </Col>
+                  <Col md={6}>
+                    <p>
+                      <strong>Email: </strong>
+                      <a
+                        className='link-product'
+                        href={`mailto: ${order.user.email}`}
+                      >
+                        {order.user.email}
+                      </a>
+                    </p>
+                  </Col>
+                </Row>
 
-              <p className='mb-3'>
-                <strong>Địa chỉ: </strong>
-                {order.shippingAddress.diaChi}, {order.shippingAddress.xa},{' '}
-                {order.shippingAddress.huyen}, {order.shippingAddress.thanhPho},
-              </p>
+                <p className='mb-3'>
+                  <strong>Địa chỉ: </strong>
+                  {order.shippingAddress.diaChi}, {order.shippingAddress.xa},{' '}
+                  {order.shippingAddress.huyen},{' '}
+                  {order.shippingAddress.thanhPho},
+                </p>
+              </div>
 
               {order.isDelivered ? (
                 <Announcement variant='success'>
@@ -131,7 +144,7 @@ const OrderScreen = ({ match, history }) => {
 
             <ListGroup.Item>
               <h5 className='text-uppercase'>Payment Method</h5>
-              <p>
+              <p className='pl-4'>
                 <strong>Method: </strong>
                 {order.paymentMethod}
               </p>
@@ -169,16 +182,19 @@ const OrderScreen = ({ match, history }) => {
                           </Link>
                         </Col>
 
-                        <Col className='d-flex align-items-center' md={5}>
+                        <Col className='d-flex align-items-center' md={4}>
                           <Link
                             to={`/product/${item.product}`}
-                            className='text-decoration-none '
+                            className='text-decoration-none d-flex align-items-center'
                           >
-                            <p>{item.name}</p>
+                            <p className='mb-0'>{item.name}</p>
                           </Link>
                         </Col>
 
-                        <Col md={5} className='d-flex align-items-center'>
+                        <Col
+                          md={6}
+                          className='d-flex align-items-center justify-content-center'
+                        >
                           <h5>
                             {item.qty} x ${item.price} = $
                             {item.qty * item.price}
@@ -202,7 +218,7 @@ const OrderScreen = ({ match, history }) => {
                 <Row>
                   <Col className='pl-5 mr-4'>Items</Col>
                   <Col className='pl-5 mr-4'>
-                    <strong>${order.itemsPrice}</strong>
+                    <p className='mb-0'>${order.itemsPrice}</p>
                   </Col>
                 </Row>
               </ListGroup.Item>
@@ -210,7 +226,7 @@ const OrderScreen = ({ match, history }) => {
                 <Row>
                   <Col className='pl-5 mr-4'>Shipping</Col>
                   <Col className='pl-5 mr-4'>
-                    <strong>${order.shippingPrice}</strong>
+                    <p className='mb-0'>${order.shippingPrice}</p>
                   </Col>
                 </Row>
               </ListGroup.Item>
@@ -218,7 +234,7 @@ const OrderScreen = ({ match, history }) => {
                 <Row>
                   <Col className='pl-5 mr-4'>Tax</Col>
                   <Col className='pl-5 mr-4'>
-                    <strong>${order.taxPrice}</strong>
+                    <p className='mb-0'>${order.taxPrice}</p>
                   </Col>
                 </Row>
               </ListGroup.Item>
@@ -254,7 +270,7 @@ const OrderScreen = ({ match, history }) => {
                 userInfo.isAdmin &&
                 order.isPaid &&
                 !order.isDelivered && (
-                  <ListGroup.Item>
+                  <ListGroup.Item className='border-0'>
                     <Button
                       type='button'
                       className='btn_color btn-block rounded-pill'
@@ -264,6 +280,10 @@ const OrderScreen = ({ match, history }) => {
                     </Button>
                   </ListGroup.Item>
                 )}
+
+              <ListGroup.Item className='border-0 p-0'>
+                <ImagePay />
+              </ListGroup.Item>
             </ListGroup>
           </Card>
         </Col>

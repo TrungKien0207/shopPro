@@ -58,15 +58,16 @@ const App = () => {
               component={ProductListScreen}
               exact
             />
+            <Route path='/order/:id' component={OrderScreen} exact />
+            <Route path='/myorders' component={MyOrdersScreen} exact />
           </div>
           <Container>
             <Route path='/product/:id' component={ProductScreen} exact />
             <Route path='/profile' component={ProfileScreen} exact />
-            <Route path='/myorders' component={MyOrdersScreen} exact />
             <Route path='/login' component={LoginScreen} exact />
             <Route path='/register' component={RegisterScreen} exact />
             <Route path='/shipping' component={ShippingScreen} exact />
-            <Route path='/order/:id' component={OrderScreen} exact />
+
             <Route path='/payment' component={PaymentScreen} exact />
             <Route path='/placeorder' component={PlaceOrderScreen} exact />
             <Route path='/cart/:id?' component={CartScreen} exact />

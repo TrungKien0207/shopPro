@@ -69,7 +69,7 @@ function ProfileScreen({ location, history }) {
   const [confirmPassword, setConfirmPassword] = useState('')
   const [uploading, setUploading] = useState(false)
   const [message, setMessage] = useState(null)
-  const [sex, setSex] = useState('Nữ')
+  const [sex, setSex] = useState('')
   const [thanhPho, setThanhPho] = useState('')
   const [huyen, setHuyen] = useState('')
   const [xa, setXa] = useState('')
@@ -187,6 +187,10 @@ function ProfileScreen({ location, history }) {
         setEmail(user.email)
         setAvatar(user.avatar)
         setAddress(user.address)
+        setThanhPho(user.address.thanhPho)
+        setHuyen(user.address.huyen)
+        setXa(user.address.xa)
+        setDiachi(user.address.diaChi)
         setSelectedDate(user.birthDay)
         setSex(user.sex)
       }
@@ -303,7 +307,7 @@ function ProfileScreen({ location, history }) {
                   <Col md={6}>
                     <p>Ngày sinh</p>
                     <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                      <Grid container justify='space-start'>
+                      <Grid container justify='space-between'>
                         <KeyboardDatePicker
                           className='m-0'
                           margin='normal'
@@ -320,25 +324,24 @@ function ProfileScreen({ location, history }) {
                     </MuiPickersUtilsProvider>
                   </Col>
                   <Col md={6}>
-                    <p>Giới tính: {user.sex}</p>
-                    <RadioGroup>
-                      <Row
-                        className='justify-content-center align-items-center'
-                        quired
-                        value={sex}
-                        onChange={(e) => setSex(e.target.value)}
-                      >
+                    <p>Giới tính: {sex}</p>
+                    <RadioGroup
+                      value={sex}
+                      onChange={(e) => setSex(e.target.value)}
+                      size='sm'
+                    >
+                      <div className='d-flex justify-content-around align-items-end'>
                         <FormControlLabel
                           value='Nam'
-                          control={<Radio size='small' />}
+                          control={<Radio />}
                           label='Nam'
                         />
                         <FormControlLabel
                           value='Nữ'
-                          control={<Radio size='small' />}
+                          control={<Radio />}
                           label='Nữ'
                         />
-                      </Row>
+                      </div>
                     </RadioGroup>
                   </Col>
                 </Row>
@@ -358,6 +361,7 @@ function ProfileScreen({ location, history }) {
                         onChange={(e) => setThanhPho(e.target.value)}
                         className='border border-gray rounded-pill'
                       >
+                        <option></option>
                         {data.map((tp) => (
                           <option
                             style={{ color: 'black' }}
@@ -383,6 +387,7 @@ function ProfileScreen({ location, history }) {
                         onChange={(e) => setHuyen(e.target.value)}
                         className='border border-gray rounded-pill'
                       >
+                        <option></option>
                         {data.map(
                           (a) =>
                             a.Name === thanhPho &&
@@ -416,6 +421,7 @@ function ProfileScreen({ location, history }) {
                       onChange={(e) => setXa(e.target.value)}
                       className='border border-gray rounded-pill'
                     >
+                      <option></option>
                       {data.map(
                         (a) =>
                           a.Name === thanhPho &&

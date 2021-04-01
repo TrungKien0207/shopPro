@@ -1,7 +1,7 @@
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline'
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline'
 import React, { useEffect, useState } from 'react'
-import { Button, Image, Table } from 'react-bootstrap'
+import { Button, Col, Image, Row, Table } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { LinkContainer } from 'react-router-bootstrap'
 import { toast } from 'react-toastify'
@@ -130,30 +130,43 @@ const MyOrdersScreen = ({ history }) => {
             <tbody>
               {orders.map((order) => (
                 <tr key={order._id}>
-                  <td className=' pb-1'>
+                  <td>
                     {order.orderItems.map((item, index) => (
-                      <td key={index} className='border-0 pb-1 pt-1'>
-                        {item.name}
-                      </td>
+                      <Row>
+                        <Col md={12}>
+                          <td key={index} className='border-0 pb-1 pt-3'>
+                            {item.name}
+                          </td>
+                        </Col>
+                      </Row>
                     ))}
                   </td>
                   <td style={{ width: '2rem', height: '2rem' }} className='p-0'>
                     {order.orderItems.map((item, index) => (
-                      <td key={index} className='p-1 border-0'>
-                        <Image
-                          src={item.image}
-                          alt={item.name}
-                          fluid
-                          rounded
-                          className='border border-grey'
-                        />
-                      </td>
+                      <Row>
+                        <Col md={12} className='d-flex align-items-center'>
+                          <td key={index} className='p-1 border-0'>
+                            <Image
+                              src={item.image}
+                              alt={item.name}
+                              fluid
+                              rounded
+                              className='border border-grey'
+                            />
+                          </td>
+                        </Col>
+                      </Row>
                     ))}
                   </td>
                   <td>
-                    {order.createdAt.substring(11, 19)}
-                    {' - '}
-                    {order.createdAt.substring(0, 10)}
+                    <div>
+                      <p>
+                        {' '}
+                        {order.createdAt.substring(11, 19)}
+                        {' - '}
+                        {order.createdAt.substring(0, 10)}
+                      </p>
+                    </div>
                   </td>
                   <td>
                     {order.isPaid ? (
@@ -172,7 +185,7 @@ const MyOrdersScreen = ({ history }) => {
                     )}
                   </td>
                   <td className='p-1 pt-2'>
-                    <LinkContainer to={`/orders/${order._id}`}>
+                    <LinkContainer to={`/order/${order._id}`}>
                       <Button variant='dark' className='text-uppercase p-2'>
                         Details
                       </Button>
