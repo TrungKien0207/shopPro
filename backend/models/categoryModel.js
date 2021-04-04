@@ -1,0 +1,25 @@
+import mongoose from 'mongoose'
+
+const categorySchema = mongoose.Schema(
+  {
+    name: {
+      type: String,
+      trim: true,
+      required: true,
+      minlength: [1, 'Quá ngắn'],
+      maxlength: [32, 'Quá dài'],
+      text: true,
+    },
+    slug: {
+      type: String,
+      trim: true,
+      unique: true,
+      lowercase: true,
+      index: true,
+    },
+  },
+  { timestamps: true }
+)
+
+const Category = mongoose.model('Category', categorySchema)
+export default Category

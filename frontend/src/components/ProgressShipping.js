@@ -75,14 +75,12 @@ const ColorlibConnector = withStyles({
   },
   active: {
     '& $line': {
-      backgroundImage:
-        'linear-gradient(90deg, rgba(98,214,138,0.989233193277311) 100%, rgba(196,231,89,1) 100%);',
+      backgroundColor: '#2e5a1c;',
     },
   },
   completed: {
     '& $line': {
-      backgroundImage:
-        'linear-gradient(90deg, rgba(98,214,138,0.989233193277311) 100%, rgba(196,231,89,1) 100%);',
+      backgroundColor: '#2e5a1c;',
     },
   },
   line: {
@@ -106,13 +104,11 @@ const useColorlibStepIconStyles = makeStyles({
     alignItems: 'center',
   },
   active: {
-    backgroundImage:
-      'linear-gradient(90deg, rgba(98,214,138,0.989233193277311) 100%, rgba(196,231,89,1) 100%);',
+    backgroundColor: '#4e9525;',
     boxShadow: '0 4px 10px 0 rgba(0,0,0,.25)',
   },
   completed: {
-    backgroundImage:
-      'linear-gradient(90deg, rgba(98,214,138,0.989233193277311) 100%, rgba(196,231,89,1) 100%);',
+    backgroundColor: '#4e9525;',
     boxShadow: '0 4px 10px 0 rgba(0,0,0,.25)',
   },
 })
@@ -122,9 +118,9 @@ function ColorlibStepIcon(props) {
   const { active, completed } = props
 
   const icons = {
-    1: <CachedIcon fontSize='large' />,
-    2: <LocalShippingIcon fontSize='large' />,
-    3: <EventAvailableIcon fontSize='large' />,
+    1: <CachedIcon style={{ fontSize: '1.8rem' }} />,
+    2: <LocalShippingIcon style={{ fontSize: '1.8rem' }} />,
+    3: <EventAvailableIcon style={{ fontSize: '1.8rem' }} />,
   }
 
   return (

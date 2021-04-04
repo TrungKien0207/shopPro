@@ -39,7 +39,7 @@ const OrderEditScreen = ({ match, history }) => {
   const orderId = match.params.id
 
   const orderDetails = useSelector((state) => state.orderDetails)
-  const { order, loading, error, orderItems } = orderDetails
+  const { order, loading } = orderDetails
 
   const userLogin = useSelector((state) => state.userLogin)
   const { userInfo } = userLogin

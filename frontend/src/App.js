@@ -6,6 +6,8 @@ import { BrowserRouter as Router, Route } from 'react-router-dom'
 import Footer from './components/Footer'
 import Header from './components/Header'
 import CartScreen from './screens/CartScreen.js'
+import CategoriesListScreen from './screens/CategoriesListScreen'
+import CategoryEditScreen from './screens/CategoryEditScreen'
 import HomeScreen from './screens/HomeScreen'
 import LoginScreen from './screens/LoginScreen'
 import MyOrdersScreen from './screens/MyOrdersScreen'
@@ -37,27 +39,38 @@ const App = () => {
         <main className='py-3'>
           <Route path='/' component={HomeScreen} exact />
           <div className='ml-5 mr-5 mt-2'>
+            <Route
+              path='/admin/categorieslist'
+              component={CategoriesListScreen}
+              exact
+            />
+
             <Route path='/admin/orderlist' component={OrderListScreen} exact />
+
             <Route
               path='/admin/order/:id/edit'
               component={OrderEditScreen}
               exact
             />
+
             <Route
               path='/admin/product/:id/edit'
               component={ProductEditScreen}
               exact
             />
+
             <Route
               path='/admin/user/:id/edit'
               component={UserEditScreen}
               exact
             />
+
             <Route
               path='/admin/productlist'
               component={ProductListScreen}
               exact
             />
+
             <Route path='/order/:id' component={OrderScreen} exact />
             <Route path='/myorders' component={MyOrdersScreen} exact />
           </div>
@@ -67,7 +80,11 @@ const App = () => {
             <Route path='/login' component={LoginScreen} exact />
             <Route path='/register' component={RegisterScreen} exact />
             <Route path='/shipping' component={ShippingScreen} exact />
-
+            <Route
+              path='/admin/category/:id/edit'
+              component={CategoryEditScreen}
+              exact
+            />
             <Route path='/payment' component={PaymentScreen} exact />
             <Route path='/placeorder' component={PlaceOrderScreen} exact />
             <Route path='/cart/:id?' component={CartScreen} exact />

@@ -3,6 +3,12 @@ import { composeWithDevTools } from 'redux-devtools-extension'
 import thunk from 'redux-thunk'
 import { cartReducer } from './reducers/cartReducers.js'
 import {
+  categoriesListReducer,
+  categoryCreateReducer,
+  categoryDetailsReducer,
+  categoryUpdateReducer,
+} from './reducers/categoriesReducers.js'
+import {
   orderCreateReducer,
   orderDeleteReducer,
   orderDeliverReducer,
@@ -58,6 +64,11 @@ const reducer = combineReducers({
   orderList: orderListReducer,
   orderDelete: orderDeleteReducer,
   orderUpdate: orderUpdateReducer,
+
+  categoriesList: categoriesListReducer,
+  categoryDetails: categoryDetailsReducer,
+  categoryUpdate: categoryUpdateReducer,
+  categoryCreate: categoryCreateReducer,
 })
 
 const cartItemsFromStorage = localStorage.getItem('cartItems')

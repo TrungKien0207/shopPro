@@ -119,12 +119,13 @@ const MyOrdersScreen = ({ history }) => {
           >
             <thead>
               <tr>
-                <th>NAME</th>
-                <th>IMAGE</th>
-                <th>DATE</th>
-                <th>TOTAL</th>
-                <th>PAID</th>
-                <th>DELIVERED</th>
+                <th style={{ fontSize: '0.85rem' }}>TÊN SẢN PHẨM</th>
+                {/* <th style={{ fontSize: '0.85rem' }}>HÌNH ẢNH</th> */}
+                <th style={{ fontSize: '0.85rem' }}>NGÀY ĐẶT</th>
+                <th style={{ fontSize: '0.85rem' }}>TỔNG CỘNG</th>
+                <th style={{ fontSize: '0.85rem' }}>ĐÃ THANH TOÁN</th>
+                <th style={{ fontSize: '0.85rem' }}>TRẠNG THÁI</th>
+                <th style={{ fontSize: '0.85rem' }}>THÔNG TIN</th>
               </tr>
             </thead>
             <tbody>
@@ -141,7 +142,7 @@ const MyOrdersScreen = ({ history }) => {
                       </Row>
                     ))}
                   </td>
-                  <td style={{ width: '2rem', height: '2rem' }} className='p-0'>
+                  {/* <td style={{ width: '5rem', height: '5rem' }} className='p-0'>
                     {order.orderItems.map((item, index) => (
                       <Row>
                         <Col md={12} className='d-flex align-items-center'>
@@ -157,7 +158,7 @@ const MyOrdersScreen = ({ history }) => {
                         </Col>
                       </Row>
                     ))}
-                  </td>
+                  </td> */}
                   <td>
                     <div>
                       <p>
@@ -168,6 +169,7 @@ const MyOrdersScreen = ({ history }) => {
                       </p>
                     </div>
                   </td>
+                  <td>{order.totalPrice}đ</td>
                   <td>
                     {order.isPaid ? (
                       order.paidAt.substring(11, 19) +
@@ -177,18 +179,18 @@ const MyOrdersScreen = ({ history }) => {
                       <i className='fas fa-times' style={{ color: 'red' }} />
                     )}
                   </td>
-                  <td>
-                    {order.isDelivered ? (
-                      order.deliveredAt.substring(0, 10)
-                    ) : (
-                      <i className='fas fa-times' style={{ color: 'red' }} />
-                    )}
-                  </td>
+
+                  <td>{order.orderStatus}</td>
                   <td className='p-1 pt-2'>
                     <LinkContainer to={`/order/${order._id}`}>
-                      <Button variant='dark' className='text-uppercase p-2'>
-                        Details
-                      </Button>
+                      <div>
+                        <Button
+                          variant='outline-light'
+                          className='text-uppercase p-2 pl-3 pr-3 btn_color_details rounded-pill'
+                        >
+                          Chi tiết
+                        </Button>
+                      </div>
                     </LinkContainer>
                   </td>
                 </tr>

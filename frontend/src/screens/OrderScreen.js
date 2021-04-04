@@ -19,6 +19,7 @@ import {
   ORDER_DELIVER_RESET,
   ORDER_PAY_RESET,
 } from '../constants/orderConstants'
+import ClearIcon from '@material-ui/icons/Clear'
 
 const OrderScreen = ({ match, history }) => {
   const orderId = match.params.id
@@ -102,7 +103,39 @@ const OrderScreen = ({ match, history }) => {
               Order {order._id}
             </h2>
             <ListGroup.Item>
-              <h5 className='text-uppercase'>Trạng thái đơn hàng</h5>
+              <Row>
+                <Col md={6} className='d-flex align-items-center'>
+                  <h5 className='text-uppercase mb-0'>Trạng thái đơn hàng</h5>
+                </Col>
+                <Col md={6} className='d-flex justify-content-end'>
+                  <div>
+                    {order.orderStatus === 'Chờ xác nhận' ? (
+                      <Button
+                        variant='outline-light'
+                        className='p-1 pl-3 pr-3 btn_color_cancel rounded-pill '
+                      >
+                        <div className='d-flex justify-content-end'>
+                          Huỷ{' '}
+                          <ClearIcon
+                            fontSize='small'
+                            style={{ marginTop: '0.2rem' }}
+                          />
+                        </div>
+                      </Button>
+                    ) : (
+                      <Button disabled className='p-1 pl-3 pr-3 rounded-pill'>
+                        <div className='d-flex justify-content-end'>
+                          Huỷ{' '}
+                          <ClearIcon
+                            fontSize='small'
+                            style={{ marginTop: '0.2rem' }}
+                          />
+                        </div>
+                      </Button>
+                    )}
+                  </div>
+                </Col>
+              </Row>
               <ProgressShipping />
               <h5 className='text-uppercase'>Shiping</h5>
               <div className='pl-4 pr-4'>
@@ -251,7 +284,7 @@ const OrderScreen = ({ match, history }) => {
               </ListGroup.Item>
 
               {!order.isPaid && (
-                <ListGroup.Item>
+                <ListGroup.Item className='border-0'>
                   {loadingPay && <Loader />}
                   {!sdkReady ? (
                     <Loader />

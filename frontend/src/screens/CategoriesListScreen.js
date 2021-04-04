@@ -1,4 +1,6 @@
 import Checkbox from '@material-ui/core/Checkbox'
+import Dialog from '@material-ui/core/Dialog'
+import DialogContent from '@material-ui/core/DialogContent'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import IconButton from '@material-ui/core/IconButton'
 import Paper from '@material-ui/core/Paper'
@@ -15,24 +17,23 @@ import TableSortLabel from '@material-ui/core/TableSortLabel'
 import Toolbar from '@material-ui/core/Toolbar'
 import Tooltip from '@material-ui/core/Tooltip'
 import Typography from '@material-ui/core/Typography'
+import { Close } from '@material-ui/icons'
 import DeleteIcon from '@material-ui/icons/Delete'
 import FilterListIcon from '@material-ui/icons/FilterList'
 import clsx from 'clsx'
+import { format, utcToZonedTime } from 'date-fns-tz'
 import PropTypes from 'prop-types'
-import { default as React, useEffect } from 'react'
-import { Button, Col, Image, Row } from 'react-bootstrap'
+import React, { useEffect, useState } from 'react'
+import { Button, Form } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { LinkContainer } from 'react-router-bootstrap'
 import '../../src/notisfied.css'
-import {
-  createProduct,
-  deleteProduct,
-  listProducts,
-} from '../actions/productActions'
+import { createCategory, listCategoriesAdm } from '../actions/categoryAction'
+import { deleteUser } from '../actions/userActions'
 import Announcement from '../components/Announcement'
 import Loader from '../components/Loader'
-import Message from '../components/Message'
-import { PRODUCT_CREATE_RESET } from '../constants/productConstants'
+
+format(new Date(2014, 1, 11), 'dd/MM/yyyy')
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -67,13 +68,21 @@ const headCells = [
     disablePadding: true,
     label: 'ID',
   },
-  { id: 'name', numeric: false, disablePadding: false, label: 'NAME' },
-  { id: 'image', numeric: false, disablePadding: false, label: 'IMAGE' },
-  { id: 'price', numeric: true, disablePadding: false, label: 'PRICE' },
-  { id: 'category', numeric: false, disablePadding: false, label: 'CATEGORY' },
-  { id: 'brand', numeric: false, disablePadding: false, label: 'BRAND' },
-  { id: 'quantity', numeric: true, disablePadding: false, label: 'QUANTITY' },
-  { id: 'action', numeric: false, disablePadding: false, label: 'ACTION' },
+  { id: 'name', numeric: true, disablePadding: false, label: 'TÊN' },
+  {
+    id: 'create',
+    numeric: true,
+    disablePadding: false,
+    label: 'THỜI GIAN TẠO',
+  },
+  {
+    id: 'update',
+    numeric: true,
+    disablePadding: false,
+    label: 'THỜI GIAN CẬP NHẬT',
+  },
+
+  { id: 'action', numeric: true, disablePadding: false, label: '' },
 ]
 
 function EnhancedTableHead(props) {
@@ -184,7 +193,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-function ProductListScreen({ history, match }) {
+const CategoriesListScreen = ({ history }) => {
   const classes = useStyles()
   const [order, setOrder] = React.useState('asc')
   const [orderBy, setOrderBy] = React.useState('calories')
@@ -201,7 +210,7 @@ function ProductListScreen({ history, match }) {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = products.map((product) => product._id)
+      const newSelecteds = category.map((cat) => cat._id)
       setSelected(newSelecteds)
       return
     }
@@ -242,58 +251,41 @@ function ProductListScreen({ history, match }) {
   }
 
   const isSelected = (name) => selected.indexOf(name) !== -1
-  const pageNumber = match.params.pageNumber || 1
 
   const dispatch = useDispatch()
 
-  const productList = useSelector((state) => state.productList)
-  const { loading, error, products } = productList
+  const [open, setOpen] = useState(false)
+  const [name, setName] = useState('')
 
-  const emptyRows =
-    products !== undefined &&
-    rowsPerPage - Math.min(rowsPerPage, products.length - page * rowsPerPage)
+  const handleClickOpen = () => {
+    setOpen(true)
+  }
 
-  const productDelete = useSelector((state) => state.productDelete)
-  const {
-    loading: loadingDelete,
-    error: errorDelete,
-    success: successDelete,
-  } = productDelete
-
-  const productCreate = useSelector((state) => state.productCreate)
-  const {
-    loading: loadingCreate,
-    error: errorCreate,
-    success: successCreate,
-    product: createdProduct,
-  } = productCreate
+  const handleClose = () => {
+    setOpen(false)
+  }
 
   const userLogin = useSelector((state) => state.userLogin)
   const { userInfo } = userLogin
 
-  useEffect(() => {
-    dispatch({ type: PRODUCT_CREATE_RESET })
+  const categoriesList = useSelector((state) => state.categoriesList)
+  const { loading, error, category } = categoriesList
 
-    if (!userInfo.isAdmin) {
-      history.push('/login')
-    }
-
-    if (successCreate) {
-      history.push(`/admin/product/${createdProduct._id}/edit`)
-    } else {
-      dispatch(listProducts('', pageNumber))
-    }
-  }, [dispatch, history, userInfo, successDelete, successCreate, createProduct])
+  const emptyRows =
+    category !== undefined &&
+    rowsPerPage - Math.min(rowsPerPage, category.length - page * rowsPerPage)
 
   const deleteHandle = (id) => {
     if (window.confirm('You are sure?')) {
-      dispatch(deleteProduct(id))
+      dispatch(deleteUser(id))
     }
   }
 
   const EnhancedTableToolbar = (props) => {
     const classes = useToolbarStyles()
     const { numSelected } = props
+
+    const did = category.find((cat) => cat._id)
 
     return (
       <Toolbar
@@ -316,7 +308,9 @@ function ProductListScreen({ history, match }) {
             variant='h6'
             id='tableTitle'
             component='div'
-          ></Typography>
+          >
+            <h2>DANH SÁCH DANH MỤC</h2>
+          </Typography>
         )}
 
         {numSelected > 0 ? (
@@ -343,38 +337,87 @@ function ProductListScreen({ history, match }) {
     numSelected: PropTypes.number.isRequired,
   }
 
-  const createProductHandle = () => {
-    dispatch(createProduct())
+  useEffect(() => {
+    if (userInfo) {
+      dispatch(listCategoriesAdm())
+    }
+  }, [dispatch, userInfo])
+
+  const submitHandler = (e) => {
+    e.preventDefault()
+    dispatch(createCategory(name))
   }
 
   return (
     <>
-      <Row className='align-items-center'>
-        <Col>
-          <h2 className='text-uppercase'>Products</h2>
-        </Col>
-        <Col className='text-right'>
-          <Button
-            variant='outline-dark'
-            className='my-2 text-uppercase rounded-pill pt-2 pb-2'
-            onClick={createProductHandle}
-          >
-            <i className='fas fa-plus'></i> Create Product
-          </Button>
-        </Col>
-      </Row>
-      {loadingDelete && <Loader />}
-      {errorDelete && <Message>{errorDelete}</Message>}
-      {loadingCreate && <Loader />}
-      {errorCreate && <Message>{errorCreate}</Message>}
-
       {loading ? (
         <Loader />
       ) : error ? (
         <Announcement variant='danger'>{error}</Announcement>
       ) : (
         <>
+          <div>
+            <Dialog
+              disableBackdropClick
+              disableEscapeKeyDown
+              open={open}
+              onClose={handleClose}
+              aria-labelledby='form-dialog-title'
+              maxWidth='xl'
+            >
+              <Button
+                onClick={handleClose}
+                variant='light'
+                className='d-flex justify-content-end'
+              >
+                <Close />
+              </Button>
+
+              <DialogContent style={{ width: '30rem' }}>
+                <h4 className='text-center'>Tạo danh mục</h4>
+                <Form onSubmit={submitHandler}>
+                  <Form.Group>
+                    <Form.Label as='p' className='mb-1'>
+                      Tên danh mục
+                    </Form.Label>
+                    <Form.Control
+                      className='border border-grey rounded-pill'
+                      type='name'
+                      size='normal'
+                      placeholder='Enter name'
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                    ></Form.Control>
+                  </Form.Group>
+                  <div className='pl-3 pr-3 text-center'>
+                    <Button
+                      type='submit'
+                      size='sm'
+                      variant='outline-light'
+                      className='rounded-pill btn-b btn_color_created pl-5 pr-5'
+                      style={{
+                        fontSize: '1rem',
+                        letterSpacing: '0.25rem',
+                      }}
+                    >
+                      Tạo
+                    </Button>
+                  </div>
+                </Form>
+              </DialogContent>
+            </Dialog>
+          </div>
           <div className={classes.root}>
+            <div className='d-flex justify-content-end'>
+              <Button
+                variant='outline-dark'
+                className='my-2 text-uppercase rounded-pill pt-2 pb-2'
+                onClick={handleClickOpen}
+                size='normal'
+              >
+                <i className='fas fa-plus'></i> Create Product
+              </Button>
+            </div>
             <Paper
               className={classes.paper + 'shadow'}
               style={{
@@ -383,7 +426,7 @@ function ProductListScreen({ history, match }) {
               }}
             >
               <TableContainer
-                className='text-center p-2'
+                className='text-center p-5'
                 style={{
                   borderRadius: '1rem',
                 }}
@@ -402,27 +445,26 @@ function ProductListScreen({ history, match }) {
                     orderBy={orderBy}
                     onSelectAllClick={handleSelectAllClick}
                     onRequestSort={handleRequestSort}
-                    rowCount={products.length}
-                    colSpan={1}
+                    rowCount={category.length}
                   />
                   <TableBody>
-                    {stableSort(products, getComparator(order, orderBy))
+                    {stableSort(category, getComparator(order, orderBy))
                       .slice(
                         page * rowsPerPage,
                         page * rowsPerPage + rowsPerPage
                       )
-                      .map((product, index) => {
-                        const isItemSelected = isSelected(product._id)
+                      .map((cat, index) => {
+                        const isItemSelected = isSelected(cat._id)
                         const labelId = `enhanced-table-checkbox-${index}`
 
                         return (
                           <TableRow
                             hover
-                            onClick={(event) => handleClick(event, product._id)}
+                            onClick={(event) => handleClick(event, cat._id)}
                             role='checkbox'
                             aria-checked={isItemSelected}
                             tabIndex={-1}
-                            key={product._id}
+                            key={cat._id}
                             selected={isItemSelected}
                           >
                             <TableCell padding='checkbox'>
@@ -438,46 +480,41 @@ function ProductListScreen({ history, match }) {
                               padding='none'
                               align='center'
                             >
-                              {product._id}
+                              {cat._id}
                             </TableCell>
-                            <TableCell
-                              align='left'
-                              component='th'
-                              className='text-center'
-                            >
-                              {product.name}
+                            <TableCell align='left' className='text-center'>
+                              {cat.name}
                             </TableCell>
                             <TableCell align='center'>
-                              <Image
-                                src={product.image}
-                                fluid
-                                className='rounded-circle p-1'
-                              />
+                              {format(
+                                new utcToZonedTime(
+                                  cat.createdAt,
+                                  'Asia/Ho_Chi_Minh'
+                                ),
+                                'HH:mm:ss - MM/dd/yyyy',
+                                { timeZone: 'Asia/Ho_Chi_Minh' }
+                              )}
                             </TableCell>
                             <TableCell align='center'>
-                              ${product.price}
+                              {format(
+                                new utcToZonedTime(
+                                  cat.updatedAt,
+                                  'Asia/Ho_Chi_Minh'
+                                ),
+                                'HH:mm:ss - MM/dd/yyyy',
+                                { timeZone: 'Asia/Ho_Chi_Minh' }
+                              )}
                             </TableCell>
-                            <TableCell align='center'>
-                              {product.category}
-                            </TableCell>
-                            <TableCell align='center'>
-                              {product.brand}
-                            </TableCell>
-                            <TableCell
-                              align='center'
-                              style={{ padding: '1px' }}
-                            >
-                              {product.countInStock}
-                            </TableCell>
+
                             <TableCell align='center'>
                               <LinkContainer
-                                to={`/admin/product/${product._id}/edit`}
+                                to={`/admin/category/${cat._id}/edit`}
                               >
                                 <Button
                                   variant='outline-light'
-                                  className='btn-block rounded-pill btn_color_details'
+                                  className='btn-sm rounded-pill btn_color_details'
                                 >
-                                  <i className='far fa-edit'></i>
+                                  CHI TIẾT
                                 </Button>
                               </LinkContainer>
                             </TableCell>
@@ -497,7 +534,7 @@ function ProductListScreen({ history, match }) {
               <TablePagination
                 rowsPerPageOptions={[5, 10, 25]}
                 component='div'
-                count={products.length}
+                count={category.length}
                 rowsPerPage={rowsPerPage}
                 page={page}
                 onChangePage={handleChangePage}
@@ -515,4 +552,4 @@ function ProductListScreen({ history, match }) {
   )
 }
 
-export default ProductListScreen
+export default CategoriesListScreen

@@ -13,14 +13,14 @@ import Popper from '@material-ui/core/Popper'
 import { makeStyles, withStyles } from '@material-ui/core/styles'
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart'
 import { black } from 'colors'
+import firebase from 'firebase'
 import React, { useEffect, useState } from 'react'
 import { Container, Image, Nav, Navbar, NavDropdown } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { LinkContainer } from 'react-router-bootstrap'
 import { Route, useHistory } from 'react-router-dom'
-import { getUserDetails, logout } from '../actions/userActions'
+import { logout } from '../actions/userActions'
 import SearchBox from './SearchBox'
-import firebase from 'firebase'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -76,6 +76,9 @@ function Header(props) {
   const userDetails = useSelector((state) => state.userDetails)
   const { user } = userDetails
 
+  const categoriesList = useSelector((state) => state.categoriesList)
+  const { loading, success, category } = categoriesList
+
   const userLogin = useSelector((state) => state.userLogin)
   const { userInfo } = userLogin
 
@@ -117,7 +120,7 @@ function Header(props) {
     }
 
     prevOpen.current = open
-  }, [open, userInfo, user])
+  }, [open, userInfo, user, category])
 
   return (
     <>
@@ -381,6 +384,15 @@ function Header(props) {
                             src='https://img.icons8.com/fluent/24/000000/purchase-order.png'
                           />
                           <strong>ORDERS</strong>
+                        </NavDropdown.Item>
+                      </LinkContainer>
+                      <LinkContainer to='/admin/categorieslist'>
+                        <NavDropdown.Item>
+                          <Image
+                            className='pr-1'
+                            src='https://img.icons8.com/fluent/24/000000/category.png'
+                          />
+                          <strong>CATEGORIES</strong>
                         </NavDropdown.Item>
                       </LinkContainer>
                     </div>

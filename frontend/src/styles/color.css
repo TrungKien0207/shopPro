@@ -36,7 +36,8 @@
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
 }
 
-.btn_color_pink {
+.btn_color_pink,
+.btn_color_pink:visited {
   background-color: #ffc1b6;
   font-size: 0.9rem;
   color: #fff;
@@ -46,9 +47,59 @@
 
 .btn_color_pink:hover,
 .btn_color_pink:active,
-.btn_color_pink:visited,
 .btn_color_pink:focus {
   background-color: #ffc1b6 !important;
   color: #fff;
   box-shadow: 0 0 0 0.2rem #ffc1b6 !important;
+}
+
+.btn_color_details,
+.btn_color_details:visited {
+  background-color: #1687a7;
+  font-size: 0.75rem;
+  color: #fff;
+  letter-spacing: 0.25rem;
+  transition: 300ms;
+}
+
+.btn_color_details:hover,
+.btn_color_details:active,
+.btn_color_details:focus {
+  background-color: #276678 !important;
+  color: #fff !important;
+  box-shadow: 0 0 0 0.2rem #276678 !important;
+}
+
+.btn_color_created,
+.btn_color_created:visited {
+  background-color: #f88f01;
+  font-size: 0.75rem;
+  color: #fff;
+  letter-spacing: 0.25rem;
+  transition: 300ms;
+}
+
+.btn_color_created:hover,
+.btn_color_created:active,
+.btn_color_created:focus {
+  background-color: #e27802 !important;
+  color: #fff !important;
+  box-shadow: 0 0 0 0.2rem #e27802 !important;
+}
+
+.btn_color_cancel {
+  background-color: #da1212;
+  font-size: 0.8rem;
+  color: #fff;
+  letter-spacing: 0.25rem;
+  transition: 300ms;
+}
+
+.btn_color_cancel:hover,
+.btn_color_cancel:active,
+.btn_color_cancel:visited,
+.btn_color_cancel:focus {
+  background-color: #ac0c0c !important;
+  color: #fff !important;
+  box-shadow: 0 0 0 0.2rem #ac0c0c !important;
 }
