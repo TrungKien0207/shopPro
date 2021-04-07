@@ -1,3 +1,4 @@
+import { Link } from '@material-ui/core'
 import Checkbox from '@material-ui/core/Checkbox'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import IconButton from '@material-ui/core/IconButton'
@@ -23,7 +24,12 @@ import { default as React, useEffect } from 'react'
 import { Button, Col, Image, Row } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { LinkContainer } from 'react-router-bootstrap'
+import Skeleton from '@material-ui/lab/Skeleton'
 import '../../src/notisfied.css'
+import {
+  getCategoryDetails,
+  listCategoriesAdm,
+} from '../actions/categoryAction'
 import {
   createProduct,
   deleteProduct,
@@ -32,7 +38,6 @@ import {
 import Announcement from '../components/Announcement'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
-import { PRODUCT_CREATE_RESET } from '../constants/productConstants'
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -246,6 +251,13 @@ function ProductListScreen({ history, match }) {
 
   const dispatch = useDispatch()
 
+  const categoriesList = useSelector((state) => state.categoriesList)
+  const {
+    loading: loadingCat,
+    error: errorCat,
+    category: categoryCat,
+  } = categoriesList
+
   const productList = useSelector((state) => state.productList)
   const { loading, error, products } = productList
 
@@ -260,6 +272,13 @@ function ProductListScreen({ history, match }) {
     success: successDelete,
   } = productDelete
 
+  const categoryDetails = useSelector((state) => state.categoryDetails)
+  const {
+    loading: loadingCatDe,
+    error: errorCatDe,
+    category: categoryCatDe,
+  } = categoryDetails
+
   const productCreate = useSelector((state) => state.productCreate)
   const {
     loading: loadingCreate,
@@ -271,11 +290,16 @@ function ProductListScreen({ history, match }) {
   const userLogin = useSelector((state) => state.userLogin)
   const { userInfo } = userLogin
 
-  useEffect(() => {
-    dispatch({ type: PRODUCT_CREATE_RESET })
+  const k = '6067d4b59f684c3fe0bd9def'
 
+  useEffect(() => {
     if (!userInfo.isAdmin) {
       history.push('/login')
+    }
+
+    if (userInfo) {
+      dispatch(listCategoriesAdm())
+      dispatch(getCategoryDetails(categoryCat.map((e) => e._id)))
     }
 
     if (successCreate) {
@@ -288,6 +312,7 @@ function ProductListScreen({ history, match }) {
   const deleteHandle = (id) => {
     if (window.confirm('You are sure?')) {
       dispatch(deleteProduct(id))
+      setSelected([])
     }
   }
 
@@ -343,10 +368,6 @@ function ProductListScreen({ history, match }) {
     numSelected: PropTypes.number.isRequired,
   }
 
-  const createProductHandle = () => {
-    dispatch(createProduct())
-  }
-
   return (
     <>
       <Row className='align-items-center'>
@@ -354,19 +375,18 @@ function ProductListScreen({ history, match }) {
           <h2 className='text-uppercase'>Products</h2>
         </Col>
         <Col className='text-right'>
-          <Button
-            variant='outline-dark'
-            className='my-2 text-uppercase rounded-pill pt-2 pb-2'
-            onClick={createProductHandle}
-          >
-            <i className='fas fa-plus'></i> Create Product
-          </Button>
+          <LinkContainer to='/admin/product/create'>
+            <Button
+              variant='outline-dark'
+              className='my-2 text-uppercase rounded-pill pt-2 pb-2'
+            >
+              <i className='fas fa-plus'></i> Thêm sản phẩm
+            </Button>
+          </LinkContainer>
         </Col>
       </Row>
       {loadingDelete && <Loader />}
       {errorDelete && <Message>{errorDelete}</Message>}
-      {loadingCreate && <Loader />}
-      {errorCreate && <Message>{errorCreate}</Message>}
 
       {loading ? (
         <Loader />
@@ -454,11 +474,16 @@ function ProductListScreen({ history, match }) {
                                 className='rounded-circle p-1'
                               />
                             </TableCell>
+
                             <TableCell align='center'>
                               ${product.price}
                             </TableCell>
                             <TableCell align='center'>
-                              {product.category}
+                              {categoryCat &&
+                                categoryCat.map(
+                                  (cat, index) =>
+                                    cat._id === product.category && cat.name
+                                )}
                             </TableCell>
                             <TableCell align='center'>
                               {product.brand}

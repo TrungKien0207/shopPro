@@ -24,6 +24,7 @@ import RegisterScreen from './screens/RegisterScreen.js'
 import { ShippingScreen } from './screens/ShippingScreen'
 import UserEditScreen from './screens/UserEditScreen'
 import UserListScreen from './screens/UserListScreen'
+import ProductCreateScreen from './screens/ProductCreateScreen'
 
 const THEME = createMuiTheme({
   typography: {
@@ -68,6 +69,12 @@ const App = () => {
             <Route
               path='/admin/productlist'
               component={ProductListScreen}
+              exact
+            />
+
+            <Route
+              path='/admin/product/create'
+              component={ProductCreateScreen}
               exact
             />
 

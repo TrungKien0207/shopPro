@@ -308,7 +308,6 @@ function OrderListScreen({ history, match }) {
               aria-label='delete'
               onClick={() => deleteHandle(selected)}
             >
-              {console.log(selected)}
               <DeleteIcon />
             </IconButton>
           </Tooltip>

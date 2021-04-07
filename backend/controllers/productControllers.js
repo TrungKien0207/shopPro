@@ -5,7 +5,7 @@ import Product from '../models/productModel.js'
 //* @route      GET /api/products/:id
 //* @access     Public
 const getProducts = asyncHandler(async (req, res) => {
-  const pageSize = 8
+  const pageSize = 100
   const page = Number(req.query.pageNumber) || 1
 
   const keyword = req.query.keyword
@@ -63,20 +63,31 @@ const deleteProduct = asyncHandler(async (req, res) => {
 //* @route      POST /api/products
 //* @access     Private/Admin
 const createProduct = asyncHandler(async (req, res) => {
+  const {
+    name,
+    price,
+    description,
+    image,
+    brand,
+    category,
+    countInStock,
+  } = req.body
+
   const product = new Product({
-    name: 'Sample name',
-    price: 0,
     user: req.user._id,
-    image: '/images/sample.jpg',
-    brand: 'Sample brand',
-    category: 'Sample category',
-    countInStock: 0,
-    numReviews: 0,
-    description: 'Sample description',
+    name: name,
+    price: price,
+    description: description,
+    image: image,
+    brand: brand,
+    category: category,
+    countInStock: countInStock,
   })
 
   const createdProduct = await product.save()
-  res.status(201).json(createdProduct)
+  setTimeout(() => {
+    res.status(201).json(createdProduct)
+  }, 2500)
 })
 
 //* @desc       Update product
@@ -103,6 +114,8 @@ const updateProduct = asyncHandler(async (req, res) => {
     product.brand = brand
     product.category = category
     product.countInStock = countInStock
+
+    console.log(product.category)
 
     const updatedProduct = await product.save()
     res.json(updatedProduct)

@@ -43,6 +43,7 @@ const productSchema = mongoose.Schema(
     category: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Category',
+      required: false,
     },
 
     description: {
@@ -60,7 +61,7 @@ const productSchema = mongoose.Schema(
 
     numReviews: {
       type: Number,
-      required: true,
+      required: false,
       default: 0,
     },
 

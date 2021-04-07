@@ -3,9 +3,11 @@ import React, { useEffect, useState } from 'react'
 import { Button, Col, Container, Form, Row } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
+import { listCategoriesAdm } from '../actions/categoryAction'
 import { listProductDetails, updateProduct } from '../actions/productActions'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
+import MessageSuccess from '../components/MessageSuccess'
 import { PRODUCT_UPDATE_RESET } from '../constants/productConstants'
 
 function ProductEditScreen({ match, history }) {
@@ -22,8 +24,18 @@ function ProductEditScreen({ match, history }) {
 
   const dispatch = useDispatch()
 
+  const userLogin = useSelector((state) => state.userLogin)
+  const { userInfo } = userLogin
+
   const productDetails = useSelector((state) => state.productDetails)
   const { loading, error, product } = productDetails
+
+  const categoriesList = useSelector((state) => state.categoriesList)
+  const {
+    loading: loadingCat,
+    error: errorCat,
+    category: categoryCat,
+  } = categoriesList
 
   const productUpdate = useSelector((state) => state.productUpdate)
   const {
@@ -75,10 +87,13 @@ function ProductEditScreen({ match, history }) {
   useEffect(() => {
     if (successUpdate) {
       dispatch({ type: PRODUCT_UPDATE_RESET })
-      history.push('/admin/productlist')
+      // history.push('/admin/productlist')
     } else {
       if (!product.name || product._id !== productId) {
-        dispatch(listProductDetails(productId))
+        if (userInfo) {
+          dispatch(listProductDetails(productId))
+          dispatch(listCategoriesAdm())
+        }
       } else {
         setName(product.name)
         setPrice(product.price)
@@ -89,7 +104,7 @@ function ProductEditScreen({ match, history }) {
         setDescription(product.description)
       }
     }
-  }, [dispatch, history, productId, product, successUpdate])
+  }, [dispatch, userInfo, history, productId, product, successUpdate])
 
   return (
     <>
@@ -99,9 +114,11 @@ function ProductEditScreen({ match, history }) {
           className='btn btn-light my-3 text-uppercase rounded-pill'
         >
           <i class='fas fa-arrow-left pr-2'></i>
-          Go back
+          Quay về
         </Link>
-        {loadingUpdate && <Loader />}
+        {loadingUpdate && (
+            <MessageSuccess variant='Đã cập nhật thành công'></MessageSuccess>
+          ) && <Loader />}
         {errorUpdate && <Message>{errorUpdate}</Message>}
         {loading ? (
           <Loader />
@@ -187,10 +204,22 @@ function ProductEditScreen({ match, history }) {
                     <Form.Control
                       className='border border-grey rounded-pill '
                       type='text'
+                      as='select'
                       placeholder='Enter category'
                       value={category}
                       onChange={(e) => setCategory(e.target.value)}
-                    ></Form.Control>
+                    >
+                      <option></option>
+                      {categoryCat.map((cat, index) => (
+                        <option
+                          style={{ color: 'black' }}
+                          key={index}
+                          value={cat._id}
+                        >
+                          {cat.name}
+                        </option>
+                      ))}
+                    </Form.Control>
                   </Form.Group>
                 </Col>
                 <Col md={3}>

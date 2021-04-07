@@ -17,7 +17,7 @@ import TableSortLabel from '@material-ui/core/TableSortLabel'
 import Toolbar from '@material-ui/core/Toolbar'
 import Tooltip from '@material-ui/core/Tooltip'
 import Typography from '@material-ui/core/Typography'
-import { Close } from '@material-ui/icons'
+import { Close, Message } from '@material-ui/icons'
 import DeleteIcon from '@material-ui/icons/Delete'
 import FilterListIcon from '@material-ui/icons/FilterList'
 import clsx from 'clsx'
@@ -28,10 +28,14 @@ import { Button, Form } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { LinkContainer } from 'react-router-bootstrap'
 import '../../src/notisfied.css'
-import { createCategory, listCategoriesAdm } from '../actions/categoryAction'
-import { deleteUser } from '../actions/userActions'
+import {
+  createCategory,
+  deleteCategory,
+  listCategoriesAdm,
+} from '../actions/categoryAction'
 import Announcement from '../components/Announcement'
 import Loader from '../components/Loader'
+import MessageSuccess from '../components/MessageSuccess'
 
 format(new Date(2014, 1, 11), 'dd/MM/yyyy')
 
@@ -271,13 +275,29 @@ const CategoriesListScreen = ({ history }) => {
   const categoriesList = useSelector((state) => state.categoriesList)
   const { loading, error, category } = categoriesList
 
+  const categoryDelete = useSelector((state) => state.categoryDelete)
+  const {
+    loading: loadingDelete,
+    error: errorDelete,
+    success: successDelete,
+  } = categoryDelete
+
+  const categoryCreate = useSelector((state) => state.categoryCreate)
+  const {
+    loading: loadingCreate,
+    error: errorCreate,
+    success: successCreate,
+    category: createdProduct,
+  } = categoryCreate
+
   const emptyRows =
     category !== undefined &&
     rowsPerPage - Math.min(rowsPerPage, category.length - page * rowsPerPage)
 
   const deleteHandle = (id) => {
     if (window.confirm('You are sure?')) {
-      dispatch(deleteUser(id))
+      dispatch(deleteCategory(id))
+      setSelected([])
     }
   }
 
@@ -341,7 +361,7 @@ const CategoriesListScreen = ({ history }) => {
     if (userInfo) {
       dispatch(listCategoriesAdm())
     }
-  }, [dispatch, userInfo])
+  }, [dispatch, userInfo, successCreate, successDelete])
 
   const submitHandler = (e) => {
     e.preventDefault()
@@ -350,6 +370,16 @@ const CategoriesListScreen = ({ history }) => {
 
   return (
     <>
+      {loadingDelete && (
+          <MessageSuccess variant='Đã xoá thành công'></MessageSuccess>
+        ) && <Loader />}
+      {errorDelete && <Message>{errorDelete}</Message>}
+      {loadingCreate && (
+        <MessageSuccess
+          variant={'Đã thêm ' + name + ' thành công'}
+        ></MessageSuccess>
+      )}
+      {errorCreate && <Message>{errorCreate}</Message>}
       {loading ? (
         <Loader />
       ) : error ? (
@@ -365,13 +395,11 @@ const CategoriesListScreen = ({ history }) => {
               aria-labelledby='form-dialog-title'
               maxWidth='xl'
             >
-              <Button
-                onClick={handleClose}
-                variant='light'
-                className='d-flex justify-content-end'
-              >
-                <Close />
-              </Button>
+              <div className='d-flex justify-content-end'>
+                <Button onClick={handleClose} variant='light'>
+                  <Close />
+                </Button>
+              </div>
 
               <DialogContent style={{ width: '30rem' }}>
                 <h4 className='text-center'>Tạo danh mục</h4>

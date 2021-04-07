@@ -72,7 +72,7 @@
 
 .btn_color_created,
 .btn_color_created:visited {
-  background-color: #f88f01;
+  background-color: #4e9525;
   font-size: 0.75rem;
   color: #fff;
   letter-spacing: 0.25rem;
@@ -82,9 +82,9 @@
 .btn_color_created:hover,
 .btn_color_created:active,
 .btn_color_created:focus {
-  background-color: #e27802 !important;
+  background-color: #2e5a1c !important;
   color: #fff !important;
-  box-shadow: 0 0 0 0.2rem #e27802 !important;
+  box-shadow: 0 0 0 0.2rem #2e5a1c !important;
 }
 
 .btn_color_cancel {
@@ -102,4 +102,20 @@
   background-color: #ac0c0c !important;
   color: #fff !important;
   box-shadow: 0 0 0 0.2rem #ac0c0c !important;
+}
+
+.link_color {
+  cursor: pointer;
+}
+
+.link_color {
+  transition: 0.3s;
+}
+
+.container_link_color:hover .link_color,
+.container_link_color:focus .link_color,
+.container_link_color:visited .link_color,
+.container_link_color:active .link_color {
+  border-top: 0.2rem solid red;
+  transition: 0.3s;
 }

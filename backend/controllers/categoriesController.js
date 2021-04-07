@@ -6,18 +6,13 @@ import Category from '../models/categoryModel.js'
 //* @route      POST /api/Categories
 //* @access     Private/Admin
 const createCategories = asyncHandler(async (req, res) => {
-  const cat = new Category({
-    name: req.body.name,
-    slug: slugify(req.body.name),
-  })
-
-  console.log('hihi', cat)
-
   const createCategories = await Category.create({
     name: req.body.name,
     slug: slugify(req.body.name),
   })
-  res.status(201).json(createCategories)
+  setTimeout(() => {
+    res.status(201).json(createCategories)
+  }, 2500)
 })
 
 //* @desc       Get all orders
@@ -66,7 +61,9 @@ const deleteCategoryById = asyncHandler(async (req, res) => {
 
   if (cat) {
     await cat.remove()
-    res.json({ message: 'Danh mục đã được xoá' })
+    setTimeout(() => {
+      res.json({ message: 'Danh mục đã được xoá' })
+    }, 2500)
   } else {
     res.status(404)
     throw new Error('Danh mục không tìm thấy')

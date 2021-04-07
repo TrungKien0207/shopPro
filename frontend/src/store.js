@@ -4,7 +4,9 @@ import thunk from 'redux-thunk'
 import { cartReducer } from './reducers/cartReducers.js'
 import {
   categoriesListReducer,
+  categoriesListReducerAdm,
   categoryCreateReducer,
+  categoryDeleteReducer,
   categoryDetailsReducer,
   categoryUpdateReducer,
 } from './reducers/categoriesReducers.js'
@@ -66,9 +68,11 @@ const reducer = combineReducers({
   orderUpdate: orderUpdateReducer,
 
   categoriesList: categoriesListReducer,
+  categoriesListAdm: categoriesListReducerAdm,
   categoryDetails: categoryDetailsReducer,
   categoryUpdate: categoryUpdateReducer,
   categoryCreate: categoryCreateReducer,
+  categoryDelete: categoryDeleteReducer,
 })
 
 const cartItemsFromStorage = localStorage.getItem('cartItems')

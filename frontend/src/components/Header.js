@@ -1,3 +1,4 @@
+// import { Menu } from '@material-ui/core'
 import Avatar from '@material-ui/core/Avatar'
 import Badge from '@material-ui/core/Badge'
 import Button from '@material-ui/core/Button'
@@ -15,19 +16,66 @@ import ShoppingCartIcon from '@material-ui/icons/ShoppingCart'
 import { black } from 'colors'
 import firebase from 'firebase'
 import React, { useEffect, useState } from 'react'
-import { Container, Image, Nav, Navbar, NavDropdown } from 'react-bootstrap'
+import 'antd/dist/antd.css'
+import { Menu, Dropdown } from 'antd'
+import { DownOutlined } from '@ant-design/icons'
+import {
+  Container,
+  // Dropdown,
+  DropdownButton,
+  Image,
+  Nav,
+  Navbar,
+  NavDropdown,
+  Row,
+  Col,
+} from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { LinkContainer } from 'react-router-bootstrap'
 import { Route, useHistory } from 'react-router-dom'
+import { listCategories } from '../actions/categoryAction'
 import { logout } from '../actions/userActions'
 import SearchBox from './SearchBox'
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
+import test from './test'
+
+const StyledMenu = withStyles({
+  paper: {
+    border: '1px solid #d3d4d5',
+  },
+})((props) => (
+  <Menu
+    elevation={0}
+    getContentAnchorEl={null}
+    anchorOrigin={{
+      vertical: 'bottom',
+      horizontal: 'center',
+    }}
+    transformOrigin={{
+      vertical: 'top',
+      horizontal: 'center',
+    }}
+    {...props}
+  />
+))
+
+const StyledMenuItem = withStyles((theme) => ({
+  root: {
+    '&:focus': {
+      backgroundColor: theme.palette.primary.main,
+      '& .MuiListItemIcon-root, & .MuiListItemText-primary': {
+        color: theme.palette.common.white,
+      },
+    },
+  },
+}))(MenuItem)
 
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
   },
   paper: {
-    marginRight: theme.spacing(2),
+    marginRight: theme.spacing(1),
     zIndex: '7 !important',
   },
   orange: {
@@ -65,13 +113,29 @@ const StyledBadge = withStyles((theme) => ({
 function Header(props) {
   const classes = useStyles()
   const [open, setOpen] = React.useState(false)
+  const [openn, setOpenn] = React.useState(false)
   const anchorRef = React.useRef(null)
+  const anchorReff = React.useRef(null)
   const history = useHistory()
   const [anchorEl, setAnchorEl] = useState(null)
+  // const [menu, setMenu] = useState(false)
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget)
   }
+
+  const menu = (
+    <Menu>
+      <Menu.Item key='0'>
+        <a href='https://www.antgroup.com'>1st menu item</a>
+      </Menu.Item>
+      <Menu.Item key='1'>
+        <a href='https://www.aliyun.com'>2nd menu item</a>
+      </Menu.Item>
+      <Menu.Divider />
+      <Menu.Item key='3'>3rd menu item</Menu.Item>
+    </Menu>
+  )
 
   const userDetails = useSelector((state) => state.userDetails)
   const { user } = userDetails
@@ -97,6 +161,10 @@ function Header(props) {
     setOpen((prevOpen) => !prevOpen)
   }
 
+  const handleTogglee = () => {
+    setOpenn((prevOpen) => !prevOpen)
+  }
+
   const handleClose = (event) => {
     if (anchorRef.current && anchorRef.current.contains(event.target)) {
       return
@@ -105,10 +173,25 @@ function Header(props) {
     setOpen(false)
   }
 
+  const handleClosee = (event) => {
+    if (anchorReff.current && anchorReff.current.contains(event.target)) {
+      return
+    }
+
+    setOpenn(false)
+  }
+
   function handleListKeyDown(event) {
     if (event.key === 'Tab') {
       event.preventDefault()
       setOpen(false)
+    }
+  }
+
+  function handleListKeyDownn(event) {
+    if (event.key === 'Tab') {
+      event.preventDefault()
+      setOpenn(false)
     }
   }
 
@@ -119,8 +202,12 @@ function Header(props) {
       anchorRef.current.focus()
     }
 
-    prevOpen.current = open
-  }, [open, userInfo, user, category])
+    if (userInfo) {
+      dispatch(listCategories())
+    }
+
+    // prevOpen.current = open
+  }, [open, userInfo, user])
 
   return (
     <>
@@ -403,6 +490,35 @@ function Header(props) {
           </Navbar.Collapse>
         </Container>
       </Navbar>
+      {/* <Navbar
+        expand='lg'
+        collapseOnSelect
+        className='p-0 pl-5 pr-5'
+        style={{ backgroundColor: '#FFFFFF' }}
+      > */}
+      <Row>
+        <Col md={4} className='pl-5'>
+          <div className='d-flex justify-content-around'>
+            {category &&
+              category.map((cat) => (
+                <div className='container_link_color'>
+                  <Dropdown overlay={menu}>
+                    <a
+                      className='ant-dropdown-link text-decoration-none link_color'
+                      onClick={(e) => e.preventDefault()}
+                      style={{ fontSize: '1rem' }}
+                    >
+                      {cat.name}
+                      <DownOutlined className='pl-1' />
+                    </a>
+                  </Dropdown>
+                </div>
+              ))}
+          </div>
+        </Col>
+      </Row>
+
+      {/* </Navbar> */}
     </>
   )
 }

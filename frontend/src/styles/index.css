@@ -315,3 +315,19 @@ body {
 * {
   box-sizing: border-box;
 } */
+
+.dropdown-toggle-ellipsis::before {
+  display: inline-block;
+  padding: 0.5rem;
+  font: normal normal normal 14px/1 FontAwesome;
+  content: "\f107";
+}
+
+.dropdown-toggle::after {
+  border: none !important;
+  font: normal normal normal 14px/1 FontAwesome;
+  content: "\f107" !important; /* the desired FontAwesome icon */
+  vertical-align: 0; /* to center vertically */
+}
+
+/* test */

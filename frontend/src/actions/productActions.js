@@ -99,7 +99,15 @@ export const deleteProduct = (id) => async (dispatch, getState) => {
   }
 }
 
-export const createProduct = () => async (dispatch, getState) => {
+export const createProduct = ({
+  name,
+  price,
+  description,
+  image,
+  brand,
+  category,
+  countInStock,
+}) => async (dispatch, getState) => {
   try {
     dispatch({ type: PRODUCT_CREATE_REQUEST })
 
@@ -107,13 +115,29 @@ export const createProduct = () => async (dispatch, getState) => {
       userLogin: { userInfo },
     } = getState()
 
+    const product = {
+      name,
+      price,
+      description,
+      image,
+      brand,
+      category,
+      countInStock,
+    }
+
+    console.log('product post', product)
+
     const config = {
       headers: {
         Authorization: `Bearer ${userInfo.token}`,
       },
     }
 
-    const { data } = await axios.post(`/api/products/`, {}, config)
+    const { data } = await axios.post(
+      `/api/products/`,
+      { name, price, description, image, brand, category, countInStock },
+      config
+    )
 
     dispatch({
       type: PRODUCT_CREATE_SUCCESS,
