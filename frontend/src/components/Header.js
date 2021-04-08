@@ -6,7 +6,7 @@ import ClickAwayListener from '@material-ui/core/ClickAwayListener'
 import { deepOrange } from '@material-ui/core/colors'
 import Grow from '@material-ui/core/Grow'
 import IconButton from '@material-ui/core/IconButton'
-import Link from '@material-ui/core/Link'
+import { Link } from 'react-router-dom'
 import MenuItem from '@material-ui/core/MenuItem'
 import MenuList from '@material-ui/core/MenuList'
 import Paper from '@material-ui/core/Paper'
@@ -503,14 +503,18 @@ function Header(props) {
               category.map((cat) => (
                 <div className='container_link_color'>
                   <Dropdown overlay={menu}>
-                    <a
+                    <Link
+                      to='/product'
                       className='ant-dropdown-link text-decoration-none link_color'
                       onClick={(e) => e.preventDefault()}
                       style={{ fontSize: '1rem' }}
                     >
                       {cat.name}
-                      <DownOutlined className='pl-1' />
-                    </a>
+                      <DownOutlined
+                        className='pl-1'
+                        style={{ fontSize: '0.5rem' }}
+                      />
+                    </Link>
                   </Dropdown>
                 </div>
               ))}

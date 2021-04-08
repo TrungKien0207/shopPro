@@ -179,8 +179,26 @@ const getTopProducts = asyncHandler(async (req, res) => {
   }, 100)
 })
 
+//* @desc       Get category for products
+//* @route      GET /api/products/top
+//* @access     Public
+const getCategoriesProduct = asyncHandler(async (req, res) => {
+  const product = await Product.find({}).populate('category', 'id name')
+  console.log(req.params.id)
+
+  if (product) {
+    setTimeout(() => {
+      res.json(product)
+    }, 1000)
+  } else {
+    res.status(404)
+    throw new Error('Product not found')
+  }
+})
+
 export {
   getProducts,
+  getCategoriesProduct,
   getProductById,
   deleteProduct,
   createProduct,

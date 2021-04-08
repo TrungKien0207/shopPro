@@ -36,6 +36,7 @@ import {
 import Announcement from '../components/Announcement'
 import Loader from '../components/Loader'
 import MessageSuccess from '../components/MessageSuccess'
+import SkeletonEffect from '../components/SkeletonEffect'
 
 format(new Date(2014, 1, 11), 'dd/MM/yyyy')
 
@@ -272,8 +273,8 @@ const CategoriesListScreen = ({ history }) => {
   const userLogin = useSelector((state) => state.userLogin)
   const { userInfo } = userLogin
 
-  const categoriesList = useSelector((state) => state.categoriesList)
-  const { loading, error, category } = categoriesList
+  const categoriesListAdm = useSelector((state) => state.categoriesListAdm)
+  const { loading, error, category } = categoriesListAdm
 
   const categoryDelete = useSelector((state) => state.categoryDelete)
   const {
@@ -381,7 +382,7 @@ const CategoriesListScreen = ({ history }) => {
       )}
       {errorCreate && <Message>{errorCreate}</Message>}
       {loading ? (
-        <Loader />
+        <SkeletonEffect />
       ) : error ? (
         <Announcement variant='danger'>{error}</Announcement>
       ) : (

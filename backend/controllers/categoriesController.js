@@ -20,10 +20,9 @@ const createCategories = asyncHandler(async (req, res) => {
 //* @access     Private
 const getCategory = asyncHandler(async (req, res) => {
   const cat = await Category.find({})
-
   setTimeout(() => {
     res.json(cat)
-  }, 200)
+  }, 1500)
 })
 
 //* @desc       Get all orders
@@ -31,10 +30,9 @@ const getCategory = asyncHandler(async (req, res) => {
 //* @access     Private/Admin
 const getCategoryAd = asyncHandler(async (req, res) => {
   const cat = await Category.find({})
-
   setTimeout(() => {
     res.json(cat)
-  }, 200)
+  }, 2500)
 })
 
 //* @desc       Get category by ID
@@ -46,7 +44,7 @@ const getCategoryById = asyncHandler(async (req, res) => {
   if (cat) {
     setTimeout(() => {
       res.json(cat)
-    }, 200)
+    }, 2500)
   } else {
     res.status(404)
     throw new Error('Danh mục không tìm thấy')
