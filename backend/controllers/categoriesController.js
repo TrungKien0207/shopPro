@@ -44,7 +44,7 @@ const getCategoryById = asyncHandler(async (req, res) => {
   if (cat) {
     setTimeout(() => {
       res.json(cat)
-    }, 2500)
+    }, 200)
   } else {
     res.status(404)
     throw new Error('Danh mục không tìm thấy')

@@ -1,4 +1,6 @@
 // import { Menu } from '@material-ui/core'
+// import { Link } from '@material-ui/core'
+import { Link } from 'react-router-dom'
 import Avatar from '@material-ui/core/Avatar'
 import Badge from '@material-ui/core/Badge'
 import Button from '@material-ui/core/Button'
@@ -6,38 +8,24 @@ import ClickAwayListener from '@material-ui/core/ClickAwayListener'
 import { deepOrange } from '@material-ui/core/colors'
 import Grow from '@material-ui/core/Grow'
 import IconButton from '@material-ui/core/IconButton'
-import { Link } from 'react-router-dom'
 import MenuItem from '@material-ui/core/MenuItem'
 import MenuList from '@material-ui/core/MenuList'
 import Paper from '@material-ui/core/Paper'
 import Popper from '@material-ui/core/Popper'
 import { makeStyles, withStyles } from '@material-ui/core/styles'
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart'
+import { Menu } from 'antd'
+import 'antd/dist/antd.css'
 import { black } from 'colors'
 import firebase from 'firebase'
 import React, { useEffect, useState } from 'react'
-import 'antd/dist/antd.css'
-import { Menu, Dropdown } from 'antd'
-import { DownOutlined } from '@ant-design/icons'
-import {
-  Container,
-  // Dropdown,
-  DropdownButton,
-  Image,
-  Nav,
-  Navbar,
-  NavDropdown,
-  Row,
-  Col,
-} from 'react-bootstrap'
+import { Container, Image, Nav, Navbar, NavDropdown } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { LinkContainer } from 'react-router-bootstrap'
 import { Route, useHistory } from 'react-router-dom'
 import { listCategories } from '../actions/categoryAction'
 import { logout } from '../actions/userActions'
 import SearchBox from './SearchBox'
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-import test from './test'
 
 const StyledMenu = withStyles({
   paper: {
@@ -113,7 +101,6 @@ const StyledBadge = withStyles((theme) => ({
 function Header(props) {
   const classes = useStyles()
   const [open, setOpen] = React.useState(false)
-  const [openn, setOpenn] = React.useState(false)
   const anchorRef = React.useRef(null)
   const anchorReff = React.useRef(null)
   const history = useHistory()
@@ -161,10 +148,6 @@ function Header(props) {
     setOpen((prevOpen) => !prevOpen)
   }
 
-  const handleTogglee = () => {
-    setOpenn((prevOpen) => !prevOpen)
-  }
-
   const handleClose = (event) => {
     if (anchorRef.current && anchorRef.current.contains(event.target)) {
       return
@@ -173,25 +156,10 @@ function Header(props) {
     setOpen(false)
   }
 
-  const handleClosee = (event) => {
-    if (anchorReff.current && anchorReff.current.contains(event.target)) {
-      return
-    }
-
-    setOpenn(false)
-  }
-
   function handleListKeyDown(event) {
     if (event.key === 'Tab') {
       event.preventDefault()
       setOpen(false)
-    }
-  }
-
-  function handleListKeyDownn(event) {
-    if (event.key === 'Tab') {
-      event.preventDefault()
-      setOpenn(false)
     }
   }
 
@@ -206,7 +174,7 @@ function Header(props) {
       dispatch(listCategories())
     }
 
-    // prevOpen.current = open
+    prevOpen.current = open
   }, [open, userInfo, user])
 
   return (
@@ -214,8 +182,8 @@ function Header(props) {
       <Navbar
         expand='lg'
         collapseOnSelect
-        className='p-0 pl-5 pr-5'
-        style={{ backgroundColor: '#FFFFFF' }}
+        className='p-0 pl-5 pr-5 m-0'
+        style={{ backgroundColor: '#edfead' }}
       >
         <Container fluid>
           <LinkContainer to='/' className=''>
@@ -225,8 +193,8 @@ function Header(props) {
           </LinkContainer>
           <Navbar.Toggle aria-controls='basic-navbar-nav' />
 
+          <Route render={({ history }) => <SearchBox history={history} />} />
           <Navbar.Collapse id='basic-navbar-nav'>
-            <Route render={({ history }) => <SearchBox history={history} />} />
             <Nav className='ml-auto' inline>
               <LinkContainer to='/cart'>
                 <Nav.Link className='text-uppercase'>
@@ -440,10 +408,11 @@ function Header(props) {
                       <Image src='https://img.icons8.com/fluent/38/000000/favorites-shield.png' />
                     }
                     id='nav-dropdown'
-                    className='pt-1 navbar-right'
+                    className='pt-1 navbar-right text-start'
                     style={{ fontSize: '0.865625rem', zIndex: '2' }}
                     alignRight
                     variant='light'
+                    pullRight
                   >
                     <div>
                       <LinkContainer to='/admin/userlist'>
@@ -490,21 +459,22 @@ function Header(props) {
           </Navbar.Collapse>
         </Container>
       </Navbar>
-      {/* <Navbar
+      <Navbar
         expand='lg'
         collapseOnSelect
         className='p-0 pl-5 pr-5'
-        style={{ backgroundColor: '#FFFFFF' }}
-      > */}
-      <Row>
-        <Col md={4} className='pl-5'>
-          <div className='d-flex justify-content-around'>
+        style={{ backgroundColor: '#edfead' }}
+        variant='tabs'
+      >
+        {/* <Row>
+          <Col md={12} className='pl-5'> */}
+        {/* <div className='d-flex justify-content-around'>
             {category &&
               category.map((cat) => (
                 <div className='container_link_color'>
                   <Dropdown overlay={menu}>
                     <Link
-                      to='/product'
+                      href='/product'
                       className='ant-dropdown-link text-decoration-none link_color'
                       onClick={(e) => e.preventDefault()}
                       style={{ fontSize: '1rem' }}
@@ -518,11 +488,77 @@ function Header(props) {
                   </Dropdown>
                 </div>
               ))}
-          </div>
-        </Col>
-      </Row>
+          </div> */}
+        <div class='collapse navbar-collapse pl-2 pr-2' id='main_nav'>
+          <ul className='navbar-nav'>
+            <li class='nav-item active' style={{ fontSize: '0.85rem' }}>
+              <Link className='nav-link' to='/'>
+                Trang chủ
+              </Link>
+            </li>
 
-      {/* </Navbar> */}
+            <li class='nav-item active' style={{ fontSize: '0.85rem' }}>
+              <Link className='nav-link' href='/'>
+                Giới thiệu
+              </Link>
+            </li>
+            <li
+              className='nav-item dropdown has-megamenu'
+              style={{ fontSize: '0.85rem' }}
+            >
+              <Link
+                className='nav-link dropdown-toggle'
+                to='#'
+                data-bs-toggle='dropdown'
+              >
+                Danh mục
+              </Link>
+              <div
+                className='dropdown-menu megamenu border border-secondary shadow'
+                style={{ borderRadius: '2rem' }}
+                role='menu'
+              >
+                <div className='row g-6' style={{ width: '70rem' }}>
+                  {category &&
+                    category.map((cat) => (
+                      <div className='col-lg-2 col-8 text-center pt-2 pb-2'>
+                        <div className='col-megamenu container_link_color'>
+                          <LinkContainer
+                            to={`/product/${cat._id}/category`}
+                            className='link_color'
+                          >
+                            <h6
+                              className='title'
+                              style={{ fontSize: '0.85rem' }}
+                            >
+                              {cat.name}
+                            </h6>
+                          </LinkContainer>
+                          <ul className='list-unstyled'>
+                            <li>
+                              <a href='#'>Custom Menu</a>
+                            </li>
+                            <li>
+                              <a href='#'>Custom Menu</a>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    ))}
+                </div>
+              </div>
+            </li>
+
+            <li class='nav-item active' style={{ fontSize: '0.85rem' }}>
+              <Link className='nav-link' href='/'>
+                Liên hệ
+              </Link>
+            </li>
+          </ul>
+        </div>
+        {/* </Col>
+        </Row> */}
+      </Navbar>
     </>
   )
 }

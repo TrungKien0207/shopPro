@@ -15,6 +15,9 @@ import {
   PRODUCT_LIST_FAIL,
   PRODUCT_LIST_REQUEST,
   PRODUCT_LIST_SUCCESS,
+  PRODUCT_OF_CATEGORY_FAIL,
+  PRODUCT_OF_CATEGORY_REQUEST,
+  PRODUCT_OF_CATEGORY_SUCCESS,
   PRODUCT_TOP_FAIL,
   PRODUCT_TOP_REQUEST,
   PRODUCT_TOP_SUCCESS,
@@ -61,6 +64,27 @@ export const listProductDetails = (id) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: PRODUCT_DETAILS_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    })
+  }
+}
+
+export const getProductOfCategory = (id) => async (dispatch) => {
+  try {
+    dispatch({ type: PRODUCT_OF_CATEGORY_REQUEST })
+
+    const { data } = await axios.get(`/api/products/${id}/category`)
+
+    dispatch({
+      type: PRODUCT_OF_CATEGORY_SUCCESS,
+      payload: data,
+    })
+  } catch (error) {
+    dispatch({
+      type: PRODUCT_OF_CATEGORY_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

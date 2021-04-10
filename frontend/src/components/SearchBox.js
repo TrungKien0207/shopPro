@@ -25,6 +25,7 @@ const SearchBox = ({ history }) => {
           placeholder='Search Product...'
           className='mr-sm-2 ml-sm-5 rounded-pill'
           onChange={(e) => setKeyword(e.target.value)}
+          style={{ width: '30rem' }}
         ></Form.Control>
       </div>
 

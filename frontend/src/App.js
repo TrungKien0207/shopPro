@@ -25,6 +25,7 @@ import { ShippingScreen } from './screens/ShippingScreen'
 import UserEditScreen from './screens/UserEditScreen'
 import UserListScreen from './screens/UserListScreen'
 import ProductCreateScreen from './screens/ProductCreateScreen'
+import ProductOfCategoryScreen from './screens/ProductOfCategoryScreen'
 
 const THEME = createMuiTheme({
   typography: {
@@ -36,8 +37,8 @@ const App = () => {
   return (
     <ThemeProvider theme={THEME}>
       <Router>
-        <Header />
-        <main className='py-3'>
+        <Header className='p-0 m-0' />
+        <main className=''>
           <Route path='/' component={HomeScreen} exact />
           <div className='ml-5 mr-5 mt-2'>
             <Route
@@ -71,6 +72,8 @@ const App = () => {
               component={ProductListScreen}
               exact
             />
+
+            <Route path='/product/:id/category' component={ProductOfCategoryScreen} exact />
 
             <Route
               path='/admin/product/create'

@@ -397,7 +397,11 @@ const CategoriesListScreen = ({ history }) => {
               maxWidth='xl'
             >
               <div className='d-flex justify-content-end'>
-                <Button onClick={handleClose} variant='light'>
+                <Button
+                  onClick={handleClose}
+                  className='p-1 m-1 rounded-pill'
+                  variant='light'
+                >
                   <Close />
                 </Button>
               </div>

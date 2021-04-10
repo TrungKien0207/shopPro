@@ -182,8 +182,10 @@ const getTopProducts = asyncHandler(async (req, res) => {
 //* @desc       Get category for products
 //* @route      GET /api/products/top
 //* @access     Public
-const getCategoriesProduct = asyncHandler(async (req, res) => {
-  const product = await Product.find({}).populate('category', 'id name')
+const getCategoriesProduct = asyncHandler(async (req, res, category) => {
+  // const product = await Product.find({}).populate('category', '_id name')
+  const product = await Product.find({ category: req.params.id })
+
   console.log(req.params.id)
 
   if (product) {

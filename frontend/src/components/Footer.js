@@ -5,7 +5,7 @@ Footer.propTypes = {}
 
 function Footer(props) {
   return (
-    <footer>
+    <footer style={{ backgroundColor: '#edfead' }}>
       <Container>
         <Row>
           <Col className='text-center py-3'>Copy right &copy; ProShop</Col>
