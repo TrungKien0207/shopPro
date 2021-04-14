@@ -4,16 +4,15 @@ import Rating from '@material-ui/lab/Rating'
 import Box from '@material-ui/core/Box'
 
 const labels = {
-  1: 'Useless',
-  2: 'Poor',
-  3: 'Ok',
-  4: 'Good',
-  5: 'Excellent',
+  1: 'Rất tệ',
+  2: 'Tệ',
+  3: 'Bình thường',
+  4: 'Tốt',
+  5: 'Rất tốt',
 }
 
 const useStyles = makeStyles({
   root: {
-    width: 200,
     display: 'flex',
     alignItems: 'center',
   },

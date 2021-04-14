@@ -4,6 +4,10 @@ import { Link } from 'react-router-dom'
 import Rating from './Rating'
 
 function Product({ product }) {
+  function format(n, currency) {
+    return n.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + currency
+  }
+
   return (
     <Card className='my-3 rounded  product-card'>
       <div className='image-product'>
@@ -36,7 +40,9 @@ function Product({ product }) {
           to={`/product/${product._id}`}
           className='text-decoration-none title-product'
         >
-          <Card.Text as='h4'>${product.price}</Card.Text>
+          <Card.Text as='h4' className='text-lowercase'>
+            {format(product.price, 'đ')}
+          </Card.Text>
         </Link>
       </Card.Body>
     </Card>

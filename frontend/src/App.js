@@ -37,10 +37,17 @@ const App = () => {
   return (
     <ThemeProvider theme={THEME}>
       <Router>
-        <Header className='p-0 m-0' />
-        <main className=''>
+        <Header />
+        <main className='mb-5'>
           <Route path='/' component={HomeScreen} exact />
-          <div className='ml-5 mr-5 mt-2'>
+
+          <Route
+            path='/admin/productlist'
+            component={ProductListScreen}
+            exact
+          />
+
+          <div className='ml-2 mr-2 mt-2'>
             <Route
               path='/admin/categorieslist'
               component={CategoriesListScreen}
@@ -68,12 +75,10 @@ const App = () => {
             />
 
             <Route
-              path='/admin/productlist'
-              component={ProductListScreen}
+              path='/product/:id/category'
+              component={ProductOfCategoryScreen}
               exact
             />
-
-            <Route path='/product/:id/category' component={ProductOfCategoryScreen} exact />
 
             <Route
               path='/admin/product/create'

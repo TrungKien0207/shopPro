@@ -448,7 +448,7 @@ const CategoriesListScreen = ({ history }) => {
                 onClick={handleClickOpen}
                 size='normal'
               >
-                <i className='fas fa-plus'></i> Create Product
+                <i className='fas fa-plus'></i> Tạo danh mục
               </Button>
             </div>
             <Paper

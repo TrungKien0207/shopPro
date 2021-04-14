@@ -170,9 +170,7 @@ function Header(props) {
       anchorRef.current.focus()
     }
 
-    if (userInfo) {
-      dispatch(listCategories())
-    }
+    dispatch(listCategories())
 
     prevOpen.current = open
   }, [open, userInfo, user])

@@ -37,7 +37,7 @@ const getProductById = asyncHandler(async (req, res) => {
   if (product) {
     setTimeout(() => {
       res.json(product)
-    }, 1000)
+    }, 2000)
   } else {
     res.status(404)
     throw new Error('Product not found')
@@ -132,17 +132,9 @@ const createProductReview = asyncHandler(async (req, res) => {
   const { rating, comment } = req.body
 
   const product = await Product.findById(req.params.id)
+  console.log(product)
 
   if (product) {
-    // const alreadyReviewed = product.reviews.find(
-    //   (r) => r.user.toString() === req.user._id.toString()
-    // )
-
-    // if (alreadyReviewed) {
-    //   res.status(400)
-    //   throw new Error('Product already reviews')
-    // }
-
     const review = {
       name: req.user.name,
       rating: Number(rating),
@@ -151,9 +143,21 @@ const createProductReview = asyncHandler(async (req, res) => {
       user: req.user._id,
     }
 
-    product.reviews.push(review)
+    const alreadyReviewed = product.reviews.find(
+      (r) => r.user.toString() === req.user._id.toString()
+    )
 
-    product.numReviews = product.reviews.length
+    if (alreadyReviewed) {
+      product.reviews.forEach((review) => {
+        if (review.user.toString() === req.user._id.toString()) {
+          review.comment = comment
+          review.rating = rating
+        }
+      })
+    } else {
+      product.reviews.push(review)
+      product.numReviews = product.reviews.length
+    }
 
     product.rating = (
       product.reviews.reduce((acc, item) => item.rating + acc, 0) /
@@ -161,7 +165,9 @@ const createProductReview = asyncHandler(async (req, res) => {
     ).toFixed(2)
 
     await product.save()
-    res.status(201).json({ message: 'Review added' })
+    setTimeout(() => {
+      res.status(201).json({ message: 'Review added' })
+    }, 1500)
   } else {
     res.status(404)
     throw new Error('Product not found')

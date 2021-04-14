@@ -23,12 +23,15 @@ import Loader from '../components/Loader'
 import Message from '../components/Message'
 import Meta from '../components/Meta'
 import Rating from '../components/Rating'
+import SkeletonEffect from '../components/SkeletonEffect'
+import { Skeleton } from 'antd'
 import { PRODUCT_CREATE_REVIEW_RESET } from '../constants/productConstants.js'
+import ProgressLine from '../components/ProgressLine.js'
 
 const useStyles = makeStyles((theme) => ({
   root: {
     '& .MuiTextField-root': {
-      margin: theme.spacing(0),
+      margin: theme.spacing(1),
     },
 
     '& .MuiInputBase-input': {
@@ -36,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
     },
 
     '& .MuiFilledInput-input': {
-      padding: theme.spacing(2),
+      padding: theme.spacing(1),
     },
 
     '& .MuiFilledInput-inputMarginDense': {
@@ -108,7 +111,7 @@ function ProductScreen({ history, match }) {
 
   return (
     <>
-      <Link className='btn btn-light my-3' to='/'>
+      <Link className='btn btn-light my-3 rounded-pill' to='/'>
         <i className='fas fa-arrow-left pr-2'></i>
         Go back
       </Link>
@@ -249,7 +252,7 @@ function ProductScreen({ history, match }) {
                   </Announcement>
                 )}
                 <div
-                  className=' rounded text-center circle-rate pt-2 pb-1 ml-3'
+                  className=' rounded text-center circle-rate pt-2 pb-1 ml-3 mb-2'
                   style={{ width: '14rem' }}
                 >
                   <h5 className=''>Điểm</h5>
@@ -257,69 +260,78 @@ function ProductScreen({ history, match }) {
                 </div>
 
                 <ListGroup variant='flush'>
-                  {product.reviews.map((review) => (
-                    <ListGroup.Item key={review._id}>
-                      <div className='d-flex justify-content-start'>
-                        {/* <Row>
+                  {loadingProductReview ? (
+                    <Skeleton avatar paragraph={{ rows: 1 }} />
+                  ) : (
+                    product.reviews.map((review) => (
+                      <ListGroup.Item key={review._id}>
+                        <div className='d-flex justify-content-start'>
+                          {/* <Row>
                         <Col md={1} className=''> */}
-                        <div className='pr-2'>
-                          {review ? (
-                            <Image
-                              className='rounded-circle'
-                              src={user.avatar}
-                              style={{ height: '2rem', width: '2rem' }}
-                            />
-                          ) : (
-                            <Avatar className={classes.orange}>
-                              {review.name.substring(0, 1)}
-                            </Avatar>
-                          )}
-                        </div>
-                        {/* </Col>
+                          <div className='pr-2'>
+                            {review ? (
+                              <Image
+                                className='rounded-circle'
+                                src={user.avatar}
+                                style={{ height: '2rem', width: '2rem' }}
+                              />
+                            ) : (
+                              <Avatar className={classes.orange}>
+                                {review.name.substring(0, 1)}
+                              </Avatar>
+                            )}
+                          </div>
+                          {/* </Col>
                         <Col> */}
-                        <div>
-                          <div className='d-flex'>
-                            <h5 className='mb-0'>{review.name}</h5>
-                            <span className='pl-2'>
-                              <Rating value={review.rating} />
-                            </span>
+                          <div>
+                            <div className='d-flex'>
+                              <h5 className='mb-0 text-capitalize'>
+                                {review.name}
+                              </h5>
+                              <span className='pl-2'>
+                                <Rating value={review.rating} />
+                              </span>
+                            </div>
+                            <div
+                              style={{
+                                fontWeight: '200',
+                                color: 'gray',
+                                fontSize: '0.65rem',
+                              }}
+                            >
+                              <p className='mb-1'>
+                                {review.createdAt.substring(11, 19)}
+                                {' : '}
+                                {review.createdAt.substring(0, 10)}
+                              </p>
+                            </div>
                           </div>
-                          <div
-                            style={{
-                              fontWeight: '200',
-                              color: 'gray',
-                              fontSize: '0.65rem',
-                            }}
-                          >
-                            <p className='mb-1'>
-                              {review.createdAt.substring(11, 19)}
-                              {' : '}
-                              {review.createdAt.substring(0, 10)}
-                            </p>
-                          </div>
-                        </div>
-                        {/* </Col>
+                          {/* </Col>
                       </Row> */}
-                      </div>
-                      <strong style={{ fontWeight: '500', color: 'black' }}>
-                        {review.comment}
-                      </strong>
-                    </ListGroup.Item>
-                  ))}
+                        </div>
+                        <strong style={{ fontWeight: '500', color: 'black' }}>
+                          {review.comment}
+                        </strong>
+                      </ListGroup.Item>
+                    ))
+                  )}
 
                   <ListGroup.Item shadow>
-                    <h4>
+                    {loadingProductReview && <ProgressLine />}
+                    <h5>
                       ĐÁNH GIÁ VÀ BÌNH LUẬN{' '}
                       <Image src='https://img.icons8.com/fluent/24/000000/favorite-chat.png' />
-                    </h4>
-                    {loadingProductReview && <Loader />}
+                    </h5>
+
                     {errorProductReview && (
                       <Message>{errorProductReview}</Message>
                     )}
                     {userInfo ? (
                       <Form onSubmit={submitHandle}>
                         <Form.Group controlId='rating'>
-                          <Form.Label as='h5'>ĐÁNH GIÁ</Form.Label>
+                          <Form.Label as='h5' className='text-capitalize'>
+                            Đánh giá
+                          </Form.Label>
                           <ActiveRating
                             value={rating}
                             hover={hover}
@@ -329,7 +341,10 @@ function ProductScreen({ history, match }) {
                           />
                         </Form.Group>
 
-                        <Form.Group controlId='comment'>
+                        <Form.Group
+                          controlId='comment'
+                          classname={classes.root}
+                        >
                           <TextField
                             className={classes.form}
                             id='outlined-multiline-static'

@@ -18,6 +18,7 @@
 .card_color {
   background-color: #fff;
   border-radius: 1rem !important;
+  z-index: 2;
 }
 
 .card_color_bill {
@@ -107,21 +108,18 @@
 .link_color {
   transition: 0.5s;
   cursor: pointer;
+  /* border-top: 0.2rem solid #fff !important;
+  padding: 0.3rem; */
 }
 
-.container_link_color:hover .link_color,
+/* .container_link_color:hover .link_color,
 .container_link_color:active .link_color,
 .container_link_color:visited .link_color,
 .container_link_color:focus .link_color {
-  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg id='Squiggle-svg' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:ev='http://www.w3.org/2001/xml-events' viewBox='0 0 20 4'%3E%3Cstyle type='text/css'%3E.st0{animation:shift .3s linear infinite;}@keyframes shift {from {transform:translateX(0);}to {transform:translateX(-20px);}}%3C/style%3E%3Cpath fill='none' stroke='%23FFB59B' stroke-width='1' class='st0' d='M0,3.5 c 5,0,5,-3,10,-3 s 5,3,10,3 c 5,0,5,-3,10,-3 s 5,3,10,3'/%3E%3C/svg%3E") !important;
-  background-position: bottom !important;
-  background-repeat: repeat-x !important;
-  background-size: 1.4rem !important;
-  border: 0 !important;
-  padding-bottom: 0.5em !important;
-  text-decoration: none !important;
+  border-top: 0.2rem solid red !important;
+  padding: 0.3rem;
   transition: 0.3s !important;
-}
+} */
 
 .dropdown-menu {
   left: 50% !important;
