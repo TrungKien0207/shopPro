@@ -114,10 +114,10 @@ function Header(props) {
   const menu = (
     <Menu>
       <Menu.Item key='0'>
-        <a href='https://www.antgroup.com'>1st menu item</a>
+        <a to='https://www.antgroup.com'>1st menu item</a>
       </Menu.Item>
       <Menu.Item key='1'>
-        <a href='https://www.aliyun.com'>2nd menu item</a>
+        <a to='https://www.aliyun.com'>2nd menu item</a>
       </Menu.Item>
       <Menu.Divider />
       <Menu.Item key='3'>3rd menu item</Menu.Item>
@@ -257,7 +257,7 @@ function Header(props) {
                             >
                               <MenuItem onClick={handleClose}>
                                 <Link
-                                  href='/profile'
+                                  to='/profile'
                                   className={classes.link}
                                   style={{
                                     color: 'black',
@@ -275,7 +275,7 @@ function Header(props) {
 
                               <MenuItem onClick={handleClose}>
                                 <Link
-                                  href='/myorders'
+                                  to='/myorders'
                                   className={classes.link}
                                   style={{
                                     color: 'black',
@@ -300,7 +300,7 @@ function Header(props) {
                                 }}
                               >
                                 <Link
-                                  href='/'
+                                  to='/'
                                   className={classes.link}
                                   style={{
                                     color: 'black',
@@ -366,7 +366,7 @@ function Header(props) {
                                   letterSpacing: '0.05rem',
                                 }}
                               >
-                                <Link href='/login' className={classes.link}>
+                                <Link to='/login' className={classes.link}>
                                   <Image
                                     className='pr-1'
                                     src='https://img.icons8.com/fluent/24/000000/key.png'
@@ -382,7 +382,7 @@ function Header(props) {
                                   letterSpacing: '0.05rem',
                                 }}
                               >
-                                <Link href='/register' className={classes.link}>
+                                <Link to='/register' className={classes.link}>
                                   <Image
                                     className='pr-1'
                                     src='https://img.icons8.com/fluent/24/000000/new-contact.png'
@@ -472,7 +472,7 @@ function Header(props) {
                 <div className='container_link_color'>
                   <Dropdown overlay={menu}>
                     <Link
-                      href='/product'
+                      to='/product'
                       className='ant-dropdown-link text-decoration-none link_color'
                       onClick={(e) => e.preventDefault()}
                       style={{ fontSize: '1rem' }}
@@ -496,7 +496,7 @@ function Header(props) {
             </li>
 
             <li class='nav-item active' style={{ fontSize: '0.85rem' }}>
-              <Link className='nav-link' href='/'>
+              <Link className='nav-link' to='/'>
                 Giới thiệu
               </Link>
             </li>
@@ -534,10 +534,10 @@ function Header(props) {
                           </LinkContainer>
                           <ul className='list-unstyled'>
                             <li>
-                              <a href='#'>Custom Menu</a>
+                              <a to='#'>Custom Menu</a>
                             </li>
                             <li>
-                              <a href='#'>Custom Menu</a>
+                              <a to='#'>Custom Menu</a>
                             </li>
                           </ul>
                         </div>
@@ -548,7 +548,7 @@ function Header(props) {
             </li>
 
             <li class='nav-item active' style={{ fontSize: '0.85rem' }}>
-              <Link className='nav-link' href='/'>
+              <Link className='nav-link' to='/'>
                 Liên hệ
               </Link>
             </li>

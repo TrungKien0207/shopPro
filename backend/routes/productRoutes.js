@@ -3,11 +3,13 @@ import {
   createProduct,
   createProductReview,
   deleteProduct,
+  filterCategoriesProduct,
+  filterPriceProduct,
+  getCategoriesProduct,
   getProductById,
   getProducts,
   getTopProducts,
   updateProduct,
-  getCategoriesProduct,
 } from '../controllers/productControllers.js'
 import { admin, protect } from '../middleware/authMiddleware.js'
 
@@ -18,6 +20,9 @@ router.route('/').get(getProducts).post(protect, admin, createProduct)
 router.route('/:id/reviews').post(protect, createProductReview)
 router.route('/top').get(getTopProducts)
 router.route('/:id/category').get(getCategoriesProduct)
+
+router.route('/filter/category').post(filterCategoriesProduct)
+router.route('/filter/price').post(filterPriceProduct)
 
 router
   .route('/:id')

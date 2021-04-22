@@ -9,7 +9,7 @@ function Product({ product }) {
   }
 
   return (
-    <Card className='my-3 rounded  product-card'>
+    <Card className='my-2 rounded product-card'>
       <div className='image-product'>
         <Link to={`/product/${product._id}`}>
           <Card.Img src={product.image} variant='top' />
@@ -21,7 +21,7 @@ function Product({ product }) {
           className='text-decoration-none title-product'
         >
           <Card.Title as='div'>
-            <h6 className='fw-bolder'>{product.name}</h6>
+            <strong>{product.name.slice(0, 30) + '...'}</strong>
           </Card.Title>
         </Link>
 
@@ -40,7 +40,7 @@ function Product({ product }) {
           to={`/product/${product._id}`}
           className='text-decoration-none title-product'
         >
-          <Card.Text as='h4' className='text-lowercase'>
+          <Card.Text as='h5' className='text-lowercase'>
             {format(product.price, 'đ')}
           </Card.Text>
         </Link>

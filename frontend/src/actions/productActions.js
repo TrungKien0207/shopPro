@@ -12,6 +12,12 @@ import {
   PRODUCT_DETAILS_FAIL,
   PRODUCT_DETAILS_REQUEST,
   PRODUCT_DETAILS_SUCCESS,
+  PRODUCT_FILTER_FAIL,
+  PRODUCT_FILTER_PRICE_FAIL,
+  PRODUCT_FILTER_PRICE_REQUEST,
+  PRODUCT_FILTER_PRICE_SUCCESS,
+  PRODUCT_FILTER_REQUEST,
+  PRODUCT_FILTER_SUCCESS,
   PRODUCT_LIST_FAIL,
   PRODUCT_LIST_REQUEST,
   PRODUCT_LIST_SUCCESS,
@@ -261,6 +267,80 @@ export const listTopProducts = () => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: PRODUCT_TOP_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    })
+  }
+}
+
+export const filterProduct = (category) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: PRODUCT_FILTER_REQUEST })
+
+    const {
+      userLogin: { userInfo },
+    } = getState()
+
+    // console.log('category post', category)
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    }
+
+    const { data } = await axios.post(
+      '/api/products/filter/category',
+      { category },
+      config
+    )
+
+    dispatch({
+      type: PRODUCT_FILTER_SUCCESS,
+      payload: data,
+    })
+  } catch (error) {
+    dispatch({
+      type: PRODUCT_FILTER_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    })
+  }
+}
+
+export const filterPriceProduct = (price) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: PRODUCT_FILTER_PRICE_REQUEST })
+
+    const {
+      userLogin: { userInfo },
+    } = getState()
+
+    console.log('price post', price)
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    }
+
+    const { data } = await axios.post(
+      '/api/products/filter/price',
+      { price },
+      config
+    )
+
+    dispatch({
+      type: PRODUCT_FILTER_PRICE_SUCCESS,
+      payload: data,
+    })
+  } catch (error) {
+    dispatch({
+      type: PRODUCT_FILTER_PRICE_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

@@ -9,6 +9,7 @@ import { Button, Card, Col, Image, ListGroup, Row } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { addToCart, removeFromCart } from '../actions/cartActions.js'
+import { getUserDetails } from '../actions/userActions.js'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -38,16 +39,23 @@ export const CartScreen = ({ match, location, history }) => {
 
   const dispatch = useDispatch()
 
+  const userDetails = useSelector((state) => state.userDetails)
+  const { loading, error, user } = userDetails
+
+  const userLogin = useSelector((state) => state.userLogin)
+  const { userInfo } = userLogin
+
   const cart = useSelector((state) => state.cart)
   const { cartItems } = cart
 
-  console.log(cartItems.product)
+  // console.log(cartItems.product)
 
   useEffect(() => {
+    dispatch(getUserDetails(userInfo._id))
     if (productId) {
       dispatch(addToCart(productId, qty))
     }
-  }, [dispatch, productId, qty])
+  }, [dispatch, productId, qty, userInfo])
 
   const removeFromCartHandler = (id) => {
     dispatch(removeFromCart(id))

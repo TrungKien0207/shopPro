@@ -37,7 +37,7 @@ const getProductById = asyncHandler(async (req, res) => {
   if (product) {
     setTimeout(() => {
       res.json(product)
-    }, 2000)
+    }, 100)
   } else {
     res.status(404)
     throw new Error('Product not found')
@@ -186,13 +186,13 @@ const getTopProducts = asyncHandler(async (req, res) => {
 })
 
 //* @desc       Get category for products
-//* @route      GET /api/products/top
+//* @route      GET /api/products/category
 //* @access     Public
 const getCategoriesProduct = asyncHandler(async (req, res, category) => {
   // const product = await Product.find({}).populate('category', '_id name')
   const product = await Product.find({ category: req.params.id })
 
-  console.log(req.params.id)
+  // console.log(req.params.id)
 
   if (product) {
     setTimeout(() => {
@@ -201,6 +201,46 @@ const getCategoriesProduct = asyncHandler(async (req, res, category) => {
   } else {
     res.status(404)
     throw new Error('Product not found')
+  }
+})
+
+//* @desc       Filter category for products
+//* @route      GET /api/products/filter/category
+//* @access     Public
+const filterCategoriesProduct = asyncHandler(async (req, res) => {
+  const { category } = req.body
+  try {
+    let products = await Product.find({ category })
+      .populate('category', '_id name')
+      .exec()
+
+    setTimeout(() => {
+      res.json(products)
+    }, 1000)
+  } catch (error) {
+    console.log(error)
+  }
+})
+
+//* @desc       Filter price for products
+//* @route      GET /api/products/filter/price
+//* @access     Public
+const filterPriceProduct = asyncHandler(async (req, res) => {
+  const { price } = req.body
+  try {
+    console.log('price', price)
+
+    let products = await Product.find({
+      price: { $gte: price[0], $lte: price[1] },
+    })
+      .populate('category', '_id name')
+      .exec()
+
+    setTimeout(() => {
+      res.json(products)
+    }, 1000)
+  } catch (error) {
+    console.log(error)
   }
 })
 
@@ -213,4 +253,6 @@ export {
   updateProduct,
   createProductReview,
   getTopProducts,
+  filterCategoriesProduct,
+  filterPriceProduct,
 }

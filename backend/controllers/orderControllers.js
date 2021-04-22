@@ -139,9 +139,18 @@ const deleteOrder = asyncHandler(async (req, res) => {
 const updateStatus = asyncHandler(async (req, res) => {
   const { orderStatus } = req.body
 
-  console.log(req.body)
+  // console.log(req.body)
 
   const order = await Order.findById(req.params.id)
+
+  async function updateStock(id, quantity) {
+    const product = await Product.findById(id)
+
+    product.stock = product.stock - quantity
+    await product.save()
+  }
+
+  console.log('order', order)
 
   try {
     let updateOrderStatus = await Order.findByIdAndUpdate(

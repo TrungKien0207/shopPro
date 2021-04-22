@@ -1,6 +1,6 @@
 import { createMuiTheme } from '@material-ui/core/styles'
 import { ThemeProvider } from '@material-ui/styles'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Container } from 'react-bootstrap'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 import Footer from './components/Footer'
@@ -26,6 +26,8 @@ import UserEditScreen from './screens/UserEditScreen'
 import UserListScreen from './screens/UserListScreen'
 import ProductCreateScreen from './screens/ProductCreateScreen'
 import ProductOfCategoryScreen from './screens/ProductOfCategoryScreen'
+import { useDispatch, useSelector } from 'react-redux'
+import { getUserDetails } from './actions/userActions'
 
 const THEME = createMuiTheme({
   typography: {
@@ -34,6 +36,17 @@ const THEME = createMuiTheme({
 })
 
 const App = () => {
+  const dispatch = useDispatch()
+  const userLogin = useSelector((state) => state.userLogin)
+  const { userInfo } = userLogin
+
+  const userDetails = useSelector((state) => state.userDetails)
+  const { user } = userDetails
+
+  useEffect(() => {
+    dispatch(getUserDetails(userInfo._id))
+  }, [dispatch, userInfo])
+
   return (
     <ThemeProvider theme={THEME}>
       <Router>
@@ -48,6 +61,7 @@ const App = () => {
           />
 
           <div className='ml-2 mr-2 mt-2'>
+            <Route path='/profile' component={ProfileScreen} exact />
             <Route
               path='/admin/categorieslist'
               component={CategoriesListScreen}
@@ -91,7 +105,7 @@ const App = () => {
           </div>
           <Container>
             <Route path='/product/:id' component={ProductScreen} exact />
-            <Route path='/profile' component={ProfileScreen} exact />
+
             <Route path='/login' component={LoginScreen} exact />
             <Route path='/register' component={RegisterScreen} exact />
             <Route path='/shipping' component={ShippingScreen} exact />

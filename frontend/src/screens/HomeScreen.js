@@ -8,8 +8,9 @@ import Paginate from '../components/Paginate'
 import Product from '../components/Product'
 import ProductCarousel from '../components/ProductCarousel'
 import Meta from '../components/Meta'
+import { getUserDetails } from '../actions/userActions'
 
-function HomeScreen({ match }) {
+function HomeScreen({ match, history }) {
   const keyword = match.params.keyword
   const pageNumber = match.params.pageNumber || 1
 
@@ -18,9 +19,16 @@ function HomeScreen({ match }) {
   const productList = useSelector((state) => state.productList)
   const { loading, error, products, pages, page } = productList
 
+  const userLogin = useSelector((state) => state.userLogin)
+  const { userInfo } = userLogin
+
+  const userDetails = useSelector((state) => state.userDetails)
+  const { user } = userDetails
+
   useEffect(() => {
+    dispatch(getUserDetails(userInfo._id))
     dispatch(listProducts(keyword, pageNumber))
-  }, [dispatch, keyword, pageNumber])
+  }, [dispatch, keyword, pageNumber, userInfo])
 
   return (
     <>

@@ -24,6 +24,8 @@ import {
   productCreateReducer,
   productDeleteReducer,
   productDetailsReducer,
+  productFilterPriceReducer,
+  productFilterReducer,
   productListReducer,
   productOfCategoryReducer,
   productReviewCreateReducer,
@@ -49,6 +51,8 @@ const reducer = combineReducers({
   productReviewCreate: productReviewCreateReducer,
   productTopRated: productTopRatedReducer,
   productOfCategory: productOfCategoryReducer,
+  productFilter: productFilterReducer,
+  productFilterPrice: productFilterPriceReducer,
 
   cart: cartReducer,
 

@@ -158,10 +158,12 @@ export const updateUserProfile = (user) => async (dispatch, getState) => {
 
     const { data } = await axios.put('/api/users/profile', user, config)
 
-    console.log('hihi', data)
+    // console.log('hihi', data)
 
     dispatch({
       type: USER_UPDATE_PROFILE_SUCCESS,
+      type: USER_LOGOUT,
+      type: USER_DETAILS_RESET,
       payload: data,
     })
   } catch (error) {

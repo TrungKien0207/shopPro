@@ -12,7 +12,7 @@ import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline'
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline'
 import {
   KeyboardDatePicker,
-  MuiPickersUtilsProvider
+  MuiPickersUtilsProvider,
 } from '@material-ui/pickers'
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
@@ -60,7 +60,7 @@ function ProfileScreen({ location, history }) {
   const userDetails = useSelector((state) => state.userDetails)
   const { loading, error, user } = userDetails
 
-  console.log('user', user)
+  // console.log('user', user)
 
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
@@ -82,7 +82,7 @@ function ProfileScreen({ location, history }) {
   const { userInfo } = userLogin
 
   const userUpdateProfile = useSelector((state) => state.userUpdateProfile)
-  const { success } = userUpdateProfile
+  const { loading: loadingUpdate, success } = userUpdateProfile
 
   const submitHandler = (e) => {
     e.preventDefault()
@@ -202,10 +202,11 @@ function ProfileScreen({ location, history }) {
       {message && <Announcement variant='danger'>{message}</Announcement>}
       {error && <Announcement variant='danger'>{error}</Announcement>}
       {/* {loading && <Loader />} */}
+
       <div className=' border-0'>
         <Row className='justify-content-center m-0'>
           <Col
-            md={5}
+            md={4}
             className='pt-5 shadow '
             style={{
               backgroundColor: '#977bd5',
@@ -222,17 +223,31 @@ function ProfileScreen({ location, history }) {
                 height: '25.6rem',
               }}
             >
-              <div className='text-center mb-3'>
+              <div className='text-center mb-3 avatar_container'>
                 {user.avatar ? (
-                  <Image
-                    style={{
-                      width: '25rem',
-                      height: '25rem',
-                    }}
-                    src={avatar}
-                    className='rounded-circle'
-                    fluid
-                  />
+                  <>
+                    <Image
+                      style={{
+                        width: '25rem',
+                        height: '25rem',
+                      }}
+                      src={avatar}
+                      className='rounded-circle'
+                      fluid
+                    />
+                    <div class='avatar_upload'>
+                      <div class='avatar_edit'>
+                        <Button variant='contained' component='label'>
+                          {/* <Form.Group>
+                            <Form.File onChange={uploadFileHandler} />
+                          </Form.Group> */}
+                          K
+                        </Button>
+
+                        {uploading && <Loader />}
+                      </div>
+                    </div>
+                  </>
                 ) : (
                   <Avatar className={classes.orange}>
                     {userInfo.name.substring(0, 1)}
@@ -253,15 +268,15 @@ function ProfileScreen({ location, history }) {
                     className='rounded-pill shadow '
                     style={{ fontSize: '1rem', letterSpacing: '0.25rem' }}
                   >
-                    MY ORDERS
+                    ĐƠN HÀNG CỦA TÔI
                   </Button>
                 </Link>
               </div>
             </div>
           </Col>
           <Col
-            md={6}
-            className='pt-4 pb-4 mr-1 bg-light shadow border-0'
+            md={8}
+            className='pt-4 pb-4  bg-light shadow border-0'
             style={{
               backgroundColor:
                 'radial-gradient(circle, rgba(238,174,202,1) 0%, rgba(148,187,233,1) 100%);',
@@ -269,7 +284,7 @@ function ProfileScreen({ location, history }) {
               borderBottomRightRadius: '1rem',
             }}
           >
-            <h2 className='text-center'>User Profile</h2>
+            <h2 className='text-center'>Thông tin cá nhân</h2>
             <Form onSubmit={submitHandler} className='pl-4 pr-4 pt-3'>
               <Row>
                 <Col md={6}>
@@ -348,7 +363,7 @@ function ProfileScreen({ location, history }) {
               </Form.Group>
               <Form.Group>
                 <Row>
-                  <Col md={6}>
+                  <Col md={4}>
                     <Form.Group controlId='address'>
                       <Form.Label as='p' className='mb-1'>
                         Thành Phố / Tỉnh
@@ -361,7 +376,7 @@ function ProfileScreen({ location, history }) {
                         onChange={(e) => setThanhPho(e.target.value)}
                         className='border border-gray rounded-pill'
                       >
-                        <option></option>
+                        <option>Vui lòng chọn thành phố/tỉnh...</option>
                         {data.map((tp) => (
                           <option
                             style={{ color: 'black' }}
@@ -374,7 +389,7 @@ function ProfileScreen({ location, history }) {
                       </Form.Control>
                     </Form.Group>
                   </Col>
-                  <Col md={6}>
+                  <Col md={4}>
                     <Form.Group controlId='city'>
                       <Form.Label as='p' className='mb-1'>
                         Quận / Huyện
@@ -387,7 +402,7 @@ function ProfileScreen({ location, history }) {
                         onChange={(e) => setHuyen(e.target.value)}
                         className='border border-gray rounded-pill'
                       >
-                        <option></option>
+                        <option>Vui lòng chọn quận/huyện...</option>
                         {data.map(
                           (a) =>
                             a.Name === thanhPho &&
@@ -404,41 +419,41 @@ function ProfileScreen({ location, history }) {
                       </Form.Control>
                     </Form.Group>
                   </Col>
+                  <Col md={4}>
+                    <Form.Group controlId='postalCode'>
+                      <Form.Label as='p' className='mb-1'>
+                        Phường / Xã
+                      </Form.Label>
+                      <Form.Control
+                        type='text'
+                        as='select'
+                        placeholder='Enter postalCode'
+                        value={xa}
+                        onChange={(e) => setXa(e.target.value)}
+                        className='border border-gray rounded-pill'
+                      >
+                        <option>Vui lòng chọn thành xã/phường...</option>
+                        {data.map(
+                          (a) =>
+                            a.Name === thanhPho &&
+                            a.Districts.map(
+                              (b) =>
+                                b.Name === huyen &&
+                                b.Wards.map((c) => (
+                                  <option style={{ color: 'black' }}>
+                                    {c.Name}
+                                  </option>
+                                ))
+                            )
+                        )}
+                      </Form.Control>
+                    </Form.Group>
+                  </Col>
                 </Row>
               </Form.Group>
 
               <Row>
-                <Col md={6}>
-                  <Form.Group controlId='postalCode'>
-                    <Form.Label as='p' className='mb-1'>
-                      Phường / Xã
-                    </Form.Label>
-                    <Form.Control
-                      type='text'
-                      as='select'
-                      placeholder='Enter postalCode'
-                      value={xa}
-                      onChange={(e) => setXa(e.target.value)}
-                      className='border border-gray rounded-pill'
-                    >
-                      <option></option>
-                      {data.map(
-                        (a) =>
-                          a.Name === thanhPho &&
-                          a.Districts.map(
-                            (b) =>
-                              b.Name === huyen &&
-                              b.Wards.map((c) => (
-                                <option style={{ color: 'black' }}>
-                                  {c.Name}
-                                </option>
-                              ))
-                          )
-                      )}
-                    </Form.Control>
-                  </Form.Group>
-                </Col>
-                <Col md={6}>
+                <Col md={12}>
                   <Form.Group controlId='country'>
                     <Form.Label as='p' className='mb-1'>
                       Địa chỉ chi tiết
@@ -552,18 +567,22 @@ function ProfileScreen({ location, history }) {
                   </Form.Group>
                 </Col>
               </Row>
-              <div>
+              <div className='d-flex justify-content-center'>
                 <Button
                   type='submit'
-                  variant='outline-success'
-                  className='btn-block shadow rounded-pill'
-                  style={{ fontSize: '1rem', letterSpacing: '0.25rem' }}
+                  variant='outline-light'
+                  className='rounded-pill btn_color_created'
+                  style={{
+                    fontSize: '1rem',
+                    letterSpacing: '0.25rem',
+                    width: '10rem',
+                  }}
                 >
                   Lưu
                 </Button>
               </div>
               <ToastContainer />
-            </Form>{' '}
+            </Form>
           </Col>
         </Row>
       </div>
