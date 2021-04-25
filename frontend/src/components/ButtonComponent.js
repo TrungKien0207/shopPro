@@ -1,8 +1,10 @@
 import Button from '@material-ui/core/Button'
-import { makeStyles } from '@material-ui/core/styles'
+import {
+  createMuiTheme,
+  makeStyles,
+  ThemeProvider,
+} from '@material-ui/core/styles'
 import React from 'react'
-import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles'
-import lime from '@material-ui/core/colors/lime'
 
 const theme = createMuiTheme({
   success: {

@@ -1,14 +1,13 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { Col, Row } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { listProducts } from '../actions/productActions'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
+import Meta from '../components/Meta'
 import Paginate from '../components/Paginate'
 import Product from '../components/Product'
 import ProductCarousel from '../components/ProductCarousel'
-import Meta from '../components/Meta'
-import { getUserDetails } from '../actions/userActions'
 
 function HomeScreen({ match, history }) {
   const keyword = match.params.keyword
@@ -26,7 +25,7 @@ function HomeScreen({ match, history }) {
   const { user } = userDetails
 
   useEffect(() => {
-    dispatch(getUserDetails(userInfo._id))
+    // dispatch(getUserDetails(userInfo._id))
     dispatch(listProducts(keyword, pageNumber))
   }, [dispatch, keyword, pageNumber, userInfo])
 

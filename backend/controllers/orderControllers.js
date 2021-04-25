@@ -150,7 +150,7 @@ const updateStatus = asyncHandler(async (req, res) => {
     await product.save()
   }
 
-  console.log('order', order)
+  // console.log('order', order)
 
   try {
     let updateOrderStatus = await Order.findByIdAndUpdate(

@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom'
 import { login, register } from '../actions/userActions'
 import FormContainer from '../components/FormContainer'
 import Loader from '../components/Loader'
+import ProgressLine from '../components/ProgressLine'
 import Message from '../components/Message'
 import configAuth from '../configAuth'
 
@@ -79,113 +80,126 @@ function LoginScreen({ location, history }) {
   }, [history, userInfo, redirect])
 
   return (
-    <FormContainer>
-      {error && <Message variant='danger'>{error}</Message>}
-      {loading && <Loader />}
-      <Form
-        onSubmit={submitHandler}
-        className='bg-light rounded shadow p-5 mt-4 card_color'
-      >
-        <h2 className='text-center'>Sign in</h2>
-        <Form.Group controlId='email' className='pt-3'>
-          <Form.Label as='p' className='mb-1'>
-            Email address
-          </Form.Label>
-          <Form.Control
-            className='border border-grey rounded-pill'
-            type='email'
-            placeholder='Enter email'
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          ></Form.Control>
-        </Form.Group>
+    <>
+      <Row className='shadow p-5 card_color ml-4 mr-4'>
+        <Col md={7}>
+          <div className='d-flex justify-content-center'>
+            <Image
+              style={{ zIndex: '2' }}
+              src='/background/Wavy_Gen-01_Single-07.jpg'
+              fluid
+            />
+          </div>
+        </Col>
+        <Col md={5}>
+          <div className='pt-5 mt-5'>
+            {error && <Message variant='danger'>{error}</Message>}
+            {loading && <ProgressLine />}
+            <Form onSubmit={submitHandler}>
+              <h2 className='text-center'>Đăng nhập</h2>
+              <Form.Group controlId='email' className='pt-3'>
+                <Form.Label as='p' className='mb-1'>
+                  Địa chỉ email
+                </Form.Label>
+                <Form.Control
+                  className='border border-grey rounded-pill'
+                  type='email'
+                  placeholder='Nhập địa chỉ email'
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                ></Form.Control>
+              </Form.Group>
 
-        <Form.Group controlId='password'>
-          <Form.Label as='p' className='mb-1'>
-            Password
-          </Form.Label>
-          <Form.Control
-            className='border border-grey rounded-pill'
-            type='password'
-            placeholder='Enter password'
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          ></Form.Control>
-        </Form.Group>
+              <Form.Group controlId='password'>
+                <Form.Label as='p' className='mb-1'>
+                  Mật khẩu
+                </Form.Label>
+                <Form.Control
+                  className='border border-grey rounded-pill'
+                  type='password'
+                  placeholder='Nhập mật khẩu'
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                ></Form.Control>
+              </Form.Group>
 
-        <div className='mt-2'>
-          <Button
-            type='submit'
-            variant='outline-success'
-            className='btn-block shadow rounded-pill mb-3'
-            style={{ fontSize: '0.875rem', letterSpacing: '0.25rem' }}
-            size='sm'
-          >
-            LOGIN
-          </Button>
-          {isLogin === false ? (
-            <Button
-              variant='outline-light'
-              className='btn-block shadow rounded-pill btn_gg'
-              style={{
-                fontSize: '0.875rem',
-                letterSpacing: '0.25rem',
-                border: '1px solid #ddd',
-                color: '#1a1a1a',
-              }}
-              onClick={onSubmit}
-              size='sm'
-            >
-              <Image
-                src='https://img.icons8.com/fluent/20/000000/google-logo.png'
-                className='pr-1'
-              />
-              Login with Google
-            </Button>
-          ) : (
-            <Button
-              variant='outline-light'
-              className='btn-block shadow rounded-pill btn_gg'
-              style={{
-                fontSize: '0.875rem',
-                letterSpacing: '0.25rem',
-                border: '1px solid #ddd',
-                color: '#1a1a1a',
-              }}
-              onClick={onSubmit}
-              size='sm'
-            >
-              <Image
-                src='https://img.icons8.com/fluent/20/000000/google-logo.png'
-                className='pr-1'
-              />
-              Login with Google
-            </Button>
-          )}
-        </div>
+              <div className='mt-2'>
+                <Button
+                  type='submit'
+                  variant='outline-light'
+                  className='btn-block  rounded-pill mb-3 btn_color_created'
+                  style={{ fontSize: '0.875rem', letterSpacing: '0.25rem' }}
+                >
+                  Đăng nhập
+                </Button>
+                {isLogin === false ? (
+                  <Button
+                    variant='outline-light'
+                    className='btn-block shadow rounded-pill btn_gg'
+                    style={{
+                      fontSize: '0.8rem',
+                      letterSpacing: '0.05rem',
+                      border: '1px solid #ddd',
+                      color: '#1a1a1a',
+                    }}
+                    onClick={onSubmit}
+                  >
+                    <Image
+                      src='https://img.icons8.com/fluent/20/000000/google-logo.png'
+                      className='pr-1'
+                    />
+                    Đăng nhập bằng tài khoản Google
+                  </Button>
+                ) : (
+                  <Button
+                    variant='outline-light'
+                    className='btn-block shadow rounded-pill btn_gg'
+                    style={{
+                      fontSize: '0.8rem',
+                      border: '1px solid #ddd',
+                      letterSpacing: '0.05rem',
+                      color: '#1a1a1a',
+                    }}
+                    onClick={onSubmit}
+                  >
+                    <Image
+                      src='https://img.icons8.com/fluent/20/000000/google-logo.png'
+                      className='pr-1'
+                    />
+                    Đăng nhập bằng tài khoản Google
+                  </Button>
+                )}
+              </div>
 
-        <Row className='py-3'>
-          <Col
-            className='d-flex align-items-center justify-content-center'
-            style={{
-              fontSize: '1rem',
-              letterSpacing: '0.15rem',
-            }}
-          >
-            <div>
-              New Customer?{' '}
-              <Link
-                className='text-decoration-none text-info pl-1'
-                to={redirect ? `/register?redirect=${redirect}` : '/register'}
-                style={{ fontWeight: '700' }}
-              >
-                Register
-              </Link>
-            </div>
-          </Col>
-        </Row>
-      </Form>
-    </FormContainer>
+              <Row className='py-3'>
+                <Col
+                  className='d-flex align-items-center justify-content-center'
+                  style={{
+                    fontSize: '0.8rem',
+                    letterSpacing: '0.05rem',
+                  }}
+                >
+                  <div>
+                    Bạn là thành viên mới?{' '}
+                    <Link
+                      className='text-decoration-none text-info pl-1'
+                      to={
+                        redirect
+                          ? `/register?redirect=${redirect}`
+                          : '/register'
+                      }
+                      style={{ fontWeight: '700' }}
+                    >
+                      Đăng kí
+                    </Link>
+                  </div>
+                </Col>
+              </Row>
+            </Form>
+          </div>
+        </Col>
+      </Row>
+    </>
   )
 }
 

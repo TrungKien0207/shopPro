@@ -81,6 +81,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
       sex: user.sex,
       birthDay: user.birthDay,
       sex: user.sex,
+      numberPhone: user.numberPhone,
       address: user.address,
       isAdmin: user.isAdmin,
     })
@@ -102,8 +103,12 @@ const updateUserProfile = asyncHandler(async (req, res) => {
     user.avatar = req.body.avatar || user.avatar
     user.birthDay = req.body.birthDay || user.birthDay
     user.sex = req.body.sex || user.sex
+    user.numberPhone = req.body.numberPhone || user.numberPhone
     user.birthDay = req.body.selectedDate || user.birthDay
-    user.address = req.body.address || user.address
+    user.address.diaChi = req.body.diaChi || user.address.diaChi
+    user.address.xa = req.body.xa || user.address.xa
+    user.address.huyen = req.body.huyen || user.address.huyen
+    user.address.thanhPho = req.body.thanhPho || user.address.thanhPho
     if (req.body.password) {
       user.password = req.body.password
     }
@@ -119,7 +124,12 @@ const updateUserProfile = asyncHandler(async (req, res) => {
       avatar: updateUser.avatar,
       birthDay: updateUser.birthDay,
       sex: updateUser.sex,
-      address: updateUser.address,
+      numberPhone: updateUser.numberPhone,
+      address:
+        updateUser.address.diaChi +
+        updateUser.address.xa +
+        updateUser.address.huyen +
+        updateUser.address.thanhPho,
       // '' +
       // updateUser.xa +
       // '' +

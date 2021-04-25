@@ -28,6 +28,7 @@ import ProductCreateScreen from './screens/ProductCreateScreen'
 import ProductOfCategoryScreen from './screens/ProductOfCategoryScreen'
 import { useDispatch, useSelector } from 'react-redux'
 import { getUserDetails } from './actions/userActions'
+import { BackTop } from 'antd'
 
 const THEME = createMuiTheme({
   typography: {
@@ -44,99 +45,107 @@ const App = () => {
   const { user } = userDetails
 
   useEffect(() => {
-    dispatch(getUserDetails(userInfo._id))
+    if (userInfo) {
+      dispatch(getUserDetails(userInfo._id))
+    }
   }, [dispatch, userInfo])
 
   return (
-    <ThemeProvider theme={THEME}>
-      <Router>
-        <Header />
-        <main className='mb-5'>
-          <Route path='/' component={HomeScreen} exact />
-
-          <Route
-            path='/admin/productlist'
-            component={ProductListScreen}
-            exact
-          />
-
-          <div className='ml-2 mr-2 mt-2'>
-            <Route path='/profile' component={ProfileScreen} exact />
-            <Route
-              path='/admin/categorieslist'
-              component={CategoriesListScreen}
-              exact
-            />
-
-            <Route path='/admin/orderlist' component={OrderListScreen} exact />
+    <>
+      <BackTop />
+      <ThemeProvider theme={THEME}>
+        <Router>
+          <Header />
+          <main className='mb-4 mt-3'>
+            <Route path='/' component={HomeScreen} exact />
 
             <Route
-              path='/admin/order/:id/edit'
-              component={OrderEditScreen}
-              exact
-            />
-
-            <Route
-              path='/admin/product/:id/edit'
-              component={ProductEditScreen}
-              exact
-            />
-
-            <Route
-              path='/admin/user/:id/edit'
-              component={UserEditScreen}
-              exact
-            />
-
-            <Route
-              path='/product/:id/category'
-              component={ProductOfCategoryScreen}
-              exact
-            />
-
-            <Route
-              path='/admin/product/create'
-              component={ProductCreateScreen}
-              exact
-            />
-
-            <Route path='/order/:id' component={OrderScreen} exact />
-            <Route path='/myorders' component={MyOrdersScreen} exact />
-          </div>
-          <Container>
-            <Route path='/product/:id' component={ProductScreen} exact />
-
-            <Route path='/login' component={LoginScreen} exact />
-            <Route path='/register' component={RegisterScreen} exact />
-            <Route path='/shipping' component={ShippingScreen} exact />
-            <Route
-              path='/admin/category/:id/edit'
-              component={CategoryEditScreen}
-              exact
-            />
-            <Route path='/payment' component={PaymentScreen} exact />
-            <Route path='/placeorder' component={PlaceOrderScreen} exact />
-            <Route path='/cart/:id?' component={CartScreen} exact />
-            <Route path='/admin/userlist' component={UserListScreen} exact />
-
-            <Route
-              path='/admin/productlist/:pageNumber'
+              path='/admin/productlist'
               component={ProductListScreen}
               exact
             />
 
-            <Route path='/search/:keyword' component={HomeScreen} exact />
-            <Route path='/page/:pageNumber' component={HomeScreen} exact />
-            <Route
-              path='/search/:keyword/page/:pageNumber'
-              component={HomeScreen}
-              exact
-            />
-          </Container>
-        </main>
-        <Footer />
-      </Router>
-    </ThemeProvider>
+            <div className='ml-4 mr-4 mt-2'>
+              <Route path='/profile' component={ProfileScreen} exact />
+              <Route
+                path='/admin/categorieslist'
+                component={CategoriesListScreen}
+                exact
+              />
+
+              <Route
+                path='/admin/orderlist'
+                component={OrderListScreen}
+                exact
+              />
+
+              <Route
+                path='/admin/order/:id/edit'
+                component={OrderEditScreen}
+                exact
+              />
+
+              <Route
+                path='/admin/product/:id/edit'
+                component={ProductEditScreen}
+                exact
+              />
+
+              <Route
+                path='/admin/user/:id/edit'
+                component={UserEditScreen}
+                exact
+              />
+
+              <Route
+                path='/product/:id/category'
+                component={ProductOfCategoryScreen}
+                exact
+              />
+
+              <Route
+                path='/admin/product/create'
+                component={ProductCreateScreen}
+                exact
+              />
+
+              <Route path='/product/:id' component={ProductScreen} exact />
+              <Route path='/order/:id' component={OrderScreen} exact />
+              <Route path='/myorders' component={MyOrdersScreen} exact />
+              <Route path='/register' component={RegisterScreen} exact />
+              <Route path='/login' component={LoginScreen} exact />
+            </div>
+            <Container>
+              <Route path='/shipping' component={ShippingScreen} exact />
+              <Route
+                path='/admin/category/:id/edit'
+                component={CategoryEditScreen}
+                exact
+              />
+              <Route path='/payment' component={PaymentScreen} exact />
+              <Route path='/placeorder' component={PlaceOrderScreen} exact />
+              <Route path='/cart/:id?' component={CartScreen} exact />
+              <Route path='/admin/userlist' component={UserListScreen} exact />
+
+              <Route
+                path='/admin/productlist/:pageNumber'
+                component={ProductListScreen}
+                exact
+              />
+
+              <Route path='/search/:keyword' component={HomeScreen} exact />
+              <Route path='/page/:pageNumber' component={HomeScreen} exact />
+              <Route
+                path='/search/:keyword/page/:pageNumber'
+                component={HomeScreen}
+                exact
+              />
+            </Container>
+          </main>
+          <Footer />
+        </Router>
+      </ThemeProvider>
+    </>
   )
 }
 

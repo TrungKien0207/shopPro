@@ -152,10 +152,27 @@
 
 .avatar_upload {
   visibility: hidden;
-  transition: 0.3s;
+  transition: 0.05s;
+  margin-top: -25%;
+}
+
+.avatar_icon {
+  z-index: 2;
+  margin-bottom: -15%;
+}
+
+.avatar_file {
+  z-index: 5;
 }
 
 .avatar_container:hover .avatar_upload {
   visibility: visible;
-  
+}
+
+.avatar_container:hover .avatar_icon {
+  opacity: 0.95;
+}
+
+.avatar_container:hover .avatar_img {
+  opacity: 0.7 !important;
 }

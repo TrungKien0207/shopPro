@@ -74,7 +74,7 @@ function ProfileScreen({ location, history }) {
   const [huyen, setHuyen] = useState('')
   const [xa, setXa] = useState('')
   const [diaChi, setDiachi] = useState('')
-  const [address, setAddress] = useState({ diaChi, xa, huyen, thanhPho })
+  const [numberPhone, setNumberPhone] = useState('')
 
   const dispatch = useDispatch()
 
@@ -84,9 +84,29 @@ function ProfileScreen({ location, history }) {
   const userUpdateProfile = useSelector((state) => state.userUpdateProfile)
   const { loading: loadingUpdate, success } = userUpdateProfile
 
+  let formatPhoneNumber = (str) => {
+    //Filter only numbers from the input
+    let cleaned = ('' + str).replace(/\D/g, '')
+
+    //Check if the input is of correct length
+    let match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/)
+
+    if (match) {
+      return '(' + match[1] + ') ' + match[2] + ' ' + match[3]
+    }
+
+    return null
+  }
+
+  // console.log('length', numberPhone.length)
+
+  // console.log(
+  //   'length',
+  //   JSON.stringify(formatPhoneNumber(formatPhoneNumber)).length
+  // )
+
   const submitHandler = (e) => {
     e.preventDefault()
-    setAddress({ diaChi, xa, huyen, thanhPho })
     error &&
       toast.error(
         <div>
@@ -120,35 +140,56 @@ function ProfileScreen({ location, history }) {
         }
       )
     } else {
-      dispatch(
-        updateUserProfile({
-          id: user._id,
-          email,
-          name,
-          avatar,
-          password,
-          sex,
-          selectedDate,
-          address,
-        })
-      )
-
-      toast.success(
-        <div>
-          <CheckCircleOutlineIcon className='pr-1' fontSize='large' />
-          Profile Updated
-        </div>,
-        {
-          className: 'Toastify__toast--success',
-          position: 'top-right',
-          autoClose: 2500,
-          hideProgressBar: true,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        }
-      )
+      if (numberPhone.length === 14 || numberPhone.length === 10) {
+        dispatch(
+          updateUserProfile({
+            id: user._id,
+            email,
+            name,
+            avatar,
+            password,
+            sex,
+            numberPhone,
+            selectedDate,
+            diaChi,
+            xa,
+            huyen,
+            thanhPho,
+          })
+        )
+        toast.success(
+          <div>
+            <CheckCircleOutlineIcon className='pr-1' fontSize='large' />
+            Hồ sơ đã được cập nhật
+          </div>,
+          {
+            className: 'Toastify__toast--success',
+            position: 'top-right',
+            autoClose: 2500,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          }
+        )
+      } else {
+        toast.error(
+          <div>
+            <ErrorOutlineIcon className='pr-1' fontSize='large' /> Số điện thoại
+            phải có đúng 10 số
+          </div>,
+          {
+            position: 'top-right',
+            autoClose: 2500,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          }
+        )
+      }
     }
   }
 
@@ -186,13 +227,14 @@ function ProfileScreen({ location, history }) {
         setName(user.name)
         setEmail(user.email)
         setAvatar(user.avatar)
-        setAddress(user.address)
+        // setAddress(user.address)
         setThanhPho(user.address.thanhPho)
         setHuyen(user.address.huyen)
         setXa(user.address.xa)
         setDiachi(user.address.diaChi)
         setSelectedDate(user.birthDay)
         setSex(user.sex)
+        setNumberPhone(user.numberPhone)
       }
     }
   }, [dispatch, history, userInfo, user])
@@ -203,11 +245,11 @@ function ProfileScreen({ location, history }) {
       {error && <Announcement variant='danger'>{error}</Announcement>}
       {/* {loading && <Loader />} */}
 
-      <div className=' border-0'>
+      <div className='border-0'>
         <Row className='justify-content-center m-0'>
           <Col
             md={4}
-            className='pt-5 shadow '
+            className='pt-5 shadow'
             style={{
               backgroundColor: '#977bd5',
               borderTopLeftRadius: '1rem',
@@ -215,7 +257,7 @@ function ProfileScreen({ location, history }) {
             }}
           >
             <div
-              className='m-auto text-center'
+              className='text-center mt-5 m-auto'
               style={{
                 border: '5px solid #55595c',
                 borderRadius: '50%',
@@ -224,7 +266,7 @@ function ProfileScreen({ location, history }) {
               }}
             >
               <div className='text-center mb-3 avatar_container'>
-                {user.avatar ? (
+                {user.avatar && user.avatar ? (
                   <>
                     <Image
                       style={{
@@ -232,29 +274,35 @@ function ProfileScreen({ location, history }) {
                         height: '25rem',
                       }}
                       src={avatar}
-                      className='rounded-circle'
+                      className='rounded-circle avatar_img'
                       fluid
                     />
-                    <div class='avatar_upload'>
-                      <div class='avatar_edit'>
-                        <Button variant='contained' component='label'>
-                          {/* <Form.Group>
-                            <Form.File onChange={uploadFileHandler} />
-                          </Form.Group> */}
-                          K
-                        </Button>
-
+                    <div className='avatar_upload'>
+                      <div className='avatar_edit'>
                         {uploading && <Loader />}
+                        <Form.Group>
+                          <Image
+                            className='avatar_icon'
+                            src='https://img.icons8.com/fluent/40/000000/camera.png'
+                          />
+                          <Form.File
+                            id='image-file'
+                            custom
+                            onChange={uploadFileHandler}
+                            className='avatar_file'
+                          ></Form.File>
+                        </Form.Group>
                       </div>
                     </div>
                   </>
                 ) : (
                   <Avatar className={classes.orange}>
+                    {uploading && <Loader />}
                     {userInfo.name.substring(0, 1)}
                   </Avatar>
                 )}
               </div>
-              <div className='text-center'>
+              <div className='text-center mt-5'>
                 <Link
                   href='/myorders'
                   style={{
@@ -295,7 +343,7 @@ function ProfileScreen({ location, history }) {
                     <Form.Control
                       className='border border-grey rounded-pill'
                       type='name'
-                      placeholder='Enter name'
+                      placeholder='Nhập họ và tên'
                       value={name}
                       onChange={(e) => setName(e.target.value)}
                     ></Form.Control>
@@ -310,7 +358,7 @@ function ProfileScreen({ location, history }) {
                     <Form.Control
                       className='border border-grey rounded-pill'
                       type='email'
-                      placeholder='Enter email'
+                      placeholder='Nhập địa chỉ email'
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                     ></Form.Control>
@@ -327,7 +375,6 @@ function ProfileScreen({ location, history }) {
                           className='m-0'
                           margin='normal'
                           id='date-picker-dialog'
-                          label='Ngày sinh'
                           format='MM/dd/yyyy'
                           value={selectedDate}
                           onChange={handleDateChange}
@@ -339,13 +386,13 @@ function ProfileScreen({ location, history }) {
                     </MuiPickersUtilsProvider>
                   </Col>
                   <Col md={6}>
-                    <p>Giới tính: {sex}</p>
+                    <p>Giới tính:</p>
                     <RadioGroup
                       value={sex}
                       onChange={(e) => setSex(e.target.value)}
-                      size='sm'
+                      size='small'
                     >
-                      <div className='d-flex justify-content-around align-items-end'>
+                      <div className='d-flex justify-content-evenly align-items-center'>
                         <FormControlLabel
                           value='Nam'
                           control={<Radio />}
@@ -453,7 +500,7 @@ function ProfileScreen({ location, history }) {
               </Form.Group>
 
               <Row>
-                <Col md={12}>
+                <Col md={8}>
                   <Form.Group controlId='country'>
                     <Form.Label as='p' className='mb-1'>
                       Địa chỉ chi tiết
@@ -467,9 +514,23 @@ function ProfileScreen({ location, history }) {
                     ></Form.Control>
                   </Form.Group>
                 </Col>
+                <Col md={4}>
+                  <Form.Group controlId='country'>
+                    <Form.Label as='p' className='mb-1'>
+                      Số điện thoại
+                    </Form.Label>
+                    <Form.Control
+                      type='string'
+                      placeholder='Nhập số điện thoại'
+                      value={formatPhoneNumber(numberPhone)}
+                      onChange={(e) => setNumberPhone(e.target.value)}
+                      className='border border-gray rounded-pill'
+                    ></Form.Control>
+                  </Form.Group>
+                </Col>
               </Row>
 
-              <Form.Group controlId='image'>
+              {/* <Form.Group controlId='image'>
                 <Form.Label as='p' className='mb-1'>
                   Image
                 </Form.Label>
@@ -488,7 +549,7 @@ function ProfileScreen({ location, history }) {
                   onChange={uploadFileHandler}
                 ></Form.File>
                 {uploading && <Loader />}
-              </Form.Group>
+              </Form.Group> */}
               <div className='d-flex align-items-center'>
                 <Switch
                   value={state}
@@ -519,24 +580,27 @@ function ProfileScreen({ location, history }) {
                 <Col md={6}>
                   <Form.Group controlId='password' fluid>
                     <Form.Label as='p' className='mb-1'>
-                      Mật khẩu
+                      Mật khẩu mới
                     </Form.Label>
                     {state === true ? (
-                      <Form.Control
-                        className='border border-grey rounded-pill '
-                        type='password'
-                        placeholder='Nhập mật khẩu'
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                      ></Form.Control>
+                      <>
+                        <Form.Control
+                          className='border border-grey rounded-pill '
+                          type='password'
+                          placeholder='Nhập mật khẩu mới'
+                          value={password}
+                          onChange={(e) => setPassword(e.target.value)}
+                        ></Form.Control>
+                      </>
                     ) : (
                       <Form.Control
                         className='border border-grey rounded-pill '
                         type='password'
-                        placeholder='Nhập mật khẩu'
+                        placeholder='Nhập mật khẩu mới'
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         disabled
+                        // style={{ visibility: 'hidden' }}
                       ></Form.Control>
                     )}
                   </Form.Group>
@@ -547,21 +611,24 @@ function ProfileScreen({ location, history }) {
                       Nhập lại mật khẩu
                     </Form.Label>
                     {state === true ? (
-                      <Form.Control
-                        className='border border-grey rounded-pill'
-                        type='password'
-                        placeholder='Nhập mật khẩu'
-                        value={confirmPassword}
-                        onChange={(e) => setConfirmPassword(e.target.value)}
-                      ></Form.Control>
+                      <>
+                        <Form.Control
+                          className='border border-grey rounded-pill'
+                          type='password'
+                          placeholder='Nhập lại mật khẩu'
+                          value={confirmPassword}
+                          onChange={(e) => setConfirmPassword(e.target.value)}
+                        ></Form.Control>
+                      </>
                     ) : (
                       <Form.Control
                         className='border border-grey rounded-pill'
                         type='password'
-                        placeholder='Nhập mật khẩu'
+                        placeholder='Nhập lại mật khẩu'
                         value={confirmPassword}
                         onChange={(e) => setConfirmPassword(e.target.value)}
                         disabled
+                        // style={{ visibility: 'hidden' }}
                       ></Form.Control>
                     )}
                   </Form.Group>

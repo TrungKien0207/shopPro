@@ -103,13 +103,13 @@ const MyOrdersScreen = ({ history }) => {
   }, [dispatch, history, userInfo, user])
   return (
     <>
-      <h2>My Order</h2>
       {loadingOrders ? (
         <Loader />
       ) : errorOrders ? (
         <Announcement variant='danger'>{errorOrders}</Announcement>
       ) : (
         <>
+          <h5>Đơn hàng của tôi</h5>
           <Table
             striped
             bordered

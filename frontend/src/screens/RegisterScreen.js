@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Col, Form, Row } from 'react-bootstrap'
+import { Button, Col, Form, Image, Row } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { register } from '../actions/userActions'
@@ -7,8 +7,28 @@ import FormContainer from '../components/FormContainer'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
 import axios from 'axios'
+import { Upload, message } from 'antd'
+import { LoadingOutlined, PlusOutlined } from '@ant-design/icons'
+import Avatar from '@material-ui/core/Avatar'
+import { makeStyles } from '@material-ui/core/styles'
+import { deepOrange } from '@material-ui/core/colors'
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    display: 'flex',
+  },
+  orange: {
+    color: theme.palette.getContrastText(deepOrange[500]),
+    backgroundColor: deepOrange[500],
+    width: theme.spacing(2),
+    height: theme.spacing(2),
+    fontSize: '1rem',
+  },
+}))
 
 function RegisterScreen({ location, history }) {
+  const classes = useStyles()
+
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [avatar, setAvatar] = useState('')
@@ -62,119 +82,134 @@ function RegisterScreen({ location, history }) {
   }, [history, userInfo, redirect])
 
   return (
-    <FormContainer>
-      {message && <Message variant='danger'>{message}</Message>}
-      {error && <Message variant='danger'>{error}</Message>}
-      {loading && <Loader />}
-      <Form
-        onSubmit={submitHandler}
-        className='bg-light rounded shadow p-5 card_color'
-      >
-        <h2 className='text-center'>Sign up</h2>
-        <Form.Group controlId='name'>
-          <Form.Label as='p' className='mb-1'>
-            Name
-          </Form.Label>
-          <Form.Control
-            type='name'
-            placeholder='Enter name'
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            className='border border-grey rounded-pill'
-          ></Form.Control>
-        </Form.Group>
+    <>
+      <Row className='shadow p-5 card_color m-0'>
+        <Col md={7}>
+          <Image src='/background/3071357.jpg' fluid />
+        </Col>
+        <Col md={5}>
+          <div>
+            {message && <Message variant='danger'>{message}</Message>}
+            {error && <Message variant='danger'>{error}</Message>}
+            {loading && <Loader />}
+            <Form onSubmit={submitHandler}>
+              <h2 className='text-center'>Đăng kí</h2>
+              <Form.Group controlId='name'>
+                <Form.Label as='p' className='mb-1'>
+                  Họ và tên
+                </Form.Label>
+                <Form.Control
+                  type='name'
+                  placeholder='Nhập họ và tên'
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  className='border border-grey rounded-pill'
+                ></Form.Control>
+              </Form.Group>
 
-        <Form.Group controlId='email'>
-          <Form.Label as='p' className='mb-1'>
-            Email address
-          </Form.Label>
-          <Form.Control
-            type='email'
-            placeholder='Enter email'
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className='border border-grey rounded-pill'
-          ></Form.Control>
-        </Form.Group>
+              <Form.Group controlId='email'>
+                <Form.Label as='p' className='mb-1'>
+                  Địa chỉ email
+                </Form.Label>
+                <Form.Control
+                  type='email'
+                  placeholder='Nhập địa chỉ email'
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className='border border-grey rounded-pill'
+                ></Form.Control>
+              </Form.Group>
 
-        <Form.Group controlId='password'>
-          <Form.Label as='p' className='mb-1'>
-            Password
-          </Form.Label>
-          <Form.Control
-            type='password'
-            placeholder='Enter password'
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className='border border-grey rounded-pill'
-          ></Form.Control>
-        </Form.Group>
+              <Form.Group controlId='password'>
+                <Form.Label as='p' className='mb-1'>
+                  Mật khẩu
+                </Form.Label>
+                <Form.Control
+                  type='password'
+                  placeholder='Nhập mật khẩu'
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className='border border-grey rounded-pill'
+                ></Form.Control>
+              </Form.Group>
 
-        <Form.Group controlId='password'>
-          <Form.Label as='p' className='mb-1'>
-            Confirm Password
-          </Form.Label>
-          <Form.Control
-            type='password'
-            placeholder='Enter Confirm Password'
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            className='border border-grey rounded-pill'
-          ></Form.Control>
-        </Form.Group>
+              <Form.Group controlId='password'>
+                <Form.Label as='p' className='mb-1'>
+                  Nhập lại mật khẩu
+                </Form.Label>
+                <Form.Control
+                  type='password'
+                  placeholder=' Nhập lại mật khẩu'
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  className='border border-grey rounded-pill'
+                ></Form.Control>
+              </Form.Group>
 
-        <Form.Group controlId='image'>
-          <Form.Label as='p' className='mb-1'>
-            Avatar
-          </Form.Label>
-          <Form.Control
-            className='border border-grey'
-            type='text'
-            placeholder='Enter image url'
-            value={avatar}
-            onChange={(e) => setAvatar(e.target.value)}
-          ></Form.Control>
-          <Form.File
-            className='border border-grey'
-            id='image-file'
-            label='Choose File'
-            custom
-            onChange={uploadFileHandler}
-          ></Form.File>
-          {uploading && <Loader />}
-        </Form.Group>
+              <Form.Group controlId='image'>
+                <Form.Label as='p' className='mb-1'>
+                  Ảnh đại diện
+                </Form.Label>
+                <Row>
+                  <div className='d-flex align-items-center'>
+                    <Col md={6}>
+                      {avatar ? (
+                        <Image
+                          src={avatar}
+                          className='rounded-circle avatar_img'
+                          fluid
+                        />
+                      ) : (
+                        <Avatar className={classes.orange}>T</Avatar>
+                      )}
+                    </Col>
+                    <Col md={6}>
+                      <Form.File
+                        className='border border-grey'
+                        id='image-file'
+                        label='Choose File'
+                        custom
+                        onChange={uploadFileHandler}
+                      ></Form.File>
+                      {uploading && <Loader />}
+                    </Col>
+                  </div>
+                </Row>
+              </Form.Group>
 
-        <div>
-          <Button
-            type='submit'
-            variant='outline-success'
-            className='btn-block shadow rounded-pill'
-            style={{ fontSize: '0.875rem', letterSpacing: '0.25rem' }}
-            size='sm'
-          >
-            Register
-          </Button>
-        </div>
+              <div>
+                <Button
+                  type='submit'
+                  variant='outline-light'
+                  className='btn-block  rounded-pill btn_color_created'
+                  style={{ fontSize: '0.875rem', letterSpacing: '0.25rem' }}
+                >
+                  Đăng kí
+                </Button>
+              </div>
 
-        <Row className='py-3'>
-          <Col
-            className='d-flex align-items-center justify-content-center'
-            style={{ fontSize: '1rem', letterSpacing: '0.15rem' }}
-          >
-            <div>
-              Have an Account?
-              <Link
-                className='text-decoration-none text-info pl-1 '
-                to={redirect ? `/login?redirect=${redirect}` : '/login'}
-                style={{ fontWeight: '700' }}
-              >
-                Login
-              </Link>
-            </div>
-          </Col>
-        </Row>
-      </Form>
-    </FormContainer>
+              <Row className='py-3'>
+                <Col
+                  className='d-flex align-items-center justify-content-center'
+                  style={{ fontSize: '0.8rem', letterSpacing: '0.05rem' }}
+                >
+                  <div>
+                    Bạn đã có tài khoản?
+                    <Link
+                      className='text-decoration-none text-info pl-1 '
+                      to={redirect ? `/login?redirect=${redirect}` : '/login'}
+                      style={{ fontWeight: '700' }}
+                    >
+                      Đăng nhập
+                    </Link>
+                  </div>
+                </Col>
+              </Row>
+            </Form>
+          </div>
+        </Col>
+      </Row>
+    </>
   )
 }
 
