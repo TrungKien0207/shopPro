@@ -11,7 +11,7 @@ function Message({ variant, children }) {
       <ErrorOutlineIcon className='pr-1' fontSize='large' /> {children}
     </div>,
     {
-      position: 'top-center',
+      position: 'top-right',
       autoClose: 2500,
       hideProgressBar: true,
       closeOnClick: true,

@@ -13,7 +13,7 @@ function MessageSuccess({ variant, children }) {
     </div>,
     {
       className: 'Toastify__toast--success',
-      position: 'top-center',
+      position: 'top-right',
       autoClose: 2500,
       hideProgressBar: true,
       closeOnClick: true,

@@ -1,5 +1,5 @@
 .Toastify__toast-container {
-  width: 320px;
+  width: 22rem !important;
 }
 .Toastify__toast--default {
   background: #fff;
@@ -18,5 +18,8 @@
   background: #f1c40f;
 }
 .Toastify__toast--error {
-  background: rgb(220, 53, 69);
+  background-color: #f2dede !important;
+  color: #b94442;
+  border: 1px solid #b94442;
+  box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.25);
 }

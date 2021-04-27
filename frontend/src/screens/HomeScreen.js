@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import { Col, Row } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { listProducts } from '../actions/productActions'
+import Banner from '../components/Banner'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
 import Meta from '../components/Meta'
@@ -32,10 +33,12 @@ function HomeScreen({ match, history }) {
   return (
     <>
       <Meta />
-      {!keyword && (
+      {/* {!keyword && (
         <ProductCarousel className='m-0' style={{ width: '100vh' }} />
-      )}
-      <h3 className='m-5 mb-0'>Latest Product</h3>
+      )} */}
+      {!keyword && <Banner />}
+
+      <h3 className='ml-5 mt-4 mb-0'>Sản phẩm</h3>
       {loading ? (
         <Loader />
       ) : error ? (

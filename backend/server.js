@@ -10,12 +10,18 @@ import productRoutes from './routes/productRoutes.js'
 import categoryRoutes from './routes/categoryRoutes.js'
 import uploadRoutes from './routes/uploadRoutes.js'
 import userRoutes from './routes/userRoutes.js'
+import { Server } from 'socket.io'
+
+import { createServer } from 'http'
 
 dotenv.config()
 
 connectDB()
 
 const app = express()
+
+var server = createServer(app)
+const io = new Server(server)
 
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'))

@@ -180,13 +180,18 @@ function Header(props) {
       <Navbar
         expand='lg'
         collapseOnSelect
-        className='p-0 pl-5 pr-5 m-0'
-        style={{ backgroundColor: '#edfead' }}
+        className='p-0 pl-5 pr-5 m-0 shadow'
+        style={{ backgroundColor: '#edfead', height: '4rem' }}
       >
         <Container fluid>
-          <LinkContainer to='/' className=''>
-            <Navbar.Brand className='text-uppercase font-weight-bold flex-grow-1'>
-              <h2>ProShop</h2>
+          <LinkContainer to='/'>
+            <Navbar.Brand className='text-uppercase font-weight-bold flex-grow-1 '>
+              {/* <h2>ProShop</h2> */}
+              <Image
+                className='border-bottom border-danger'
+                src='/logo/logo_white.png'
+                style={{ width: '6rem', height: '5rem', zIndex: '0' }}
+              />
             </Navbar.Brand>
           </LinkContainer>
           <Navbar.Toggle aria-controls='basic-navbar-nav' />
@@ -219,8 +224,8 @@ function Header(props) {
                     {userInfo ? (
                       <Image
                         className='rounded-circle border border-grey'
-                        src={user.avatar}
-                        alt={userDetails.user?.avatar}
+                        src={userDetails.user.avatar}
+                        alt={userDetails.user && userDetails.user.avatar}
                         style={{ width: '2.5rem', height: '2.5rem' }}
                         fluid
                       />
@@ -269,7 +274,9 @@ function Header(props) {
                                     src='https://img.icons8.com/fluent/24/000000/user-male-circle.png'
                                     className='pr-1'
                                   />
-                                  <strong>PROFILE</strong>
+                                  <strong className='text-capitalize'>
+                                    Thông tin cá nhân
+                                  </strong>
                                 </Link>
                               </MenuItem>
 
@@ -287,7 +294,9 @@ function Header(props) {
                                     src='https://img.icons8.com/fluent/24/000000/receipt-dollar.png'
                                     className='pr-1'
                                   />
-                                  <strong>MY ORDERS</strong>
+                                  <strong className='text-capitalize'>
+                                    Đơn hàng của tôi
+                                  </strong>
                                 </Link>
                               </MenuItem>
 
@@ -312,7 +321,9 @@ function Header(props) {
                                     className='pr-1'
                                     src='https://img.icons8.com/fluent/24/000000/exit.png'
                                   />
-                                  <strong>LOG OUT</strong>
+                                  <strong className='text-capitalize'>
+                                    Đăng Xuất
+                                  </strong>
                                 </Link>
                               </MenuItem>
                             </MenuList>
@@ -371,7 +382,9 @@ function Header(props) {
                                     className='pr-1'
                                     src='https://img.icons8.com/fluent/24/000000/key.png'
                                   />
-                                  <strong>SIGN IN</strong>
+                                  <strong className='text-capitalize'>
+                                    Đăng Nhập
+                                  </strong>
                                 </Link>
                               </MenuItem>
                               <MenuItem
@@ -387,7 +400,9 @@ function Header(props) {
                                     className='pr-1'
                                     src='https://img.icons8.com/fluent/24/000000/new-contact.png'
                                   />
-                                  <strong>SIGN UP</strong>
+                                  <strong className='text-capitalize'>
+                                    Đăng Kí
+                                  </strong>
                                 </Link>
                               </MenuItem>
                             </MenuList>
@@ -407,7 +422,7 @@ function Header(props) {
                     }
                     id='nav-dropdown'
                     className='pt-1 navbar-right text-start'
-                    style={{ fontSize: '0.865625rem', zIndex: '2' }}
+                    style={{ fontSize: '1rem', zIndex: '2' }}
                     alignRight
                     variant='light'
                     pullRight
@@ -419,7 +434,15 @@ function Header(props) {
                             className='pr-1'
                             src='https://img.icons8.com/fluent/24/000000/user-menu-male.png'
                           />
-                          <strong>USER</strong>
+                          <strong
+                            className='text-capitalize'
+                            style={{
+                              fontSize: '0.8rem',
+                              letterSpacing: '0.05rem',
+                            }}
+                          >
+                            Thành viên
+                          </strong>
                         </NavDropdown.Item>
                       </LinkContainer>
                       <LinkContainer to='/admin/productlist'>
@@ -428,7 +451,15 @@ function Header(props) {
                             className='pr-1'
                             src='https://img.icons8.com/fluent/24/000000/box-settings-1.png'
                           />
-                          <strong>PRODUCTS</strong>
+                          <strong
+                            style={{
+                              fontSize: '0.8rem',
+                              letterSpacing: '0.05rem',
+                            }}
+                            className='text-capitalize'
+                          >
+                            Sản phẩm
+                          </strong>
                         </NavDropdown.Item>
                       </LinkContainer>
                       <LinkContainer to='/admin/orderlist'>
@@ -437,7 +468,15 @@ function Header(props) {
                             className='pr-1'
                             src='https://img.icons8.com/fluent/24/000000/purchase-order.png'
                           />
-                          <strong>ORDERS</strong>
+                          <strong
+                            style={{
+                              fontSize: '0.8rem',
+                              letterSpacing: '0.05rem',
+                            }}
+                            className='text-capitalize'
+                          >
+                            Đơn hàng
+                          </strong>
                         </NavDropdown.Item>
                       </LinkContainer>
                       <LinkContainer to='/admin/categorieslist'>
@@ -446,7 +485,15 @@ function Header(props) {
                             className='pr-1'
                             src='https://img.icons8.com/fluent/24/000000/category.png'
                           />
-                          <strong>CATEGORIES</strong>
+                          <strong
+                            style={{
+                              fontSize: '0.8rem',
+                              letterSpacing: '0.05rem',
+                            }}
+                            className='text-capitalize'
+                          >
+                            Danh mục
+                          </strong>
                         </NavDropdown.Item>
                       </LinkContainer>
                     </div>

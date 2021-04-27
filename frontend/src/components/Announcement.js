@@ -3,7 +3,7 @@ import { Alert } from 'react-bootstrap'
 
 const Announcement = ({ variant, children }) => {
   return (
-    <Alert className='rounded-pill' variant={variant}>
+    <Alert className='rounded' variant={variant}>
       {children}
     </Alert>
   )

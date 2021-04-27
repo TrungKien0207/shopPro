@@ -12,12 +12,16 @@ import React, { useEffect, useState } from 'react'
 import { Button, Col, Form, Image, ListGroup, Row } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
+import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline'
+import { toast, ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 import {
   createProductReview,
   listProductDetails,
 } from '../actions/productActions.js'
 import ActiveRating from '../components/ActiveRating'
 import Announcement from '../components/Announcement.js'
+import MessageSuccess from '../components/MessageSuccess.js'
 import ButtonComponent from '../components/ButtonComponent'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
@@ -93,9 +97,8 @@ function ProductScreen({ history, match }) {
 
   useEffect(() => {
     if (successProductReview) {
-      ;<Announcement variant='success'>Review Submited</Announcement>
       setRating(0)
-      setComment('')
+      setComment(' ')
       dispatch({ type: PRODUCT_CREATE_REVIEW_RESET })
     }
 
@@ -110,6 +113,22 @@ function ProductScreen({ history, match }) {
         comment,
       })
     )
+    toast.success(
+      <div>
+        <CheckCircleOutlineIcon className='pr-1' fontSize='large' />
+        Đã đánh giá thành công
+      </div>,
+      {
+        className: 'Toastify__toast--success',
+        position: 'top-right',
+        autoClose: 2500,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      }
+    )
   }
 
   const addToCartHandler = () => {
@@ -118,12 +137,12 @@ function ProductScreen({ history, match }) {
 
   return (
     <>
+      {successProductReview && <MessageSuccess variant='Success' />}
       <div className='ml-4 mr-4'>
         <Link className='btn btn-light my-3 rounded-pill' to='/'>
           <i className='fas fa-arrow-left pr-2'></i>
           Quay lại
         </Link>
-
         {loading ? (
           <Loader />
         ) : error ? (
@@ -146,7 +165,7 @@ function ProductScreen({ history, match }) {
                   <ListGroup variant='flush' className='pr-3'>
                     <ListGroup.Item className='border-0 pb-0'>
                       <strong>
-                        <h5>{product.name}</h5>
+                        <h5 className='border-0 pb-0'>{product.name}</h5>
                       </strong>
                     </ListGroup.Item>
 
@@ -158,7 +177,7 @@ function ProductScreen({ history, match }) {
                     </ListGroup.Item>
 
                     <ListGroup.Item className='text-justify'>
-                      Description: {product.description}
+                      <p>{product.description}</p>
                     </ListGroup.Item>
                   </ListGroup>
 
@@ -171,13 +190,19 @@ function ProductScreen({ history, match }) {
                       </ListGroup.Item>
 
                       <ListGroup.Item className='border-0 group-items'>
-                        Trạng thái:{' '}
                         {product.countInStock > 0 ? (
-                          'Còn hàng'
+                          <div className='d-flex justify-content-start align-items-center'>
+                            <p className='mb-0'>Trạng thái:</p>
+                            <p className='mb-0 fw-bold ml-2 text-success'>
+                              Còn hàng
+                            </p>
+                          </div>
                         ) : (
-                          <b className='danger'>
+                          <div className='d-flex justify-content-start align-items-center'>
+                            <p className='mb-0'>Trạng thái:</p>
                             <Image src='https://img.icons8.com/fluent/35/000000/close-sign.png' />
-                          </b>
+                            <p className='mb-0 fw-bold ml-2 danger'>Hết hàng</p>
+                          </div>
                         )}
                       </ListGroup.Item>
 
@@ -258,10 +283,14 @@ function ProductScreen({ history, match }) {
                 <Col className='mt-3 p-3 pl-5 pr-5 background-light rounded shadow card_color'>
                   <h5 className='text-uppercase'>Đánh giá sản phẩm</h5>
                   {product.reviews.length === 0 && (
-                    <Announcement variant='warning'>
-                      Không có đánh giá{' '}
-                      <Image src='https://img.icons8.com/fluent/24/000000/box-important.png' />
-                    </Announcement>
+                    <Row>
+                      <Col md={4}>
+                        <Announcement variant='warning'>
+                          Không có đánh giá{' '}
+                          <Image src='https://img.icons8.com/fluent/24/000000/box-important.png' />
+                        </Announcement>
+                      </Col>
+                    </Row>
                   )}
                   <div
                     className=' rounded text-center circle-rate pt-2 pb-1 ml-3 mb-2'
@@ -273,7 +302,10 @@ function ProductScreen({ history, match }) {
 
                   <ListGroup variant='flush'>
                     {loadingProductReview ? (
-                      <Skeleton avatar paragraph={{ rows: 1 }} />
+                      <>
+                        {/* <MessageSuccess variant='Success' /> */}
+                        <Skeleton avatar paragraph={{ rows: 1 }} />
+                      </>
                     ) : (
                       product.reviews.map((review) => (
                         <ListGroup.Item key={review._id}>
@@ -371,6 +403,7 @@ function ProductScreen({ history, match }) {
                               label='Bình luận'
                               multiline
                               rows={2}
+                              value={comment}
                               // defaultValue='Default Value'
                               // variant='outlined'
                               onChange={(e) => setComment(e.target.value)}
@@ -384,6 +417,7 @@ function ProductScreen({ history, match }) {
                             disabled={loadingProductReview}
                             endIcon={<SendIcon />}
                           ></ButtonComponent>
+                          <ToastContainer />
                         </Form>
                       ) : (
                         <Announcement

@@ -56,8 +56,10 @@ const App = () => {
       <ThemeProvider theme={THEME}>
         <Router>
           <Header />
-          <main className='mb-4 mt-3'>
+          <main className='mb-4'>
             <Route path='/' component={HomeScreen} exact />
+
+            <Route path='/search/:keyword' component={HomeScreen} exact />
 
             <Route
               path='/admin/productlist'
@@ -133,7 +135,6 @@ const App = () => {
                 exact
               />
 
-              <Route path='/search/:keyword' component={HomeScreen} exact />
               <Route path='/page/:pageNumber' component={HomeScreen} exact />
               <Route
                 path='/search/:keyword/page/:pageNumber'

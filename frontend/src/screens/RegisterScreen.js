@@ -20,9 +20,9 @@ const useStyles = makeStyles((theme) => ({
   orange: {
     color: theme.palette.getContrastText(deepOrange[500]),
     backgroundColor: deepOrange[500],
-    width: theme.spacing(2),
-    height: theme.spacing(2),
-    fontSize: '1rem',
+    width: theme.spacing(8),
+    height: theme.spacing(8),
+    fontSize: '3rem',
   },
 }))
 
@@ -153,21 +153,19 @@ function RegisterScreen({ location, history }) {
                 <Row>
                   <div className='d-flex align-items-center'>
                     <Col md={6}>
-                      {avatar ? (
+                      {avatar && (
                         <Image
                           src={avatar}
                           className='rounded-circle avatar_img'
                           fluid
                         />
-                      ) : (
-                        <Avatar className={classes.orange}>T</Avatar>
                       )}
                     </Col>
                     <Col md={6}>
                       <Form.File
                         className='border border-grey'
                         id='image-file'
-                        label='Choose File'
+                        label='Chọn ảnh'
                         custom
                         onChange={uploadFileHandler}
                       ></Form.File>
