@@ -21,6 +21,9 @@ import {
   ORDER_PAY_FAIL,
   ORDER_PAY_REQUEST,
   ORDER_PAY_SUCCESS,
+  ORDER_UPDATE_BY_MEMBER_FAIL,
+  ORDER_UPDATE_BY_MEMBER_REQUEST,
+  ORDER_UPDATE_BY_MEMBER_SUCCESS,
   ORDER_UPDATE_FAIL,
   ORDER_UPDATE_REQUEST,
   ORDER_UPDATE_SUCCESS,
@@ -149,6 +152,8 @@ export const deliverOrder = (order) => async (dispatch, getState) => {
         Authorization: `Bearer ${userInfo.token}`,
       },
     }
+
+    console.log('delivered', order)
 
     const { data } = await axios.put(
       `/api/orders/${order._id}/deliver`,
@@ -294,6 +299,41 @@ export const updateOrder = (order) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: ORDER_UPDATE_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    })
+  }
+}
+
+export const updateOrderByMember = (order) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: ORDER_UPDATE_BY_MEMBER_REQUEST,
+    })
+
+    const {
+      userLogin: { userInfo },
+    } = getState()
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    }
+
+    console.log('order', order)
+
+    const { data } = await axios.put(`/api/orders/${order._id}`, order, config)
+
+    dispatch({
+      type: ORDER_UPDATE_BY_MEMBER_SUCCESS,
+      payload: data,
+    })
+  } catch (error) {
+    dispatch({
+      type: ORDER_UPDATE_BY_MEMBER_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

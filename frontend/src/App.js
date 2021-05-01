@@ -1,8 +1,11 @@
 import { createMuiTheme } from '@material-ui/core/styles'
 import { ThemeProvider } from '@material-ui/styles'
+import { BackTop } from 'antd'
 import React, { useEffect } from 'react'
 import { Container } from 'react-bootstrap'
+import { useDispatch, useSelector } from 'react-redux'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
+import { getUserDetails } from './actions/userActions'
 import Footer from './components/Footer'
 import Header from './components/Header'
 import CartScreen from './screens/CartScreen.js'
@@ -16,19 +19,16 @@ import OrderListScreen from './screens/OrderListScreen'
 import OrderScreen from './screens/OrderScreen.js'
 import { PaymentScreen } from './screens/PaymentScreen'
 import PlaceOrderScreen from './screens/PlaceOrderScreen'
+import ProductCreateScreen from './screens/ProductCreateScreen'
 import ProductEditScreen from './screens/ProductEditScreen'
 import ProductListScreen from './screens/ProductListScreen'
+import ProductOfCategoryScreen from './screens/ProductOfCategoryScreen'
 import ProductScreen from './screens/ProductScreen.js'
 import ProfileScreen from './screens/ProfileScreen'
 import RegisterScreen from './screens/RegisterScreen.js'
 import { ShippingScreen } from './screens/ShippingScreen'
 import UserEditScreen from './screens/UserEditScreen'
 import UserListScreen from './screens/UserListScreen'
-import ProductCreateScreen from './screens/ProductCreateScreen'
-import ProductOfCategoryScreen from './screens/ProductOfCategoryScreen'
-import { useDispatch, useSelector } from 'react-redux'
-import { getUserDetails } from './actions/userActions'
-import { BackTop } from 'antd'
 
 const THEME = createMuiTheme({
   typography: {
@@ -58,7 +58,6 @@ const App = () => {
           <Header />
           <main className='mb-4'>
             <Route path='/' component={HomeScreen} exact />
-
             <Route path='/search/:keyword' component={HomeScreen} exact />
 
             <Route
@@ -67,13 +66,15 @@ const App = () => {
               exact
             />
 
-            <div className='ml-4 mr-4 mt-2'>
+            <div className='ml-5 mr-5 mt-3'>
               <Route path='/profile' component={ProfileScreen} exact />
               <Route
                 path='/admin/categorieslist'
                 component={CategoriesListScreen}
                 exact
               />
+
+              <Route path='/cart/:id?' component={CartScreen} exact />
 
               <Route
                 path='/admin/orderlist'
@@ -115,18 +116,18 @@ const App = () => {
               <Route path='/order/:id' component={OrderScreen} exact />
               <Route path='/myorders' component={MyOrdersScreen} exact />
               <Route path='/register' component={RegisterScreen} exact />
+              <Route path='/shipping' component={ShippingScreen} exact />
               <Route path='/login' component={LoginScreen} exact />
+              <Route path='/placeorder' component={PlaceOrderScreen} exact />
             </div>
             <Container>
-              <Route path='/shipping' component={ShippingScreen} exact />
               <Route
                 path='/admin/category/:id/edit'
                 component={CategoryEditScreen}
                 exact
               />
               <Route path='/payment' component={PaymentScreen} exact />
-              <Route path='/placeorder' component={PlaceOrderScreen} exact />
-              <Route path='/cart/:id?' component={CartScreen} exact />
+
               <Route path='/admin/userlist' component={UserListScreen} exact />
 
               <Route

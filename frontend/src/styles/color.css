@@ -176,3 +176,22 @@
 .avatar_container:hover .avatar_img {
   opacity: 0.7 !important;
 }
+
+.border-order {
+  /* z-index: 5 !important; */
+  /* height: 0.1875rem !important; */
+  width: 100%;
+  /* background-position-x: -1.875rem; */
+  /* background-size: 3.25rem 0.1rem; */
+  background-image: repeating-linear-gradient(
+    45deg,
+    #6fa6d6,
+    #6fa6d6 33px,
+    transparent 0,
+    transparent 41px,
+    #f18d9b 0,
+    #f18d9b 74px,
+    transparent 0,
+    transparent 82px
+  );
+}

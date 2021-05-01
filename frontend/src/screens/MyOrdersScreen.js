@@ -11,6 +11,11 @@ import { getUserDetails, updateUserProfile } from '../actions/userActions'
 import Announcement from '../components/Announcement'
 import Loader from '../components/Loader'
 import '../toast.css'
+import { format, utcToZonedTime } from 'date-fns-tz'
+
+function formatMoney(n, currency) {
+  return n.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + currency
+}
 
 const MyOrdersScreen = ({ history }) => {
   const [name, setName] = useState('')
@@ -33,72 +38,12 @@ const MyOrdersScreen = ({ history }) => {
   const orderListMy = useSelector((state) => state.orderListMy)
   const { loading: loadingOrders, error: errorOrders, orders } = orderListMy
 
-  const submitHandler = (e) => {
-    e.preventDefault()
-    error &&
-      toast.error(
-        <div>
-          <ErrorOutlineIcon className='pr-1' fontSize='large' /> {error}
-        </div>,
-        {
-          position: 'top-right',
-          autoClose: 2500,
-          hideProgressBar: true,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        }
-      )
-
-    if (password !== confirmPassword) {
-      toast.error(
-        <div>
-          <ErrorOutlineIcon className='pr-1' fontSize='large' /> Password is not
-          match
-        </div>,
-        {
-          position: 'top-right',
-          autoClose: 2500,
-          hideProgressBar: true,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        }
-      )
-    } else {
-      dispatch(updateUserProfile({ id: user._id, email, name, password }))
-      toast.success(
-        <div>
-          <CheckCircleOutlineIcon className='pr-1' fontSize='large' />
-          Profile Updated
-        </div>,
-        {
-          className: 'Toastify__toast--success',
-          position: 'top-right',
-          autoClose: 2500,
-          hideProgressBar: true,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        }
-      )
-    }
-  }
-
   useEffect(() => {
     if (!userInfo) {
       history.push()
     } else {
-      if (!user.name) {
-        dispatch(getUserDetails('profile'))
-        dispatch(listMyOrders())
-      } else {
-        setName(user.name)
-        setEmail(user.email)
-      }
+      // dispatch(getUserDetails('profile'))
+      dispatch(listMyOrders())
     }
   }, [dispatch, history, userInfo, user])
   return (
@@ -109,13 +54,13 @@ const MyOrdersScreen = ({ history }) => {
         <Announcement variant='danger'>{errorOrders}</Announcement>
       ) : (
         <>
-          <h5>Đơn hàng của tôi</h5>
+          <h3 className='text-center'>Đơn hàng của tôi</h3>
           <Table
             striped
             bordered
             hover
             responsive
-            className='table-sm align-items-center text-center rounded shadow bg-light '
+            className='table-sm align-items-center  text-center rounded shadow bg-light '
           >
             <thead>
               <tr>
@@ -162,19 +107,25 @@ const MyOrdersScreen = ({ history }) => {
                   <td>
                     <div>
                       <p>
-                        {' '}
-                        {order.createdAt.substring(11, 19)}
-                        {' - '}
-                        {order.createdAt.substring(0, 10)}
+                        {format(
+                          new utcToZonedTime(
+                            order.createdAt,
+                            'Asia/Ho_Chi_Minh'
+                          ),
+                          'HH:mm:ss - dd/MM/yyyy',
+                          { timeZone: 'Asia/Ho_Chi_Minh' }
+                        )}
                       </p>
                     </div>
                   </td>
-                  <td>{order.totalPrice}đ</td>
+                  <td>{formatMoney(order.totalPrice, 'đ')}</td>
                   <td>
                     {order.isPaid ? (
-                      order.paidAt.substring(11, 19) +
-                      ' : ' +
-                      order.paidAt.substring(0, 10)
+                      format(
+                        new utcToZonedTime(order.paidAt, 'Asia/Ho_Chi_Minh'),
+                        'HH:mm:ss - dd/MM/yyyy',
+                        { timeZone: 'Asia/Ho_Chi_Minh' }
+                      )
                     ) : (
                       <i className='fas fa-times' style={{ color: 'red' }} />
                     )}

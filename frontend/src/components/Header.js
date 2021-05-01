@@ -224,7 +224,7 @@ function Header(props) {
                     {userInfo ? (
                       <Image
                         className='rounded-circle border border-grey'
-                        src={userDetails.user.avatar}
+                        src={userDetails.user && userDetails.user.avatar}
                         alt={userDetails.user && userDetails.user.avatar}
                         style={{ width: '2.5rem', height: '2.5rem' }}
                         fluid
@@ -422,7 +422,7 @@ function Header(props) {
                     }
                     id='nav-dropdown'
                     className='pt-1 navbar-right text-start'
-                    style={{ fontSize: '1rem', zIndex: '2' }}
+                    style={{ fontSize: '1rem', zIndex: '5' }}
                     alignRight
                     variant='light'
                     pullRight

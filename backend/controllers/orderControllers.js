@@ -85,6 +85,8 @@ const updateOrderToPaid = asyncHandler(async (req, res) => {
 const updateOrderToDelivered = asyncHandler(async (req, res) => {
   const order = await Order.findById(req.params.id)
 
+  // console.log('Delivered', order)
+
   if (order) {
     order.isDelivered = true
     order.deliveredAt = Date.now()
@@ -171,6 +173,37 @@ const updateStatus = asyncHandler(async (req, res) => {
   }
 })
 
+//* @desc       Update orders status
+//* @route      PUT /api/orders/:id
+//* @access     Private
+const updateStatusByMember = asyncHandler(async (req, res) => {
+  const { _id, orderStatus } = req.body
+
+  const order = await Order.findById(_id)
+
+  console.log(req.body)
+
+  // console.log('order', order)
+
+  try {
+    let updateOrderStatus = await Order.findByIdAndUpdate(
+      order,
+      {
+        orderStatus,
+      },
+      { new: true }
+    ).exec()
+    setTimeout(() => {
+      res
+        .status(200)
+        .json({ updateOrderStatus, message: 'Update Success Order Status' })
+    }, 2000)
+  } catch (error) {
+    res.status(404)
+    throw new Error('Order not found')
+  }
+})
+
 export {
   addOrderItems,
   getOrderById,
@@ -180,4 +213,5 @@ export {
   updateOrderToDelivered,
   deleteOrder,
   updateStatus,
+  updateStatusByMember,
 }

@@ -24,6 +24,14 @@ const Banner = () => {
         <Image
           className='d-block w-100 h-80'
           style={{ width: '100%', height: '80vh' }}
+          src='/banner/rau-an-toan-4k-farm-tang-03032021142652.jpg'
+          alt='Second slide'
+        />
+      </Carousel.Item>
+      <Carousel.Item>
+        <Image
+          className='d-block w-100 h-80'
+          style={{ width: '100%', height: '80vh' }}
           src='/banner/thuc-pham-giam-soc-20042021213548.jpg'
           alt='Third slide'
         />

@@ -210,15 +210,16 @@ function ProductEditScreen({ match, history }) {
                       onChange={(e) => setCategory(e.target.value)}
                     >
                       <option></option>
-                      {categoryCat.map((cat, index) => (
-                        <option
-                          style={{ color: 'black' }}
-                          key={index}
-                          value={cat._id}
-                        >
-                          {cat.name}
-                        </option>
-                      ))}
+                      {categoryCat &&
+                        categoryCat.map((cat, index) => (
+                          <option
+                            style={{ color: 'black' }}
+                            key={index}
+                            value={cat._id}
+                          >
+                            {cat.name}
+                          </option>
+                        ))}
                     </Form.Control>
                   </Form.Group>
                 </Col>

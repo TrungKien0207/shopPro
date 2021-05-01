@@ -2,7 +2,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Radio from '@material-ui/core/Radio'
 import RadioGroup from '@material-ui/core/RadioGroup'
 import React, { useState } from 'react'
-import { Button, Col, Form } from 'react-bootstrap'
+import { Button, Col, Form, Image, Row } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { savePaymentMethod } from '../actions/cartActions'
 import FormContainer from '../components/FormContainer'
@@ -16,7 +16,7 @@ export const PaymentScreen = ({ history }) => {
     history.push('/shipping')
   }
 
-  const [paymentMethod, setPaymentMethod] = useState('PayPal')
+  const [paymentMethod, setPaymentMethod] = useState('Thanh toán bằng PayPal')
 
   const dispatch = useDispatch()
 
@@ -27,46 +27,52 @@ export const PaymentScreen = ({ history }) => {
   }
 
   return (
-    <FormContainer>
-      <Step step1 step2 step3 />
-      <Form
-        onSubmit={submitHandler}
-        className='rounded bg-light shadow p-4 mt-2 text-center'
-      >
-        <h3 className='pt-3 '>Payment Method</h3>
-        <Form.Group>
-          <Form.Label as='legend'>
-            <h5>Select Method</h5>
-          </Form.Label>
-          <Col md={8}>
-            <div>
-              <RadioGroup
-                value={paymentMethod}
-                onChange={(e) => setPaymentMethod(e.target.value)}
-              >
-                <FormControlLabel
-                  value='PayPal'
-                  control={<Radio />}
-                  label='PayPal or Credit Card'
-                />
-                <FormControlLabel
-                  value='Stripe'
-                  control={<Radio />}
-                  label='Stripe'
-                />
-              </RadioGroup>
-            </div>
-          </Col>
-        </Form.Group>
+    <>
+      <Row className='shadow p-2 card_color '>
+        <Col md={6} className='d-flex align-items-center'>
+          <Image src='/background/payment.jpg' fluid />
+        </Col>
+        <Col md={6} className='d-flex align-items-center'>
+          <div>
+            <Step step1 step2 step3 />
+            <Form onSubmit={submitHandler} className=' p-4 mt-2 text-center'>
+              <Form.Group>
+                <Form.Label as='legend'>
+                  <h3>Phương thức thanh toán</h3>
+                </Form.Label>
 
-        <Button
-          type='submit'
-          variant='danger'
-          className='btn-block btn_color rounded-pill'
-        >
-          Continue
-        </Button>
-      </Form>
-    </FormContainer>
+                <Col>
+                  <div>
+                    <RadioGroup
+                      value={paymentMethod}
+                      onChange={(e) => setPaymentMethod(e.target.value)}
+                    >
+                      <FormControlLabel
+                        value='Thanh toán bằng PayPal'
+                        control={<Radio />}
+                        label='Thanh toán bằng PayPal'
+                      />
+                      <FormControlLabel
+                        value='Thanh toán bằng tiền mặt'
+                        control={<Radio />}
+                        label='Thanh toán bằng tiền mặt'
+                      />
+                    </RadioGroup>
+                  </div>
+                </Col>
+              </Form.Group>
+
+              <Button
+                type='submit'
+                variant='danger'
+                className='btn-block btn_color rounded-pill'
+              >
+                Tiếp Tục
+              </Button>
+            </Form>
+          </div>
+        </Col>
+      </Row>
+    </>
   )
 }

@@ -524,7 +524,7 @@ const CategoriesListScreen = ({ history }) => {
                                   cat.createdAt,
                                   'Asia/Ho_Chi_Minh'
                                 ),
-                                'HH:mm:ss - MM/dd/yyyy',
+                                'HH:mm:ss - dd/MM/yyyy',
                                 { timeZone: 'Asia/Ho_Chi_Minh' }
                               )}
                             </TableCell>

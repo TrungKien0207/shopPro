@@ -247,7 +247,7 @@ function ProfileScreen({ location, history }) {
       {/* {loading && <Loader />} */}
 
       <div className='border-0'>
-        <Row className='justify-content-center m-0'>
+        <Row className='justify-content-center  m-4'>
           <Col
             md={4}
             className='pt-5 shadow'
@@ -262,8 +262,8 @@ function ProfileScreen({ location, history }) {
               style={{
                 border: '5px solid #55595c',
                 borderRadius: '50%',
-                width: '25rem',
-                height: '25.6rem',
+                width: '20rem',
+                height: '20.6rem',
               }}
             >
               <div className='text-center mb-3 avatar_container'>
@@ -271,8 +271,8 @@ function ProfileScreen({ location, history }) {
                   <>
                     <Image
                       style={{
-                        width: '25rem',
-                        height: '25rem',
+                        width: '20rem',
+                        height: '20rem',
                       }}
                       src={avatar}
                       className='rounded-circle avatar_img'
@@ -339,10 +339,10 @@ function ProfileScreen({ location, history }) {
                 <Col md={6}>
                   <Form.Group controlId='name'>
                     <Form.Label as='p' className='mb-1'>
-                      Họ và tên
+                      <strong>Họ và tên</strong>
                     </Form.Label>
                     <Form.Control
-                      className='border border-grey rounded-pill'
+                      className='border-1 border-grey rounded-pill'
                       type='name'
                       placeholder='Nhập họ và tên'
                       value={name}
@@ -354,10 +354,10 @@ function ProfileScreen({ location, history }) {
                 <Col md={6}>
                   <Form.Group controlId='email'>
                     <Form.Label as='p' className='mb-1'>
-                      Địa chỉ email
+                      <strong>Địa chỉ email</strong>
                     </Form.Label>
                     <Form.Control
-                      className='border border-grey rounded-pill'
+                      className='border-1 border-grey rounded-pill'
                       type='email'
                       placeholder='Nhập địa chỉ email'
                       value={email}
@@ -369,7 +369,7 @@ function ProfileScreen({ location, history }) {
               <Form.Group>
                 <Row>
                   <Col md={6}>
-                    <p>Ngày sinh</p>
+                    <strong>Ngày sinh</strong>
                     <MuiPickersUtilsProvider utils={DateFnsUtils}>
                       <Grid container justify='space-between'>
                         <KeyboardDatePicker
@@ -387,21 +387,21 @@ function ProfileScreen({ location, history }) {
                     </MuiPickersUtilsProvider>
                   </Col>
                   <Col md={6}>
-                    <p>Giới tính:</p>
+                    <strong>Giới tính:</strong>
                     <RadioGroup
                       value={sex}
                       onChange={(e) => setSex(e.target.value)}
-                      size='small'
                     >
                       <div className='d-flex justify-content-evenly align-items-center'>
                         <FormControlLabel
                           value='Nam'
-                          control={<Radio />}
+                          control={<Radio size='small' />}
                           label='Nam'
+                          size='medium'
                         />
                         <FormControlLabel
                           value='Nữ'
-                          control={<Radio />}
+                          control={<Radio size='small' />}
                           label='Nữ'
                         />
                       </div>
@@ -409,12 +409,42 @@ function ProfileScreen({ location, history }) {
                   </Col>
                 </Row>
               </Form.Group>
+              <Row>
+                <Col md={8}>
+                  <Form.Group controlId='country'>
+                    <Form.Label as='p' className='mb-1'>
+                      <strong>Địa chỉ chi tiết</strong>
+                    </Form.Label>
+                    <Form.Control
+                      type='text'
+                      placeholder='Enter country'
+                      value={diaChi}
+                      onChange={(e) => setDiachi(e.target.value)}
+                      className='border-1 border-gray rounded-pill'
+                    ></Form.Control>
+                  </Form.Group>
+                </Col>
+                <Col md={4}>
+                  <Form.Group controlId='country'>
+                    <Form.Label as='p' className='mb-1'>
+                      <strong>Số điện thoại</strong>
+                    </Form.Label>
+                    <Form.Control
+                      type='string'
+                      placeholder='Nhập số điện thoại'
+                      value={formatPhoneNumber(numberPhone)}
+                      onChange={(e) => setNumberPhone(e.target.value)}
+                      className='border-1 border-gray rounded-pill'
+                    ></Form.Control>
+                  </Form.Group>
+                </Col>
+              </Row>
               <Form.Group>
                 <Row>
                   <Col md={4}>
                     <Form.Group controlId='address'>
                       <Form.Label as='p' className='mb-1'>
-                        Thành Phố / Tỉnh
+                        <strong>Thành Phố / Tỉnh</strong>
                       </Form.Label>
                       <Form.Control
                         type='text'
@@ -422,7 +452,7 @@ function ProfileScreen({ location, history }) {
                         placeholder='Enter address'
                         value={thanhPho}
                         onChange={(e) => setThanhPho(e.target.value)}
-                        className='border border-gray rounded-pill'
+                        className='border-1 border-gray rounded-pill'
                       >
                         <option>Vui lòng chọn thành phố/tỉnh...</option>
                         {data.map((tp) => (
@@ -440,7 +470,7 @@ function ProfileScreen({ location, history }) {
                   <Col md={4}>
                     <Form.Group controlId='city'>
                       <Form.Label as='p' className='mb-1'>
-                        Quận / Huyện
+                        <strong>Quận / Huyện</strong>
                       </Form.Label>
                       <Form.Control
                         type='text'
@@ -448,7 +478,7 @@ function ProfileScreen({ location, history }) {
                         placeholder='Enter city'
                         value={huyen}
                         onChange={(e) => setHuyen(e.target.value)}
-                        className='border border-gray rounded-pill'
+                        className='border-1 border-gray rounded-pill'
                       >
                         <option>Vui lòng chọn quận/huyện...</option>
                         {data.map(
@@ -470,7 +500,7 @@ function ProfileScreen({ location, history }) {
                   <Col md={4}>
                     <Form.Group controlId='postalCode'>
                       <Form.Label as='p' className='mb-1'>
-                        Phường / Xã
+                        <strong>Phường / Xã</strong>
                       </Form.Label>
                       <Form.Control
                         type='text'
@@ -478,7 +508,7 @@ function ProfileScreen({ location, history }) {
                         placeholder='Enter postalCode'
                         value={xa}
                         onChange={(e) => setXa(e.target.value)}
-                        className='border border-gray rounded-pill'
+                        className='border-1 border-gray rounded-pill'
                       >
                         <option>Vui lòng chọn thành xã/phường...</option>
                         {data.map(
@@ -499,37 +529,6 @@ function ProfileScreen({ location, history }) {
                   </Col>
                 </Row>
               </Form.Group>
-
-              <Row>
-                <Col md={8}>
-                  <Form.Group controlId='country'>
-                    <Form.Label as='p' className='mb-1'>
-                      Địa chỉ chi tiết
-                    </Form.Label>
-                    <Form.Control
-                      type='text'
-                      placeholder='Enter country'
-                      value={diaChi}
-                      onChange={(e) => setDiachi(e.target.value)}
-                      className='border border-gray rounded-pill'
-                    ></Form.Control>
-                  </Form.Group>
-                </Col>
-                <Col md={4}>
-                  <Form.Group controlId='country'>
-                    <Form.Label as='p' className='mb-1'>
-                      Số điện thoại
-                    </Form.Label>
-                    <Form.Control
-                      type='string'
-                      placeholder='Nhập số điện thoại'
-                      value={formatPhoneNumber(numberPhone)}
-                      onChange={(e) => setNumberPhone(e.target.value)}
-                      className='border border-gray rounded-pill'
-                    ></Form.Control>
-                  </Form.Group>
-                </Col>
-              </Row>
 
               {/* <Form.Group controlId='image'>
                 <Form.Label as='p' className='mb-1'>
@@ -561,7 +560,7 @@ function ProfileScreen({ location, history }) {
                 />
                 {state === true ? (
                   <p className='mb-0' style={{ opacity: '1' }}>
-                    Đổi mật khẩu
+                    <strong>Đổi mật khẩu</strong>
                     <Image
                       style={{ opacity: '1' }}
                       src='https://img.icons8.com/fluent/32/000000/unlock-2.png'
@@ -581,12 +580,12 @@ function ProfileScreen({ location, history }) {
                 <Col md={6}>
                   <Form.Group controlId='password' fluid>
                     <Form.Label as='p' className='mb-1'>
-                      Mật khẩu mới
+                      <strong>Mật khẩu mới</strong>
                     </Form.Label>
                     {state === true ? (
                       <>
                         <Form.Control
-                          className='border border-grey rounded-pill '
+                          className='border-1 border-grey rounded-pill '
                           type='password'
                           placeholder='Nhập mật khẩu mới'
                           value={password}
@@ -595,7 +594,7 @@ function ProfileScreen({ location, history }) {
                       </>
                     ) : (
                       <Form.Control
-                        className='border border-grey rounded-pill '
+                        className='border-1 border-grey rounded-pill '
                         type='password'
                         placeholder='Nhập mật khẩu mới'
                         value={password}
@@ -609,12 +608,12 @@ function ProfileScreen({ location, history }) {
                 <Col md={6}>
                   <Form.Group controlId='password'>
                     <Form.Label as='p' className='mb-1'>
-                      Nhập lại mật khẩu
+                      <strong>Nhập lại mật khẩu</strong>
                     </Form.Label>
                     {state === true ? (
                       <>
                         <Form.Control
-                          className='border border-grey rounded-pill'
+                          className='border-1 border-grey rounded-pill'
                           type='password'
                           placeholder='Nhập lại mật khẩu'
                           value={confirmPassword}
@@ -623,7 +622,7 @@ function ProfileScreen({ location, history }) {
                       </>
                     ) : (
                       <Form.Control
-                        className='border border-grey rounded-pill'
+                        className='border-1 border-grey rounded-pill'
                         type='password'
                         placeholder='Nhập lại mật khẩu'
                         value={confirmPassword}

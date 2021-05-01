@@ -25,25 +25,25 @@ export default function HorizontalLinearStepper({
     <div>
       <Stepper
         alternativeLabel
-        className='pt-4 pb-4 shadow bg-light border-0 card_color'
+        className='pt-4 pb-4 bg-light border-0 steps-shipping'
       >
         <Step>
           {step1 ? (
-            <LinkContainer to='/login'>
+            <LinkContainer to='/'>
               <StepLabel
                 StepIconProps={{
                   classes: { root: classes.stepIcon },
                 }}
               >
                 <Link component='button'>
-                  <strong>Sign In</strong>
+                  <strong className='text-capitalize'>Mua hàng</strong>
                 </Link>
               </StepLabel>
             </LinkContainer>
           ) : (
             <StepLabel>
               <Link disabled component='button'>
-                <strong>Sign In</strong>
+                <strong className='text-capitalize'>Mua hàng</strong>
               </Link>
             </StepLabel>
           )}
@@ -57,14 +57,14 @@ export default function HorizontalLinearStepper({
                 }}
               >
                 <Link component='button'>
-                  <strong>Shipping</strong>
+                  <strong className='text-capitalize'>Vận chuyển</strong>
                 </Link>
               </StepLabel>
             </LinkContainer>
           ) : (
             <StepLabel>
               <Link disabled component='button'>
-                <strong>Shipping</strong>
+                <strong className='text-capitalize'>Vận chuyển</strong>
               </Link>
             </StepLabel>
           )}
@@ -78,14 +78,18 @@ export default function HorizontalLinearStepper({
                 }}
               >
                 <Link component='button'>
-                  <strong>Payment</strong>
+                  <strong className='text-capitalize'>
+                    Phương thức thanh toán
+                  </strong>
                 </Link>
               </StepLabel>
             </LinkContainer>
           ) : (
             <StepLabel>
               <Link disabled component='button'>
-                <strong>Payment</strong>
+                <strong className='text-capitalize'>
+                  Phương thức thanh toán
+                </strong>
               </Link>
             </StepLabel>
           )}
@@ -99,14 +103,14 @@ export default function HorizontalLinearStepper({
                 }}
               >
                 <Link component='button'>
-                  <strong>Place Order</strong>
+                  <strong className='text-capitalize'>Xác nhận đơn hàng</strong>
                 </Link>
               </StepLabel>
             </LinkContainer>
           ) : (
             <StepLabel>
               <Link disabled component='button'>
-                <strong>Place Order</strong>
+                <strong className='text-capitalize'>Xác nhận đơn hàng</strong>
               </Link>
             </StepLabel>
           )}

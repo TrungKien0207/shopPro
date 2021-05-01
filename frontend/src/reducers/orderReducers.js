@@ -23,6 +23,10 @@ import {
   ORDER_PAY_REQUEST,
   ORDER_PAY_RESET,
   ORDER_PAY_SUCCESS,
+  ORDER_UPDATE_BY_MEMBER_FAIL,
+  ORDER_UPDATE_BY_MEMBER_REQUEST,
+  ORDER_UPDATE_BY_MEMBER_RESET,
+  ORDER_UPDATE_BY_MEMBER_SUCCESS,
   ORDER_UPDATE_FAIL,
   ORDER_UPDATE_REQUEST,
   ORDER_UPDATE_RESET,
@@ -195,6 +199,21 @@ export const orderUpdateReducer = (state = { order: [] }, action) => {
     case ORDER_UPDATE_FAIL:
       return { loading: false, error: action.payload }
     case ORDER_UPDATE_RESET:
+      return { order: [] }
+    default:
+      return state
+  }
+}
+
+export const orderUpdateByMemberReducer = (state = { order: [] }, action) => {
+  switch (action.type) {
+    case ORDER_UPDATE_BY_MEMBER_REQUEST:
+      return { loading: true }
+    case ORDER_UPDATE_BY_MEMBER_SUCCESS:
+      return { loading: false, success: true, order: action.payload }
+    case ORDER_UPDATE_BY_MEMBER_FAIL:
+      return { loading: false, error: action.payload }
+    case ORDER_UPDATE_BY_MEMBER_RESET:
       return { order: [] }
     default:
       return state

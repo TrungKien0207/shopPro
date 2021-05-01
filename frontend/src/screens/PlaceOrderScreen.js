@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button, Card, Col, Image, ListGroup, Row } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
@@ -9,6 +9,24 @@ import Step from '../components/Step'
 
 PlaceOrderScreen.propTypes = {}
 
+let formatPhoneNumber = (str) => {
+  //Filter only numbers from the input
+  let cleaned = ('' + str).replace(/\D/g, '')
+
+  //Check if the input is of correct length
+  let match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/)
+
+  if (match) {
+    return '(' + match[1] + ') ' + match[2] + ' ' + match[3]
+  }
+
+  return null
+}
+
+function format(n, currency) {
+  return n.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + currency
+}
+
 function PlaceOrderScreen({ history }) {
   const dispatch = useDispatch()
 
@@ -16,21 +34,26 @@ function PlaceOrderScreen({ history }) {
 
   // Calculate prices
   cart.itemsPrice = cart.cartItems.reduce(
-    (acc, item) => acc + item.price + item.qty,
+    (acc, item) => acc + item.price * item.qty,
     0
   )
 
   const addDecimals = (num) => {
-    return (Math.round(num * 100) / 100).toFixed(2)
+    return Math.round(num * 100) / 100
   }
 
-  cart.shippingPrice = addDecimals(cart.itemsPrice > 100 ? 0 : 100)
+  if (cart.shippingAddress.thanhPho === 'Thành phố Hà Nội') {
+    cart.shippingPrice = 25000
+  } else if (cart.shippingAddress.thanhPho === 'Thành phố Hồ Chí Minh') {
+    cart.shippingPrice = 15000
+  } else {
+    cart.shippingPrice = 35000
+  }
+
+  // cart.shippingPrice = addDecimals(cart.itemsPrice > 100 ? 0 : 100)
   cart.taxPrice = addDecimals(Number((0.15 * cart.itemsPrice).toFixed(2)))
-  cart.totalPrice = (
-    Number(cart.itemsPrice) +
-    Number(cart.shippingPrice) +
-    Number(cart.taxPrice)
-  ).toFixed(2)
+  cart.totalPrice =
+    (Number(cart.itemsPrice) + Number(cart.shippingPrice)) / 10000
 
   const orderCreate = useSelector((state) => state.orderCreate)
   const { order, success, error } = orderCreate
@@ -57,32 +80,46 @@ function PlaceOrderScreen({ history }) {
 
   return (
     <>
-      <Row className='justify-content-center'>
-        <Col md={7} className='ml-3 mr-3 pl-0 pr-0 mt-2'>
+      <Row>
+        <Col md={8} className='mt-2'>
           <Step step1 step2 step3 step4 />
           <ListGroup
             variant='flush'
-            className='shadow pt-3 mt-3 card_color pb-3'
+            className='shadow mt-3 card_color p-1 border-order'
           >
-            <ListGroup.Item className='border-0'>
-              <h5 className='text-uppercase'>Shiping</h5>
-              <p className='mb-1'>
+            <ListGroup.Item className='pt-3'>
+              <h4 className='text-uppercase'>Thông tin giao hàng</h4>
+              <p className='mb-1 ml-2' style={{ fontSize: '0.9rem' }}>
                 <strong>Địa chỉ: </strong>
-                {cart.shippingAddress.diaChi}, {cart.shippingAddress.xa},{' '}
-                {cart.shippingAddress.huyen}, {cart.shippingAddress.thanhPho},
+                {cart.shippingAddress.diaChi} {' - '} {cart.shippingAddress.xa}{' '}
+                {' - '}
+                {cart.shippingAddress.huyen} {' - '}
+                {cart.shippingAddress.thanhPho}.
+              </p>
+              <p className='mb-2 ml-2' style={{ fontSize: '0.9rem' }}>
+                <strong>Số điện thoại: </strong>
+                {formatPhoneNumber(cart.shippingAddress.numberPhone)}
               </p>
             </ListGroup.Item>
 
-            <ListGroup.Item className='border-0'>
-              <h5 className='text-uppercase'>Payment Method</h5>
-              <strong>Method: </strong>
-              {cart.paymentMethod}
+            <ListGroup.Item>
+              <h4 className='text-uppercase mt-2'>Phương thức thanh toán</h4>
+              <div className='d-flex mb-2 ml-2' style={{ fontSize: '0.9rem' }}>
+                <strong className='pr-1'>Phương Thức: </strong>
+                {cart.paymentMethod ? (
+                  cart.paymentMethod
+                ) : (
+                  <strong className='text-danger'>
+                    Chưa chọn phương thức thanh toán
+                  </strong>
+                )}
+              </div>
             </ListGroup.Item>
 
             <ListGroup.Item>
-              <h5 className='text-uppercase'>Order Items</h5>
+              <h4 className='text-uppercase mt-2'>Giỏ hàng</h4>
               {cart.cartItems.length === 0 ? (
-                <Message>Your cart is empty</Message>
+                <Message>Giỏ hàng của bạn trống</Message>
               ) : (
                 <ListGroup variant='flush'>
                   {cart.cartItems.map((item, index) => (
@@ -97,7 +134,7 @@ function PlaceOrderScreen({ history }) {
                           />
                         </Col>
 
-                        <Col>
+                        <Col md={5} className='d-flex align-items-center'>
                           <Link
                             to={`/product/${item.product}`}
                             className='link-product'
@@ -106,10 +143,11 @@ function PlaceOrderScreen({ history }) {
                           </Link>
                         </Col>
 
-                        <Col md={4}>
-                          <b>
-                            {item.qty} x ${item.price} = $
-                            {item.qty * item.price}
+                        <Col md={5} className='d-flex align-items-center'>
+                          <b style={{ fontSize: '1rem' }}>
+                            {item.qty} x {format(item.price, 'đ')}
+                            {' = '}
+                            {format(item.qty * item.price, 'đ')}
                           </b>
                         </Col>
                       </Row>
@@ -121,40 +159,38 @@ function PlaceOrderScreen({ history }) {
           </ListGroup>
         </Col>
         <Col md={4}>
-          <Card className='shadow mt-2 border-0 card_color pt-3 pb-3'>
+          <Card
+            className='shadow mt-2 border-0 card_color p-1 border-order'
+            style={{ zIndex: '1' }}
+          >
             <ListGroup variant='flush' className='card_color'>
               <ListGroup.Item>
-                <h4 className='text-uppercase text-center'>Order Summary</h4>
+                <h4 className='text-uppercase text-center'>Chi tiết hoá đơn</h4>
               </ListGroup.Item>
               <ListGroup.Item>
                 <Row>
-                  <Col className='pl-5 mr-5'>Items</Col>
-                  <Col className='pl-5 pr-0'>
-                    <strong>${cart.itemsPrice}</strong>
+                  <Col md={8}>Tổng tiền sản phẩm</Col>
+                  <Col md={4}>
+                    <strong>{format(cart.itemsPrice, 'đ')}</strong>
                   </Col>
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
                 <Row>
-                  <Col className='pl-5 mr-5'>Shipping</Col>
-                  <Col className='pl-5 pr-0'>
-                    <strong>${cart.shippingPrice}</strong>
+                  <Col md={8}>Phí vận chuyển</Col>
+                  <Col m={4}>
+                    <strong>{format(cart.shippingPrice, 'đ')}</strong>
                   </Col>
                 </Row>
               </ListGroup.Item>
+
               <ListGroup.Item>
                 <Row>
-                  <Col className='pl-5 mr-5'>Tax</Col>
-                  <Col className='pl-5 pr-0'>
-                    <strong>${cart.taxPrice}</strong>
+                  <Col md={8}>
+                    <strong>Tổng cộng (bao gồm VAT):</strong>
                   </Col>
-                </Row>
-              </ListGroup.Item>
-              <ListGroup.Item>
-                <Row>
-                  <Col className='pl-5 mr-5'>Total</Col>
-                  <Col className='pl-5 pr-0'>
-                    <strong>${cart.totalPrice}</strong>
+                  <Col md={4}>
+                    <strong>{format(cart.totalPrice, 'đ')}</strong>
                   </Col>
                 </Row>
               </ListGroup.Item>
@@ -168,11 +204,12 @@ function PlaceOrderScreen({ history }) {
               <ListGroup.Item>
                 <Button
                   type='button'
-                  className='btn-block  text-uppercase btn-apply btn_color rounded-pill '
+                  variant='outline-light'
+                  className='btn-block text-uppercase btn-apply btn_color_created pt-3 rounded-pill'
                   disabled={cart.cartItems === 0}
                   onClick={placeOrderHandler}
                 >
-                  <strong>Place Order</strong>
+                  <h5>Đặt hàng</h5>
                 </Button>
               </ListGroup.Item>
             </ListGroup>
