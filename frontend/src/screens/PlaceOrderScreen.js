@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Button, Card, Col, Image, ListGroup, Row } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
+import { removeFromCart } from '../actions/cartActions'
 import { createOrder } from '../actions/orderActions'
 import Announcement from '../components/Announcement'
 import Message from '../components/Message'
@@ -75,6 +76,7 @@ function PlaceOrderScreen({ history }) {
   useEffect(() => {
     if (success) {
       history.push(`/order/${order._id}`)
+      cart.cartItems.map((item) => dispatch(removeFromCart(item.product)))
     }
   }, [history, success])
 

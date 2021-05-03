@@ -14,6 +14,25 @@ import Loader from '../components/Loader'
 import Message from '../components/Message'
 import { ORDER_UPDATE_RESET } from '../constants/orderConstants'
 import MessageSuccess from '../components/MessageSuccess'
+import { format, utcToZonedTime } from 'date-fns-tz'
+
+let formatPhoneNumber = (str) => {
+  //Filter only numbers from the input
+  let cleaned = ('' + str).replace(/\D/g, '')
+
+  //Check if the input is of correct length
+  let match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/)
+
+  if (match) {
+    return '(' + match[1] + ') ' + match[2] + ' ' + match[3]
+  }
+
+  return null
+}
+
+function formatMoney(n, currency) {
+  return n.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + currency
+}
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -51,8 +70,11 @@ const OrderEditScreen = ({ match, history }) => {
     success: successUpdate,
   } = orderUpdate
 
+  const orderPay = useSelector((state) => state.orderPay)
+  const { loading: loadingPay, success: successPay } = orderPay
+
   const stateOrder = ['Chờ xác nhận', 'Đang vận chuyển', 'Đã giao hàng', 'Huỷ']
-  const [orderStatus, setOrderStatus] = useState('Chờ xác nhận')
+  const [orderStatus, setOrderStatus] = useState('')
 
   const submitHandler = (e) => {
     e.preventDefault()
@@ -63,11 +85,7 @@ const OrderEditScreen = ({ match, history }) => {
     if (successUpdate) {
       dispatch({ type: ORDER_UPDATE_RESET })
     } else {
-      if (orderStatus || order._id !== orderId) {
-        dispatch(getOrderDetails(orderId))
-      } else {
-        setOrderStatus(order.orderStatus)
-      }
+      dispatch(getOrderDetails(orderId))
     }
   }, [dispatch, orderId, successUpdate])
 
@@ -86,12 +104,9 @@ const OrderEditScreen = ({ match, history }) => {
             className='shadow p-3 mt-3 card_color'
             style={{ border: '0.4rem dashed #ffc1b6', borderRadius: '1rem' }}
           >
-            <Row>
-              <Col md={6}>
-                <h4 className='pl-2'>CHI TIẾT ĐƠN HÀNG</h4>
-              </Col>
-              <Col md={6}>{order.orderStatus}</Col>
-            </Row>
+            <div className='text-center'>
+              <h3 className='pl-2'>CHI TIẾT ĐƠN HÀNG</h3>
+            </div>
             <ListGroup.Item className='border-0'>
               <Row>
                 <Col md={6}>
@@ -116,7 +131,9 @@ const OrderEditScreen = ({ match, history }) => {
                       open={open}
                       onClose={handleClose}
                       onOpen={handleOpen}
-                      value={orderStatus}
+                      value={
+                        order.orderStatus ? order.orderStatus : orderStatus
+                      }
                       onChange={(e) => setOrderStatus(e.target.value)}
                       className='text-danger text-center text-uppercase'
                     >
@@ -173,6 +190,20 @@ const OrderEditScreen = ({ match, history }) => {
                         <Row className='m-0'>
                           <Col md={4}>
                             <p style={{ color: 'grey' }} className='mb-1'>
+                              Số điện thoại:
+                            </p>
+                          </Col>
+                          <Col md={8}>
+                            <p className='mb-1'>
+                              {formatPhoneNumber(
+                                order.shippingAddress.numberPhone
+                              )}
+                            </p>
+                          </Col>
+                        </Row>
+                        <Row className='m-0'>
+                          <Col md={4}>
+                            <p style={{ color: 'grey' }} className='mb-1'>
                               Email:
                             </p>
                           </Col>
@@ -201,7 +232,12 @@ const OrderEditScreen = ({ match, history }) => {
                             </p>
                           </Col>
                           <Col md={7} className='pt-1'>
-                            <h6 className='mb-0'>{order.paymentMethod}</h6>
+                            <strong
+                              className='mb-0 text-capitalize'
+                              style={{ letterSpacing: '0.1rem' }}
+                            >
+                              {order.paymentMethod}
+                            </strong>
                           </Col>
                         </Row>
                         <Row className='m-0'>
@@ -212,14 +248,33 @@ const OrderEditScreen = ({ match, history }) => {
                           </Col>
                           <Col md={7}>
                             <p className='mb-1'>
-                              {order.paidAt ? (
-                                <strong className='mb-0'>{order.paidAt}</strong>
+                              {order.paymentMethod ===
+                                'Thanh toán bằng tiền mặt' &&
+                              order.isDelivered ? (
+                                <strong className='mb-0'>
+                                  {format(
+                                    new utcToZonedTime(
+                                      order.deliveredAt,
+                                      'Asia/Ho_Chi_Minh'
+                                    ),
+                                    'HH:mm:ss - dd/MM/yyyy',
+                                    { timeZone: 'Asia/Ho_Chi_Minh' }
+                                  )}
+                                </strong>
+                              ) : order.paymentMethod ===
+                                'Thanh toán bằng PayPal' ? (
+                                <strong className='mb-0'>
+                                  {format(
+                                    new utcToZonedTime(
+                                      order.paidAt,
+                                      'Asia/Ho_Chi_Minh'
+                                    ),
+                                    'HH:mm:ss - dd/MM/yyyy',
+                                    { timeZone: 'Asia/Ho_Chi_Minh' }
+                                  )}
+                                </strong>
                               ) : (
                                 <div className='d-flex'>
-                                  <Image
-                                    src='https://img.icons8.com/fluent/24/000000/only-cash.png'
-                                    className='pr-1'
-                                  />
                                   <strong className='text-danger mb-0'>
                                     Chưa thanh toán
                                   </strong>
@@ -235,16 +290,23 @@ const OrderEditScreen = ({ match, history }) => {
                             </p>
                           </Col>
                           <Col md={7}>
-                            {order.deliveredAt ? (
+                            {order.isDelivered ? (
                               <strong className='mb-0'>
-                                {order.deliveredAt}
+                                {format(
+                                  new utcToZonedTime(
+                                    order.deliveredAt,
+                                    'Asia/Ho_Chi_Minh'
+                                  ),
+                                  'HH:mm:ss - dd/MM/yyyy',
+                                  { timeZone: 'Asia/Ho_Chi_Minh' }
+                                )}
                               </strong>
                             ) : (
                               <div className='d-flex'>
-                                <Image
+                                {/* <Image
                                   src='https://img.icons8.com/fluent/24/000000/only-cash.png'
                                   className='pr-1'
-                                />
+                                /> */}
                                 <strong className='text-danger mb-0'>
                                   Chưa nhận hàng
                                 </strong>
@@ -264,11 +326,7 @@ const OrderEditScreen = ({ match, history }) => {
                 className='pb-1'
                 style={{ borderBottom: '0.04rem solid #ddd' }}
               >
-                Chi tiết giỏ hàng
-                <Image
-                  src='https://img.icons8.com/fluent/28/000000/shopping-cart-loaded.png'
-                  className='pl-2'
-                />
+                Giỏ hàng
               </h5>
 
               <div className='rounded mt-3'>
@@ -305,7 +363,9 @@ const OrderEditScreen = ({ match, history }) => {
                           style={{ fontSize: '1.1rem' }}
                           className='pt-3 fst-italic'
                         >
-                          {item.qty} x ${item.price} = ${item.qty * item.price}
+                          {item.qty} x {formatMoney(item.price, 'đ')}
+                          {' = '}
+                          {formatMoney(item.qty * item.price, 'đ')}
                         </p>
                       </Col>
                     </Row>

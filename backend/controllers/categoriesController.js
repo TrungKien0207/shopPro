@@ -76,6 +76,7 @@ const updateCategoryById = asyncHandler(async (req, res) => {
 
   if (cat) {
     cat.name = req.body.name || cat.name
+    cat.slug = slugify(req.body.name) || cat.slug
     const updateCat = await cat.save()
     setTimeout(() => {
       res.json({

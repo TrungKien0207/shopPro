@@ -27,8 +27,11 @@ import ProductScreen from './screens/ProductScreen.js'
 import ProfileScreen from './screens/ProfileScreen'
 import RegisterScreen from './screens/RegisterScreen.js'
 import { ShippingScreen } from './screens/ShippingScreen'
+import SupplierListScreen from './screens/SupplierListScreen'
+import SupplierEditScreen from './screens/SupplierEditScreen'
 import UserEditScreen from './screens/UserEditScreen'
 import UserListScreen from './screens/UserListScreen'
+import Admin from './screens/admin/src/layouts/Admin'
 
 const THEME = createMuiTheme({
   typography: {
@@ -65,12 +68,25 @@ const App = () => {
               component={ProductListScreen}
               exact
             />
+            <Route path='/admin/k' component={Admin} exact />
 
             <div className='ml-5 mr-5 mt-3'>
               <Route path='/profile' component={ProfileScreen} exact />
               <Route
                 path='/admin/categorieslist'
                 component={CategoriesListScreen}
+                exact
+              />
+
+              <Route
+                path='/admin/supplierlist'
+                component={SupplierListScreen}
+                exact
+              />
+
+              <Route
+                path='/admin/supplier/:id/edit'
+                component={SupplierEditScreen}
                 exact
               />
 

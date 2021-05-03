@@ -120,12 +120,27 @@ const MyOrdersScreen = ({ history }) => {
                   </td>
                   <td>{formatMoney(order.totalPrice, 'đ')}</td>
                   <td>
-                    {order.isPaid ? (
-                      format(
-                        new utcToZonedTime(order.paidAt, 'Asia/Ho_Chi_Minh'),
-                        'HH:mm:ss - dd/MM/yyyy',
-                        { timeZone: 'Asia/Ho_Chi_Minh' }
-                      )
+                    {order.paymentMethod === 'Thanh toán bằng tiền mặt' &&
+                    order.isDelivered ? (
+                      <strong className='mb-0'>
+                        {format(
+                          new utcToZonedTime(
+                            order.deliveredAt,
+                            'Asia/Ho_Chi_Minh'
+                          ),
+                          'HH:mm:ss - dd/MM/yyyy',
+                          { timeZone: 'Asia/Ho_Chi_Minh' }
+                        )}
+                      </strong>
+                    ) : order.paymentMethod === 'Thanh toán bằng PayPal' &&
+                      order.isPaid ? (
+                      <strong className='mb-0'>
+                        {format(
+                          new utcToZonedTime(order.paidAt, 'Asia/Ho_Chi_Minh'),
+                          'HH:mm:ss - dd/MM/yyyy',
+                          { timeZone: 'Asia/Ho_Chi_Minh' }
+                        )}
+                      </strong>
                     ) : (
                       <i className='fas fa-times' style={{ color: 'red' }} />
                     )}

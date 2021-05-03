@@ -369,7 +369,6 @@ const OrderScreen = ({ match, history }) => {
 
               {loadingDeliver && <Loader />}
               {userInfo &&
-                order.isPaid &&
                 !order.isDelivered &&
                 order.orderStatus === 'Đã giao hàng' && (
                   <ListGroup.Item className='border-0'>

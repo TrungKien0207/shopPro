@@ -46,6 +46,12 @@ const productSchema = mongoose.Schema(
       required: false,
     },
 
+    supplier: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Supplier',
+      required: false,
+    },
+
     description: {
       type: String,
       required: true,
