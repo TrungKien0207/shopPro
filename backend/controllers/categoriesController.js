@@ -32,7 +32,7 @@ const getCategoryAd = asyncHandler(async (req, res) => {
   const cat = await Category.find({})
   setTimeout(() => {
     res.json(cat)
-  }, 2500)
+  }, 100)
 })
 
 //* @desc       Get category by ID

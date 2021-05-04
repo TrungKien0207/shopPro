@@ -152,7 +152,7 @@ const getUsers = asyncHandler(async (req, res) => {
   const users = await User.find({})
   setTimeout(() => {
     res.json(users)
-  }, 1000)
+  }, 100)
 })
 
 //* @desc       Delete user user
@@ -174,7 +174,7 @@ const deleteUsers = asyncHandler(async (req, res) => {
 //* @route      GET /api/users/:id
 //* @access     Private/Admin
 const getUsersById = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.params.id).select('-password')
+  const user = await User.findById(req.params.id)
   if (user) {
     res.json(user)
   } else {
@@ -193,16 +193,20 @@ const updateUser = asyncHandler(async (req, res) => {
     user.name = req.body.name || user.name
     user.email = req.body.email || user.email
     user.isAdmin = req.body.isAdmin || user.isAdmin
+    user.password = req.body.password || user.password
 
     const updateUser = await user.save()
 
-    res.json({
-      _id: updateUser._id,
-      name: updateUser.name,
-      email: updateUser.email,
-      avatar: updateUser.avatar,
-      isAdmin: updateUser.isAdmin,
-    })
+    setTimeout(() => {
+      res.json({
+        _id: updateUser._id,
+        name: updateUser.name,
+        email: updateUser.email,
+        avatar: updateUser.avatar,
+        isAdmin: updateUser.isAdmin,
+        password: updateUser.password,
+      })
+    }, 2000)
   } else {
     res.status(404)
     throw new Error('User not found')
