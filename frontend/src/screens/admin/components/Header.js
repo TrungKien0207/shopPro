@@ -228,7 +228,7 @@ function Header(props) {
                     role={undefined}
                     transition
                     disablePortal
-                    style={{ zIndex: '2' }}
+                    style={{ zIndex: '5' }}
                   >
                     {({ TransitionProps, placement }) => (
                       <Grow {...TransitionProps}>

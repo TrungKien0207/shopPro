@@ -9,6 +9,8 @@ import Loader from '../components/Loader'
 import ProgressLine from '../components/ProgressLine'
 import Message from '../components/Message'
 import configAuth from '../configAuth'
+import Footer from '../components/Footer.js'
+import Header from '../components/Header.js'
 
 const firebaseApp = firebase.initializeApp(configAuth)
 
@@ -81,6 +83,7 @@ function LoginScreen({ location, history }) {
 
   return (
     <>
+      <Header />
       <Row className='shadow p-5 card_color ml-4 mr-4'>
         <Col md={7}>
           <div className='d-flex justify-content-center'>
@@ -199,6 +202,7 @@ function LoginScreen({ location, history }) {
           </div>
         </Col>
       </Row>
+      <Footer />
     </>
   )
 }

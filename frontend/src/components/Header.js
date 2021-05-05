@@ -260,6 +260,27 @@ function Header(props) {
                               id='menu-list-grow'
                               onKeyDown={handleListKeyDown}
                             >
+                              {userInfo && userInfo.isAdmin && (
+                                <MenuItem onClick={handleClose}>
+                                  <Link
+                                    to='/admin'
+                                    className={classes.link}
+                                    style={{
+                                      color: 'black',
+                                      fontSize: '0.8rem',
+                                      letterSpacing: '0.05rem',
+                                    }}
+                                  >
+                                    <Image
+                                      src='https://img.icons8.com/fluent/24/000000/user-male-circle.png'
+                                      className='pr-1'
+                                    />
+                                    <strong className='text-capitalize'>
+                                      Quản lí
+                                    </strong>
+                                  </Link>
+                                </MenuItem>
+                              )}
                               <MenuItem onClick={handleClose}>
                                 <Link
                                   to='/profile'
@@ -411,93 +432,6 @@ function Header(props) {
                       </Grow>
                     )}
                   </Popper>
-                </>
-              )}
-
-              {userInfo && userInfo.isAdmin && (
-                <>
-                  <NavDropdown
-                    title={
-                      <Image src='https://img.icons8.com/fluent/38/000000/favorites-shield.png' />
-                    }
-                    id='nav-dropdown'
-                    className='pt-1 navbar-right text-start'
-                    style={{ fontSize: '1rem', zIndex: '5' }}
-                    alignRight
-                    variant='light'
-                    pullRight
-                  >
-                    <div>
-                      <LinkContainer to='/admin/userlist'>
-                        <NavDropdown.Item>
-                          <Image
-                            className='pr-1'
-                            src='https://img.icons8.com/fluent/24/000000/user-menu-male.png'
-                          />
-                          <strong
-                            className='text-capitalize'
-                            style={{
-                              fontSize: '0.8rem',
-                              letterSpacing: '0.05rem',
-                            }}
-                          >
-                            Thành viên
-                          </strong>
-                        </NavDropdown.Item>
-                      </LinkContainer>
-                      <LinkContainer to='/admin/productlist'>
-                        <NavDropdown.Item>
-                          <Image
-                            className='pr-1'
-                            src='https://img.icons8.com/fluent/24/000000/box-settings-1.png'
-                          />
-                          <strong
-                            style={{
-                              fontSize: '0.8rem',
-                              letterSpacing: '0.05rem',
-                            }}
-                            className='text-capitalize'
-                          >
-                            Sản phẩm
-                          </strong>
-                        </NavDropdown.Item>
-                      </LinkContainer>
-                      <LinkContainer to='/admin/orderlist'>
-                        <NavDropdown.Item>
-                          <Image
-                            className='pr-1'
-                            src='https://img.icons8.com/fluent/24/000000/purchase-order.png'
-                          />
-                          <strong
-                            style={{
-                              fontSize: '0.8rem',
-                              letterSpacing: '0.05rem',
-                            }}
-                            className='text-capitalize'
-                          >
-                            Đơn hàng
-                          </strong>
-                        </NavDropdown.Item>
-                      </LinkContainer>
-                      <LinkContainer to='/admin/categorieslist'>
-                        <NavDropdown.Item>
-                          <Image
-                            className='pr-1'
-                            src='https://img.icons8.com/fluent/24/000000/category.png'
-                          />
-                          <strong
-                            style={{
-                              fontSize: '0.8rem',
-                              letterSpacing: '0.05rem',
-                            }}
-                            className='text-capitalize'
-                          >
-                            Danh mục
-                          </strong>
-                        </NavDropdown.Item>
-                      </LinkContainer>
-                    </div>
-                  </NavDropdown>
                 </>
               )}
             </Nav>

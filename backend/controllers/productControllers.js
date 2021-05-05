@@ -69,9 +69,15 @@ const createProduct = asyncHandler(async (req, res) => {
     description,
     image,
     brand,
-    category,
+    categoryy,
     countInStock,
+    supplierr,
+    mass,
+    hdsd,
+    hdbq,
   } = req.body
+
+  console.log(req.body)
 
   const product = new Product({
     user: req.user._id,
@@ -80,8 +86,12 @@ const createProduct = asyncHandler(async (req, res) => {
     description: description,
     image: image,
     brand: brand,
-    category: category,
+    category: categoryy,
     countInStock: countInStock,
+    mass: mass,
+    hdbq: hdbq,
+    hdsd: hdsd,
+    supplier: supplierr,
   })
 
   const createdProduct = await product.save()
@@ -114,8 +124,6 @@ const updateProduct = asyncHandler(async (req, res) => {
     product.brand = brand
     product.category = category
     product.countInStock = countInStock
-
-    console.log(product.category)
 
     const updatedProduct = await product.save()
     res.json(updatedProduct)

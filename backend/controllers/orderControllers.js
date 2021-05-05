@@ -1,5 +1,14 @@
 import asyncHandler from 'express-async-handler'
 import Order from '../models/orderModel.js'
+import Product from '../models/productModel.js'
+
+async function updateStock(id, quantity) {
+  const product = await Product.findById(id)
+
+  product.countInStock = product.countInStock - quantity
+
+  await product.save()
+}
 
 //* @desc       Create new order
 //* @route      POST /api/order
@@ -28,6 +37,21 @@ const addOrderItems = asyncHandler(async (req, res) => {
       taxPrice,
       shippingPrice,
       totalPrice,
+    })
+
+    order.orderItems.map(async (item) => {
+      const p = item.product
+      const q = item.qty
+
+      const product = await Product.findById(p)
+
+      console.log('product', product)
+
+      product.countInStock = product.countInStock - q
+
+      console.log('countInStock', product.countInStock)
+
+      await product.save()
     })
 
     const createdOrder = await order.save()
@@ -115,9 +139,16 @@ const getMyOrders = asyncHandler(async (req, res) => {
 //* @access     Private/Admin
 const getOrders = asyncHandler(async (req, res) => {
   const orders = await Order.find({}).populate('user', 'id name')
+
+  let totalAmount = 0
+
+  orders.forEach((order) => {
+    totalAmount += order.totalPrice
+  })
+
   setTimeout(() => {
-    res.json(orders)
-  }, 1000)
+    res.json({ orders, totalAmount })
+  }, 100)
 })
 
 //* @desc       Delete orders

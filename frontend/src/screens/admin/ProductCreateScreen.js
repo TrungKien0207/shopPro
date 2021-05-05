@@ -1,6 +1,6 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
-import { Button, Col, Container, Form, Row } from 'react-bootstrap'
+import { Button, Col, Container, Form, Image, Row } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { listCategoriesAdm } from '../../actions/categoryAction'
@@ -12,6 +12,11 @@ import Announcement from '../../components/Announcement'
 import { PRODUCT_CREATE_RESET } from '../../constants/productConstants'
 import SideBar from './components/SideBar'
 import Header from './components/Header'
+import { listSupplierAdm } from '../../actions/supplierActions'
+
+function formatPrice(n, currency) {
+  return n.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + currency
+}
 
 const ProductCreateScreen = () => {
   const [name, setName] = useState('')
@@ -21,6 +26,10 @@ const ProductCreateScreen = () => {
   const [categoryy, setCategory] = useState('')
   const [countInStock, setCountInStock] = useState(0)
   const [description, setDescription] = useState('')
+  const [mass, setMass] = useState('')
+  const [hdsd, setHdsd] = useState('')
+  const [hdbq, setHdbq] = useState('')
+  const [supplierr, setSupplier] = useState('')
   const [uploading, setUploading] = useState(false)
 
   const dispatch = useDispatch()
@@ -36,9 +45,10 @@ const ProductCreateScreen = () => {
   } = productCreate
 
   const categoriesList = useSelector((state) => state.categoriesList)
-  const { loading: loadingCat, error: errorCat, category } = categoriesList
+  const { category } = categoriesList
 
-  console.log('hihi', category)
+  const supplierListAdm = useSelector((state) => state.supplierListAdm)
+  const { supplier } = supplierListAdm
 
   const submitHandler = (e) => {
     e.preventDefault()
@@ -51,6 +61,10 @@ const ProductCreateScreen = () => {
         brand,
         categoryy,
         countInStock,
+        supplierr,
+        hdsd,
+        hdbq,
+        mass,
       })
     )
   }
@@ -84,31 +98,35 @@ const ProductCreateScreen = () => {
     } else {
       if (userInfo) {
         dispatch(listCategoriesAdm())
+        dispatch(listSupplierAdm())
       }
     }
   }, [dispatch, userInfo, successCreate])
   return (
     <>
       <Header />
-      <Row style={{ backgroundColor: '#001529' }}>
+      <Row style={{ backgroundColor: '#b68973' }}>
         <Col md={2} className='p-0 '>
           <SideBar />
         </Col>
-        <Col md={10} className='pl-0 '>
+        <Col md={10} className='pl-0 pr-4 '>
           <>
             {/* {loadingCreate && (
             <Announcement variant='success'> Thêm thành công</Announcement>
           ) && <Loader />}
         {errorCreate && <Announcement>{errorCreate}</Announcement>} */}
+            {loadingCreate && (
+              <MessageSuccess variant='Thêm thành công'> </MessageSuccess>
+            )}
             {loadingCreate ? (
-              <Announcement> Thêm thành công</Announcement> && <Loader />
+              <Loader />
             ) : errorCreate ? (
               <Message>{errorCreate}</Message>
             ) : (
               <>
                 <Form
                   onSubmit={submitHandler}
-                  className='bg-light border-0'
+                  className='bg-light border-0 pt-3 pb-3'
                   fluid
                 >
                   <h2 className='text-center mb-4'>Thêm sản phẩm</h2>
@@ -130,20 +148,31 @@ const ProductCreateScreen = () => {
                     <Form.Label as='p' className='mb-1'>
                       Ảnh
                     </Form.Label>
-                    <Form.Control
-                      className='border border-grey'
-                      type='text'
-                      placeholder='Enter image url'
-                      value={image}
-                      onChange={(e) => setImage(e.target.value)}
-                    ></Form.Control>
-                    <Form.File
-                      className='border border-grey'
-                      id='image-file'
-                      label='Choose File'
-                      custom
-                      onChange={uploadFileHandler}
-                    ></Form.File>
+
+                    <Row>
+                      <Col md={6} className='align-items-center d-flex'>
+                        <Form.File
+                          className='border border-grey'
+                          id='image-file'
+                          label='Choose File'
+                          custom
+                          onChange={uploadFileHandler}
+                        ></Form.File>
+                      </Col>
+                      <Col md={2}>
+                        {image && (
+                          <Image
+                            style={{
+                              width: '4rem',
+                              height: '4rem',
+                            }}
+                            src={image}
+                            className='rounded avatar_img'
+                            fluid
+                          />
+                        )}
+                      </Col>
+                    </Row>
                     {uploading && <Loader />}
                   </Form.Group>
 
@@ -222,6 +251,53 @@ const ProductCreateScreen = () => {
                     </Col>
                   </Row>
 
+                  <Row>
+                    <Col md={6}>
+                      <Form.Group
+                        controlId='countInStock'
+                        className='pl-3 pr-3'
+                      >
+                        <Form.Label as='p' className='mb-1 text-center'>
+                          Khối lượng
+                        </Form.Label>
+                        <Form.Control
+                          className='border border-grey rounded-pill text-center'
+                          type='text'
+                          placeholder='Enter countInStock'
+                          value={mass}
+                          onChange={(e) => setMass(e.target.value)}
+                        ></Form.Control>
+                      </Form.Group>
+                    </Col>
+                    <Col md={6}>
+                      <Form.Group controlId='category' className='pl-3 pr-3'>
+                        <Form.Label as='p' className='mb-1 text-center'>
+                          Nhà cung cấp
+                        </Form.Label>
+                        <Form.Control
+                          className='border border-grey rounded-pill '
+                          type='text'
+                          as='select'
+                          placeholder='Enter category'
+                          value={supplierr}
+                          onChange={(e) => setSupplier(e.target.value)}
+                        >
+                          <option></option>
+                          {supplier &&
+                            supplier.map((cat, index) => (
+                              <option
+                                style={{ color: 'black' }}
+                                key={index}
+                                value={cat._id}
+                              >
+                                {cat.name}
+                              </option>
+                            ))}
+                        </Form.Control>
+                      </Form.Group>
+                    </Col>
+                  </Row>
+
                   <Form.Group controlId='description' className='pl-3 pr-3'>
                     <Form.Label as='p' className='mb-1 ml-5'>
                       Nội dung
@@ -234,6 +310,36 @@ const ProductCreateScreen = () => {
                       placeholder='Enter description'
                       value={description}
                       onChange={(e) => setDescription(e.target.value)}
+                    ></Form.Control>
+                  </Form.Group>
+
+                  <Form.Group controlId='description' className='pl-3 pr-3'>
+                    <Form.Label as='p' className='mb-1 ml-5'>
+                      Hướng dẫn sử dụng
+                    </Form.Label>
+                    <Form.Control
+                      className='border border-grey rounded-pill'
+                      type='text'
+                      rows={3}
+                      as='textarea'
+                      placeholder='Enter description'
+                      value={hdsd}
+                      onChange={(e) => setHdsd(e.target.value)}
+                    ></Form.Control>
+                  </Form.Group>
+
+                  <Form.Group controlId='description' className='pl-3 pr-3'>
+                    <Form.Label as='p' className='mb-1 ml-5'>
+                      Hướng dẫn bảo quản
+                    </Form.Label>
+                    <Form.Control
+                      className='border border-grey rounded-pill'
+                      type='text'
+                      rows={3}
+                      as='textarea'
+                      placeholder='Enter description'
+                      value={hdbq}
+                      onChange={(e) => setHdbq(e.target.value)}
                     ></Form.Control>
                   </Form.Group>
 

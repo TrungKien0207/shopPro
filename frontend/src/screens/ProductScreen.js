@@ -32,6 +32,8 @@ import { Skeleton } from 'antd'
 import { format, utcToZonedTime } from 'date-fns-tz'
 import { PRODUCT_CREATE_REVIEW_RESET } from '../constants/productConstants.js'
 import ProgressLine from '../components/ProgressLine.js'
+import Footer from '../components/Footer.js'
+import Header from '../components/Header.js'
 
 format(new Date(2014, 1, 11), 'dd/MM/yyyy')
 
@@ -137,8 +139,9 @@ function ProductScreen({ history, match }) {
 
   return (
     <>
-      {successProductReview && <MessageSuccess variant='Success' />}
-      <div className='ml-4 mr-4'>
+      {/* {successProductReview && <MessageSuccess variant='Success' />} */}
+      <Header />
+      <div className='ml-4 mr-4 mb-4'>
         <Link className='btn btn-light my-3 rounded-pill' to='/'>
           <i className='fas fa-arrow-left pr-2'></i>
           Quay lại
@@ -151,7 +154,7 @@ function ProductScreen({ history, match }) {
           <>
             <Meta title={product.name} />
             <Row className='container-productGreen mb-2 rounded shadow card_color'>
-              <Col md={5} className='p-3 img-productGreen'>
+              <Col md={6} className='p-3 img-productGreen'>
                 <Image
                   className='rounded'
                   src={product.image}
@@ -160,12 +163,12 @@ function ProductScreen({ history, match }) {
                 />
               </Col>
 
-              <Col md={7} className='text-left p-1'>
+              <Col md={6} className='text-left p-1'>
                 <Row className='pl-4 pr-2'>
                   <ListGroup variant='flush' className='pr-3'>
                     <ListGroup.Item className='border-0 pb-0'>
                       <strong>
-                        <h5 className='border-0 pb-0'>{product.name}</h5>
+                        <h3 className='border-0 pb-0'>{product.name}</h3>
                       </strong>
                     </ListGroup.Item>
 
@@ -177,11 +180,27 @@ function ProductScreen({ history, match }) {
                     </ListGroup.Item>
 
                     <ListGroup.Item className='text-justify'>
-                      <p>{product.description}</p>
+                      <p className='mb-0'>{product.description}</p>
+                    </ListGroup.Item>
+                    <ListGroup.Item className='text-justify'>
+                      <Row>
+                        <Col md={6} className='d-flex align-items-center'>
+                          <h6 className='mb-0 pr-2'>Khối lượng</h6>
+                          <p className='mb-0'>{product.mass}</p>
+                        </Col>
+                      </Row>
+                    </ListGroup.Item>
+                    <ListGroup.Item className='text-justify'>
+                      <h6 className='mb-0'>Hướng dẫn sử dụng</h6>
+                      <p className='mb-0'>{product.hdsd}</p>
+                    </ListGroup.Item>
+                    <ListGroup.Item className='text-justify border-bottom mb-2'>
+                      <h6 className='mb-0'>Bảo quản</h6>
+                      <p className='mb-0'>{product.hdbq}</p>
                     </ListGroup.Item>
                   </ListGroup>
 
-                  <ListGroup variant='flush' className='border-0 pt-0'>
+                  <ListGroup variant='flush' className='border-0 pt-0 mb-4'>
                     <div className='group-items pt-2 pb-2 ml-4 mr-4 rounded shadow'>
                       <ListGroup.Item className='border-0 pt-0 pb-0 mb-0 pr-0 group-items'>
                         <h2 className='text-lowercase'>
@@ -446,6 +465,7 @@ function ProductScreen({ history, match }) {
           </>
         )}
       </div>
+      <Footer />
     </>
   )
 }

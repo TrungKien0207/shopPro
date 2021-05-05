@@ -7,6 +7,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { savePaymentMethod } from '../actions/cartActions'
 import FormContainer from '../components/FormContainer'
 import Step from '../components/Step'
+import Footer from '../components/Footer.js'
+import Header from '../components/Header.js'
 
 export const PaymentScreen = ({ history }) => {
   const cart = useSelector((state) => state.cart)
@@ -23,12 +25,13 @@ export const PaymentScreen = ({ history }) => {
   const submitHandler = (e) => {
     e.preventDefault()
     dispatch(savePaymentMethod(paymentMethod))
-    history.push('./placeorder')
+    history.push('/placeorder')
   }
 
   return (
     <>
-      <Row className='shadow p-2 card_color '>
+      <Header />
+      <Row className='shadow p-2 card_color m-4'>
         <Col md={6} className='d-flex align-items-center'>
           <Image src='/background/payment.jpg' fluid />
         </Col>
@@ -73,6 +76,7 @@ export const PaymentScreen = ({ history }) => {
           </div>
         </Col>
       </Row>
+      <Footer />
     </>
   )
 }

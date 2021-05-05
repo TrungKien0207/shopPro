@@ -1,38 +1,82 @@
 import { React, useState } from 'react'
 import { Form, Button, Image, InputGroup } from 'react-bootstrap'
 import SearchIcon from '@material-ui/icons/Search'
-import { FormGroup, Input } from '@material-ui/core'
-import InputBase from '@material-ui/core/InputBase'
+import { ButtonBase, FormGroup, Input } from '@material-ui/core'
+import SpeechRecognition, {
+  useSpeechRecognition,
+} from 'react-speech-recognition'
+import ClearIcon from '@material-ui/icons/Clear'
 
 const SearchBox = ({ history }) => {
   const [keyword, setKeyword] = useState('')
 
   const submitHandle = (e) => {
+    // setKeyword(transcript)
     e.preventDefault()
     if (keyword.trim()) {
-      history.push(`/search/${keyword}`)
+      if (keyword) {
+        history.push(`/search/${keyword}`)
+      } else {
+        history.push(`/search/${transcript}`)
+      }
     } else {
       history.push('/')
     }
   }
 
+  const { transcript, resetTranscript } = useSpeechRecognition()
+
+  if (!SpeechRecognition.browserSupportsSpeechRecognition()) {
+    return null
+  }
+
+  const click = () => {
+    if (transcript) {
+      setKeyword(transcript)
+    }
+  }
+
+  const clear = () => {
+    setKeyword(' ')
+    resetTranscript()
+  }
+
   return (
     <Form onSubmit={submitHandle} inline>
-      <div className='d-flex'>
+      <div className='d-flex align-items-center'>
         <Form.Control
           type='text'
           name='q'
-          placeholder='Search Product...'
+          placeholder='Tìm kiếm sản phẩm.'
           className='mr-sm-2 ml-sm-5 rounded-pill'
           onChange={(e) => setKeyword(e.target.value)}
+          value={transcript ? transcript : keyword}
           style={{ width: '30rem' }}
         ></Form.Control>
+        <Button
+          variant='outline-light'
+          className='p-1 text-dark border-0'
+          style={{ marginLeft: '-10%', height: '2rem' }}
+          onClick={clear}
+        >
+          <ClearIcon />
+        </Button>
+
+        <Button
+          variant='outline-light'
+          onClick={SpeechRecognition.startListening}
+          className='p-1 text-dark border-0'
+          style={{ marginLeft: '-10%', fontSize: '1rem' }}
+        >
+          <i className='fa fa-microphone' />
+        </Button>
       </div>
 
       <Button
         type='submit'
         className='p-2 btn_color rounded-pill'
-        style={{ fontSize: '0.7rem' }}
+        style={{ fontSize: '0.7rem', marginLeft: '-8%' }}
+        onClick={click}
       >
         <SearchIcon />
       </Button>

@@ -12,6 +12,8 @@ import Announcement from '../components/Announcement'
 import Loader from '../components/Loader'
 import '../toast.css'
 import { format, utcToZonedTime } from 'date-fns-tz'
+import Footer from '../components/Footer.js'
+import Header from '../components/Header.js'
 
 function formatMoney(n, currency) {
   return n.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + currency
@@ -48,6 +50,7 @@ const MyOrdersScreen = ({ history }) => {
   }, [dispatch, history, userInfo, user])
   return (
     <>
+      <Header />
       {loadingOrders ? (
         <Loader />
       ) : errorOrders ? (
@@ -165,6 +168,7 @@ const MyOrdersScreen = ({ history }) => {
           </Table>
         </>
       )}
+      <Footer />
     </>
   )
 }

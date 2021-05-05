@@ -324,7 +324,7 @@ function UserListScreen({ history }) {
   return (
     <>
       <Header />
-      <Row style={{ backgroundColor: '#001529' }}>
+      <Row style={{ backgroundColor: '#b68973' }}>
         <Col md={2} className='p-0'>
           <SideBar />
         </Col>

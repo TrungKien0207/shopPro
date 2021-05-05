@@ -373,11 +373,11 @@ function ProductListScreen({ history, match }) {
   return (
     <>
       <Header />
-      <Row style={{ backgroundColor: '#001529' }}>
+      <Row style={{ backgroundColor: '#b68973' }}>
         <Col md={2} className='p-0'>
           <SideBar />
         </Col>
-        <Col md={10} className='pl-0'>
+        <Col md={10} className='pl-0 pr-4'>
           <Row className='align-items-center'>
             <Col>
               <h4 className='text-uppercase'>Danh sách sản phẩm</h4>

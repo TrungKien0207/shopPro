@@ -135,8 +135,12 @@ export const createProduct = ({
   description,
   image,
   brand,
-  category,
+  categoryy,
   countInStock,
+  mass,
+  supplierr,
+  hdsd,
+  hdbq,
 }) => async (dispatch, getState) => {
   try {
     dispatch({ type: PRODUCT_CREATE_REQUEST })
@@ -151,11 +155,13 @@ export const createProduct = ({
       description,
       image,
       brand,
-      category,
+      categoryy,
       countInStock,
+      mass,
+      supplierr,
+      hdsd,
+      hdbq,
     }
-
-    console.log('product post', product)
 
     const config = {
       headers: {
@@ -163,11 +169,9 @@ export const createProduct = ({
       },
     }
 
-    const { data } = await axios.post(
-      `/api/products/`,
-      { name, price, description, image, brand, category, countInStock },
-      config
-    )
+    const { data } = await axios.post(`/api/products/`, product, config)
+
+    console.log(data)
 
     dispatch({
       type: PRODUCT_CREATE_SUCCESS,

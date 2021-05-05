@@ -35,6 +35,7 @@ function HomeScreen({ match, history }) {
   return (
     <>
       <Meta />
+      <Header />
       {/* {!keyword && (
         <ProductCarousel className='m-0' style={{ width: '100vh' }} />
       )} */}
@@ -65,6 +66,7 @@ function HomeScreen({ match, history }) {
           </div>
         </>
       )}
+      <Footer />
     </>
   )
 }

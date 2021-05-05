@@ -51,11 +51,10 @@ const SideBar = () => {
           theme='dark'
           inlineCollapsed={state}
           selectedKeys={selectedKey}
-          style={{ height: '100vh' }}
-          className='shadow'
+          style={{ height: '100vh', backgroundColor: '#b68973' }}
         >
           <Menu.Item key='/admin' icon={<PieChartOutlined />}>
-            <Link href='/admin' className='text-none-deractor'>
+            <Link href='/admin' className='text-decoration-none '>
               Dashboard
             </Link>
           </Menu.Item>
@@ -80,12 +79,20 @@ const SideBar = () => {
             </Link>
           </Menu.Item>
           <SubMenu key='sub1' icon={<MailOutlined />} title='Sản phẩm'>
-            <Menu.Item key='/admin/productlist'>
+            <Menu.Item
+              key='/admin/productlist'
+              className='m-0 pb-2'
+              style={{ backgroundColor: '#587B7F' }}
+            >
               <Link href='/admin/productlist' className='text-decoration-none'>
                 Danh sách
               </Link>
             </Menu.Item>
-            <Menu.Item key='/admin/product/create'>
+            <Menu.Item
+              key='/admin/product/create'
+              className='m-0  pb-4'
+              style={{ backgroundColor: '#587B7F' }}
+            >
               <Link
                 href='/admin/product/create'
                 className='text-decoration-none'

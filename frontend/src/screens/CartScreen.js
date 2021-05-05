@@ -18,6 +18,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { addToCart, removeFromCart } from '../actions/cartActions.js'
 import { getUserDetails } from '../actions/userActions.js'
+import Footer from '../components/Footer.js'
+import Header from '../components/Header.js'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -85,13 +87,14 @@ export const CartScreen = ({ match, location, history }) => {
   // }
 
   return (
-    <Col>
+    <>
+      <Header />
       {/* <Link className='btn btn-light my-3 rounded-pill' to='/'>
         <i class='fas fa-arrow-left pr-2'></i>
         Go back
       </Link> */}
 
-      <Row>
+      <Row className='m-4' style={{ height: '100vh' }}>
         <Col md={8} className='p-0 pr-4 mt-3 text-uppercase'>
           {cartItems.length === 0 ? (
             // <Announcement variant='danger'>
@@ -101,7 +104,7 @@ export const CartScreen = ({ match, location, history }) => {
               <div className='mb-1'>
                 <Link to='/'>
                   <Button className='text-uppercase btn_color rounded-pill'>
-                    Shop now
+                    Mua hàng
                   </Button>
                 </Link>
               </div>
@@ -288,7 +291,8 @@ export const CartScreen = ({ match, location, history }) => {
           </Card>
         </Col>
       </Row>
-    </Col>
+      <Footer />
+    </>
   )
 }
 

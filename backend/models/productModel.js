@@ -35,9 +35,19 @@ const productSchema = mongoose.Schema(
       required: true,
     },
 
-    brand: {
+    mass: {
       type: String,
-      required: true,
+      required: false,
+    },
+
+    hdsd: {
+      type: String,
+      required: false,
+    },
+
+    hdbq: {
+      type: String,
+      required: false,
     },
 
     category: {

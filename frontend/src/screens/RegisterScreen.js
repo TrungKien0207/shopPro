@@ -12,6 +12,8 @@ import { LoadingOutlined, PlusOutlined } from '@ant-design/icons'
 import Avatar from '@material-ui/core/Avatar'
 import { makeStyles } from '@material-ui/core/styles'
 import { deepOrange } from '@material-ui/core/colors'
+import Footer from '../components/Footer.js'
+import Header from '../components/Header.js'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -83,6 +85,7 @@ function RegisterScreen({ location, history }) {
 
   return (
     <>
+      <Header />
       <Row className='shadow p-5 card_color m-0'>
         <Col md={7}>
           <Image src='/background/3071357.jpg' fluid />
@@ -207,6 +210,7 @@ function RegisterScreen({ location, history }) {
           </div>
         </Col>
       </Row>
+      <Footer />
     </>
   )
 }

@@ -27,6 +27,8 @@ import Loader from '../components/Loader'
 import { USER_UPDATE_PROFILE_RESET } from '../constants/userConstants'
 import data from '../data.json'
 import '../toast.css'
+import Footer from '../components/Footer.js'
+import Header from '../components/Header.js'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -241,7 +243,8 @@ function ProfileScreen({ location, history }) {
   }, [dispatch, history, userInfo, user])
 
   return (
-    <div>
+    <>
+      <Header />
       {message && <Announcement variant='danger'>{message}</Announcement>}
       {error && <Announcement variant='danger'>{error}</Announcement>}
       {/* {loading && <Loader />} */}
@@ -653,7 +656,8 @@ function ProfileScreen({ location, history }) {
           </Col>
         </Row>
       </div>
-    </div>
+      <Footer />
+    </>
   )
 }
 

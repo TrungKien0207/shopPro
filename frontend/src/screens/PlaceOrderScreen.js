@@ -7,6 +7,8 @@ import { createOrder } from '../actions/orderActions'
 import Announcement from '../components/Announcement'
 import Message from '../components/Message'
 import Step from '../components/Step'
+import Footer from '../components/Footer.js'
+import Header from '../components/Header.js'
 
 PlaceOrderScreen.propTypes = {}
 
@@ -82,7 +84,8 @@ function PlaceOrderScreen({ history }) {
 
   return (
     <>
-      <Row>
+      <Header />
+      <Row className='m-4'>
         <Col md={8} className='mt-2'>
           <Step step1 step2 step3 step4 />
           <ListGroup
@@ -218,6 +221,7 @@ function PlaceOrderScreen({ history }) {
           </Card>
         </Col>
       </Row>
+      <Footer />
     </>
   )
 }

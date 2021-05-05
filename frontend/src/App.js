@@ -65,7 +65,7 @@ const App = () => {
               <Route path='/' component={HomeScreen} exact />
               <Route path='/search/:keyword' component={HomeScreen} exact />
 
-              <div className='ml-5 mr-5 '>
+              <div>
                 <Route path='/profile' component={ProfileScreen} exact />
 
                 <Route path='/cart/:id?' component={CartScreen} exact />
@@ -83,11 +83,10 @@ const App = () => {
                 <Route path='/shipping' component={ShippingScreen} exact />
                 <Route path='/login' component={LoginScreen} exact />
                 <Route path='/placeorder' component={PlaceOrderScreen} exact />
+                <Route path='/payment' component={PaymentScreen} exact />
               </div>
 
               <Container>
-                <Route path='/payment' component={PaymentScreen} exact />
-
                 <Route
                   path='/admin/productlist/:pageNumber'
                   component={ProductListScreen}

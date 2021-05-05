@@ -14,6 +14,8 @@ import Avatar from '@material-ui/core/Avatar'
 import Chip from '@material-ui/core/Chip'
 import FaceIcon from '@material-ui/icons/Face'
 import DoneIcon from '@material-ui/icons/Done'
+import Footer from '../components/Footer.js'
+import Header from '../components/Header.js'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -78,6 +80,7 @@ const ProductOfCategoryScreen = ({ match }) => {
 
   return (
     <>
+      <Header />
       <div className='pt-2'>
         <Meta />
 
@@ -165,6 +168,7 @@ const ProductOfCategoryScreen = ({ match }) => {
           </>
         )}
       </div>
+      <Footer />
     </>
   )
 }

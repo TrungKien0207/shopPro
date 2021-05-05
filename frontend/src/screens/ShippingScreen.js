@@ -7,6 +7,8 @@ import FormContainer from '../components/FormContainer'
 import SkeletonEffect from '../components/SkeletonEffect'
 import Step from '../components/Step'
 import data from '../data.json'
+import Footer from '../components/Footer.js'
+import Header from '../components/Header.js'
 
 export const ShippingScreen = ({ history }) => {
   const cart = useSelector((state) => state.cart)
@@ -50,10 +52,11 @@ export const ShippingScreen = ({ history }) => {
 
   return (
     <>
+      <Header />
       {loadingUserDetail ? (
         <SkeletonEffect />
       ) : (
-        <Row className='shadow p-2 card_color '>
+        <Row className='shadow p-2 card_color m-4'>
           <Col md={7} className='d-flex align-items-center'>
             <Image src='/background/shipping.jpg' fluid />
           </Col>
@@ -183,6 +186,7 @@ export const ShippingScreen = ({ history }) => {
           </Col>
         </Row>
       )}
+      <Footer />
     </>
   )
 }

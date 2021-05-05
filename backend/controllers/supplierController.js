@@ -33,7 +33,7 @@ const getSupplierAd = asyncHandler(async (req, res) => {
   const cat = await Supplier.find({})
   setTimeout(() => {
     res.json(cat)
-  }, 2500)
+  }, 500)
 })
 
 //* @desc       Get category by ID
