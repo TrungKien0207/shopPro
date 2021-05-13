@@ -76,7 +76,7 @@ const AdminScreen = ({ history }) => {
                       </Card.Subtitle>
                       <Card.Title className='text-center'>
                         <h1 style={{ fontSize: '3rem' }}>
-                          {orders && orders.orders?.length}
+                          {orders && orders.length}
                         </h1>
                       </Card.Title>
                       <Card.Subtitle className='mb-2 text-center'>
@@ -117,8 +117,8 @@ const AdminScreen = ({ history }) => {
                           style={{ fontSize: '2.5rem' }}
                           className='text-lowercase'
                         >
-                          {orders?.totalAmount &&
-                            format(orders?.totalAmount, 'đ')}
+                          {/* {orders?.totalAmount &&
+                            format(orders?.totalAmount, 'đ')} */}
                         </h2>
                       </Card.Title>
 

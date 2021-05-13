@@ -56,7 +56,7 @@ const SearchBox = ({ history }) => {
         <Button
           variant='outline-light'
           className='p-1 text-dark border-0'
-          style={{ marginLeft: '-10%', height: '2rem' }}
+          style={{ marginLeft: '-14%', height: '2rem' }}
           onClick={clear}
         >
           <ClearIcon />
@@ -74,8 +74,8 @@ const SearchBox = ({ history }) => {
 
       <Button
         type='submit'
-        className='p-2 btn_color rounded-pill'
-        style={{ fontSize: '0.7rem', marginLeft: '-8%' }}
+        className='p-2 btn_color rounded-circle'
+        style={{ fontSize: '0.7rem', marginLeft: '-15%' }}
         onClick={click}
       >
         <SearchIcon />

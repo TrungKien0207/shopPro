@@ -205,20 +205,20 @@ function Footer(props) {
 
               <div className='d-flex justify-content-evenly'>
                 <Link
-                  href='https://mail.google.com/'
+                  href='#'
                   className='border bg-secondary p-2 rounded-circle'
                 >
                   <Image src='https://img.icons8.com/fluent/24/000000/gmail-new.png' />
                 </Link>
                 <Link
                   className='border bg-secondary p-2 rounded-circle'
-                  href='https://www.facebook.com/'
+                  href='#'
                 >
                   <Image src='https://img.icons8.com/fluent/24/000000/facebook-new.png' />
                 </Link>
                 <Link
                   className='border bg-secondary p-2 rounded-circle'
-                  href='https://www.twitter.com/'
+                  href='#'
                 >
                   <Image src='https://img.icons8.com/fluent/24/000000/twitter.png' />
                 </Link>

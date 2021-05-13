@@ -1,15 +1,16 @@
 import express from 'express'
 import {
-  createProduct,
-  createProductReview,
-  deleteProduct,
-  filterCategoriesProduct,
-  filterPriceProduct,
-  getCategoriesProduct,
-  getProductById,
-  getProducts,
-  getTopProducts,
-  updateProduct,
+   createProduct,
+   createProductReview,
+   deleteProduct,
+   filterCategoriesProduct,
+   filterPriceProduct,
+   getCategoriesProduct,
+   getProductById,
+   getProducts,
+   getTopProducts,
+   newProduct,
+   updateProduct,
 } from '../controllers/productControllers.js'
 import { admin, protect } from '../middleware/authMiddleware.js'
 
@@ -25,9 +26,9 @@ router.route('/filter/category').post(filterCategoriesProduct)
 router.route('/filter/price').post(filterPriceProduct)
 
 router
-  .route('/:id')
-  .get(getProductById)
-  .delete(protect, admin, deleteProduct)
-  .put(protect, admin, updateProduct)
+   .route('/:id')
+   .get(getProductById)
+   .delete(protect, admin, deleteProduct)
+   .put(protect, admin, updateProduct)
 
 export default router

@@ -77,7 +77,7 @@ p {
 .product-card:active,
 .product-card:visited {
   box-shadow: rgb(0 0 10 / 10%) 0 0 2rem;
-  border: 0.25px solid #fff;
+  border: 0.25px solid rgb(224, 224, 224);
   border-radius: 0.5rem !important;
   z-index: 1;
 }
@@ -312,4 +312,16 @@ p {
 .steps-shipping {
   border: 0.1rem solid grey !important;
   border-radius: 0.5rem;
+}
+
+.ant-carousel .slick-dots li button {
+  background: #fff;
+  opacity: 0.4;
+  height: 0.5rem;
+}
+
+.ant-carousel .slick-dots li.slick-active button {
+  opacity: 1;
+  background: #fff;
+  height: 0.5rem;
 }

@@ -343,7 +343,7 @@ function OrderListScreen({ history, match }) {
           ) : error ? (
             <Announcement variant='danger'>{error}</Announcement>
           ) : (
-            <div className={classes.root}>
+            <div className={classes.root + 'p-4'}>
               <Paper className={classes.paper}>
                 <TableContainer
                   className='text-center'
