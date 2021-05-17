@@ -63,10 +63,8 @@ const OrderScreen = ({ match, history }) => {
    const { loading: loadingDeliver, success: successDeliver } = orderDeliver
 
    const orderUpdateByMember = useSelector((state) => state.orderUpdateByMember)
-   const {
-      loading: loadingByMember,
-      success: successByMember,
-   } = orderUpdateByMember
+   const { loading: loadingByMember, success: successByMember } =
+      orderUpdateByMember
 
    const userLogin = useSelector((state) => state.userLogin)
    const { userInfo } = userLogin
@@ -74,7 +72,7 @@ const OrderScreen = ({ match, history }) => {
    if (!loading) {
       //   Calculate prices
       const addDecimals = (num) => {
-         return Math.round(num * 100) / 100
+         return Math.round(num)
       }
 
       order.itemsPrice = addDecimals(
@@ -389,11 +387,8 @@ const OrderScreen = ({ match, history }) => {
                                     <h5 className='mb-0'>Tổng cộng</h5>
                                  </Col>
                                  <Col md={4}>
-                                    <h5 className='mb-0 text-danger'>
-                                       {formatMoney(
-                                          order.totalPrice * 100,
-                                          'đ'
-                                       )}
+                                    <h5 className='mb-0 text-danger text-lowercase'>
+                                       {formatMoney(order.totalPrice, 'đ')}
                                     </h5>
                                  </Col>
                               </Row>
@@ -409,7 +404,7 @@ const OrderScreen = ({ match, history }) => {
                                        <Loader />
                                     ) : (
                                        <PayPalButton
-                                          amount={order.totalPrice}
+                                          amount={order.totalPrice / 100}
                                           onSuccess={successPaymentHandler}
                                           className='rounded-pill'
                                        />

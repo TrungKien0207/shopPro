@@ -325,3 +325,7 @@ p {
   background: #fff;
   height: 0.5rem;
 }
+
+.table_th {
+  padding: 1rem 0 !important;
+}

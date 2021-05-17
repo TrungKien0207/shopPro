@@ -11,6 +11,7 @@ import {
    categoryUpdateReducer,
 } from './reducers/categoriesReducers.js'
 import {
+   orderConsultReducer,
    orderCreateReducer,
    orderDeleteReducer,
    orderDeliverReducer,
@@ -34,6 +35,14 @@ import {
    productUpdateReducer,
 } from './reducers/productReducers'
 import {
+   supplierCreateReducer,
+   supplierDeleteReducer,
+   supplierDetailsReducer,
+   supplierListReducer,
+   supplierListReducerAdm,
+   supplierUpdateReducer,
+} from './reducers/supplierReducers'
+import {
    authReducer,
    userDeleteReducer,
    userDetailsReducer,
@@ -43,14 +52,6 @@ import {
    userUpdateProfileReducer,
    userUpdateReducer,
 } from './reducers/userReducers'
-import {
-   supplierListReducer,
-   supplierListReducerAdm,
-   supplierCreateReducer,
-   supplierDeleteReducer,
-   supplierDetailsReducer,
-   supplierUpdateReducer,
-} from './reducers/supplierReducers'
 
 const reducer = combineReducers({
    productList: productListReducer,
@@ -84,6 +85,7 @@ const reducer = combineReducers({
    orderDelete: orderDeleteReducer,
    orderUpdate: orderUpdateReducer,
    orderUpdateByMember: orderUpdateByMemberReducer,
+   orderConsult: orderConsultReducer,
 
    categoriesList: categoriesListReducer,
    categoriesListAdm: categoriesListReducerAdm,

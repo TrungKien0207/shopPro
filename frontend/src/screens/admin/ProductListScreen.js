@@ -41,6 +41,10 @@ import Message from '../../components/Message'
 import SideBar from './components/SideBar'
 import Header from './components/Header'
 
+function formatMoney(n, currency) {
+   return n.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + currency
+}
+
 function descendingComparator(a, b, orderBy) {
    if (b[orderBy] < a[orderBy]) {
       return -1
@@ -74,13 +78,12 @@ const headCells = [
       disablePadding: true,
       label: 'ID',
    },
-   { id: 'name', numeric: false, disablePadding: false, label: 'NAME' },
-   { id: 'image', numeric: false, disablePadding: false, label: 'IMAGE' },
-   { id: 'price', numeric: true, disablePadding: false, label: 'PRICE' },
-   { id: 'category', numeric: false, disablePadding: false, label: 'CATEGORY' },
-   { id: 'brand', numeric: false, disablePadding: false, label: 'BRAND' },
-   { id: 'quantity', numeric: true, disablePadding: false, label: 'QUANTITY' },
-   { id: 'action', numeric: false, disablePadding: false, label: 'ACTION' },
+   { id: 'name', numeric: false, disablePadding: false, label: 'Tên' },
+   { id: 'image', numeric: false, disablePadding: false, label: 'Ảnh' },
+   { id: 'price', numeric: true, disablePadding: false, label: 'Giá' },
+   { id: 'category', numeric: false, disablePadding: false, label: 'Thể Loại' },
+   { id: 'quantity', numeric: true, disablePadding: false, label: 'Số lượng' },
+   { id: 'action', numeric: false, disablePadding: false, label: '' },
 ]
 
 function EnhancedTableHead(props) {
@@ -276,20 +279,13 @@ function ProductListScreen({ history, match }) {
       success: successDelete,
    } = productDelete
 
-   const categoryDetails = useSelector((state) => state.categoryDetails)
+   const productCreate = useSelector((state) => state.productCreate)
    const {
-      loading: loadingCatDe,
-      error: errorCatDe,
-      category: categoryCatDe,
-   } = categoryDetails
-
-   //  const productCreate = useSelector((state) => state.productCreate)
-   //  const {
-   //     loading: loadingCreate,
-   //     error: errorCreate,
-   //     success: successCreate,
-   //     product: createdProduct,
-   //  } = productCreate
+      loading: loadingCreate,
+      error: errorCreate,
+      success: successCreate,
+      product: createdProduct,
+   } = productCreate
 
    const userLogin = useSelector((state) => state.userLogin)
    const { userInfo } = userLogin
@@ -306,12 +302,12 @@ function ProductListScreen({ history, match }) {
          dispatch(getCategoryDetails(categoryCat.map((e) => e._id)))
       }
 
-      // if (successCreate) {
-      //    history.push(`/admin/product/${createdProduct._id}/edit`)
-      // } else {
-      dispatch(listProducts('', pageNumber))
-      // }
-   }, [dispatch, history, userInfo, successDelete])
+      if (successCreate) {
+         history.push(`/admin/product/${createdProduct._id}/edit`)
+      } else {
+         dispatch(listProducts('', pageNumber))
+      }
+   }, [dispatch, history, userInfo, successDelete, successCreate])
 
    const deleteHandle = (id) => {
       if (window.confirm('You are sure?')) {
@@ -471,7 +467,8 @@ function ProductListScreen({ history, match }) {
                                                    <Checkbox
                                                       checked={isItemSelected}
                                                       inputProps={{
-                                                         'aria-labelledby': labelId,
+                                                         'aria-labelledby':
+                                                            labelId,
                                                       }}
                                                    />
                                                 </TableCell>
@@ -481,26 +478,33 @@ function ProductListScreen({ history, match }) {
                                                    scope='row'
                                                    padding='none'
                                                    align='center'
+                                                   className='text-center text-capitalize'
                                                 >
                                                    {product._id}
                                                 </TableCell>
                                                 <TableCell
                                                    align='left'
-                                                   component='th'
-                                                   className='text-center'
+                                                   className='text-center text-capitalize'
                                                 >
-                                                   {product.name}
+                                                   <p className='text-capitalize'>
+                                                      {product.name}
+                                                   </p>
                                                 </TableCell>
                                                 <TableCell align='center'>
                                                    <Image
-                                                      src={product.image}
+                                                      src={
+                                                         product.images[0].url
+                                                      }
                                                       fluid
-                                                      className='rounded-circle p-1'
+                                                      className='rounded p-1'
                                                    />
                                                 </TableCell>
 
                                                 <TableCell align='center'>
-                                                   ${product.price}
+                                                   {formatMoney(
+                                                      product.price,
+                                                      'đ'
+                                                   )}
                                                 </TableCell>
                                                 <TableCell align='center'>
                                                    {categoryCat &&
@@ -511,9 +515,7 @@ function ProductListScreen({ history, match }) {
                                                             cat.name
                                                       )}
                                                 </TableCell>
-                                                <TableCell align='center'>
-                                                   {product.brand}
-                                                </TableCell>
+
                                                 <TableCell
                                                    align='center'
                                                    style={{ padding: '1px' }}

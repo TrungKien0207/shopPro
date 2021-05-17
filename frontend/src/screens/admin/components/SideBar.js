@@ -32,7 +32,7 @@ const SideBar = () => {
       setState(!state)
    }
 
-   // console.log(selectedKey)
+   console.log(selectedKey)
 
    return (
       <>
@@ -99,7 +99,7 @@ const SideBar = () => {
                   <Menu.Item
                      key='/admin/productlist'
                      className='m-0 pb-2'
-                     style={{ backgroundColor: '#587B7F' }}
+                     // style={{ backgroundColor: '#587B7F' }}
                   >
                      <Link
                         href='/admin/productlist'
@@ -111,7 +111,7 @@ const SideBar = () => {
                   <Menu.Item
                      key='/admin/product/create'
                      className='m-0  pb-4'
-                     style={{ backgroundColor: '#587B7F' }}
+                     // style={{ backgroundColor: '#587B7F' }}
                   >
                      <Link
                         href='/admin/product/create'

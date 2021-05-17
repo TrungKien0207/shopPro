@@ -42,7 +42,7 @@ function PlaceOrderScreen({ history }) {
    )
 
    const addDecimals = (num) => {
-      return Math.round(num * 100) / 100
+      return Math.round(num)
    }
 
    if (cart.shippingAddress.thanhPho === 'Thành phố Hà Nội') {
@@ -55,8 +55,7 @@ function PlaceOrderScreen({ history }) {
 
    // cart.shippingPrice = addDecimals(cart.itemsPrice > 100 ? 0 : 100)
    cart.taxPrice = addDecimals(Number((0.15 * cart.itemsPrice).toFixed(2)))
-   cart.totalPrice =
-      (Number(cart.itemsPrice) + Number(cart.shippingPrice)) / 100
+   cart.totalPrice = Number(cart.itemsPrice) + Number(cart.shippingPrice)
 
    const tempPrice = Number(cart.itemsPrice) + Number(cart.shippingPrice)
 
@@ -210,7 +209,7 @@ function PlaceOrderScreen({ history }) {
                               <strong>Tổng cộng (bao gồm VAT):</strong>
                            </Col>
                            <Col md={4}>
-                              <strong>{format(tempPrice, 'đ')}</strong>
+                              <strong>{format(cart.totalPrice, 'đ')}</strong>
                            </Col>
                         </Row>
                      </ListGroup.Item>
