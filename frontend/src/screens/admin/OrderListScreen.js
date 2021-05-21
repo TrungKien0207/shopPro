@@ -218,7 +218,7 @@ function OrderListScreen({ history, match }) {
 
    const handleSelectAllClick = (event) => {
       if (event.target.checked) {
-         const newSelecteds = orders.map((order) => order._id)
+         const newSelecteds = ord.map((order) => order._id)
          setSelected(newSelecteds)
          return
       }
@@ -263,7 +263,10 @@ function OrderListScreen({ history, match }) {
    const dispatch = useDispatch()
 
    const orderList = useSelector((state) => state.orderList)
-   const { loading, error, orders } = orderList
+   const { loading, error, ordersList } = orderList
+
+   const ord = ordersList?.orders
+   console.log('ord', ordersList && ordersList.orders)
 
    const orderDelete = useSelector((state) => state.orderDelete)
    const {
@@ -273,8 +276,9 @@ function OrderListScreen({ history, match }) {
    } = orderDelete
 
    const emptyRows =
-      orders !== undefined &&
-      rowsPerPage - Math.min(rowsPerPage, orders.length - page * rowsPerPage)
+      ordersList?.orders !== undefined &&
+      rowsPerPage -
+         Math.min(rowsPerPage, ordersList?.orders.length - page * rowsPerPage)
 
    const userLogin = useSelector((state) => state.userLogin)
    const { userInfo } = userLogin
@@ -351,9 +355,9 @@ function OrderListScreen({ history, match }) {
    return (
       <>
          <Header />
-         <Row style={{ backgroundColor: '#b68973' }}>
+         <Row style={{ backgroundColor: '#fff' }}>
             <Col md={2} className='p-0'>
-               <SideBar />
+               <SideBar fluid />
             </Col>
             <Col md={10} className='pl-0'>
                {loadingDelete && <Loader />}
@@ -387,177 +391,183 @@ function OrderListScreen({ history, match }) {
                                  orderBy={orderBy}
                                  onSelectAllClick={handleSelectAllClick}
                                  onRequestSort={handleRequestSort}
-                                 rowCount={orders.length}
+                                 rowCount={ordersList?.orders.length}
                               />
                               <TableBody>
-                                 {stableSort(
-                                    orders,
-                                    getComparator(order, orderBy)
-                                 )
-                                    .slice(
-                                       page * rowsPerPage,
-                                       page * rowsPerPage + rowsPerPage
-                                    )
-                                    .map((order, index) => {
-                                       const isItemSelected = isSelected(
-                                          order._id
+                                 {ordersList &&
+                                    ordersList.orders
+                                       .slice(
+                                          page * rowsPerPage,
+                                          page * rowsPerPage + rowsPerPage
                                        )
-                                       const labelId = `enhanced-table-checkbox-${index}`
+                                       .map((order, index) => {
+                                          const isItemSelected = isSelected(
+                                             order._id
+                                          )
+                                          const labelId = `enhanced-table-checkbox-${index}`
 
-                                       return (
-                                          <TableRow
-                                             hover
-                                             onClick={(event) =>
-                                                handleClick(event, order._id)
-                                             }
-                                             role='checkbox'
-                                             aria-checked={isItemSelected}
-                                             tabIndex={-1}
-                                             key={order._id}
-                                             selected={isItemSelected}
-                                             className='p-0'
-                                          >
-                                             <TableCell
-                                                padding='checkbox'
-                                                className='table_th'
+                                          return (
+                                             <TableRow
+                                                hover
+                                                onClick={(event) =>
+                                                   handleClick(event, order._id)
+                                                }
+                                                role='checkbox'
+                                                aria-checked={isItemSelected}
+                                                tabIndex={-1}
+                                                key={order._id}
+                                                selected={isItemSelected}
+                                                className='p-0'
                                              >
-                                                <Checkbox
-                                                   checked={isItemSelected}
-                                                   inputProps={{
-                                                      'aria-labelledby':
-                                                         labelId,
-                                                   }}
-                                                />
-                                             </TableCell>
-                                             <TableCell
-                                                id={labelId}
-                                                // scope='row'
-                                                // padding='none'
-                                                align='center'
-                                                className='table_th '
-                                             >
-                                                {order._id}
-                                             </TableCell>
-                                             <TableCell
-                                                align='center'
-                                                // component='th'
-                                                className='text-capitalize table_th'
-                                             >
-                                                {order.user && order.user.name}
-                                             </TableCell>
-                                             <TableCell
-                                                align='center'
-                                                className='table_th'
-                                             >
-                                                {format(
-                                                   new utcToZonedTime(
-                                                      order.createdAt,
-                                                      'Asia/Ho_Chi_Minh'
-                                                   ),
-                                                   'HH:mm:ss - dd/MM/yyyy',
-                                                   {
-                                                      timeZone:
-                                                         'Asia/Ho_Chi_Minh',
-                                                   }
-                                                )}
-                                             </TableCell>
-                                             <TableCell
-                                                align='center'
-                                                className='table_th'
-                                             >
-                                                {formatMoney(
-                                                   order.totalPrice,
-                                                   'đ'
-                                                )}
-                                             </TableCell>
-                                             <TableCell
-                                                align='center'
-                                                className='table_th'
-                                             >
-                                                {order.orderItems &&
-                                                   order.orderItems.map(
-                                                      (q) =>
-                                                         q.name.slice(0, 20) +
-                                                         '...'
-                                                   )}
-                                             </TableCell>
-
-                                             <TableCell
-                                                align='center'
-                                                style={{
-                                                   color: 'green',
-                                                   fontWeight: '700',
-                                                }}
-                                                className='table_th'
-                                             >
-                                                {order.isPaid ? (
-                                                   format(
-                                                      new utcToZonedTime(
-                                                         order.paidAt,
-                                                         'Asia/Ho_Chi_Minh'
-                                                      ),
-                                                      'HH:mm:ss - dd/MM/yyyy',
-                                                      {
-                                                         timeZone:
-                                                            'Asia/Ho_Chi_Minh',
-                                                      }
-                                                   )
-                                                ) : (
-                                                   <i
-                                                      className='fas fa-times'
-                                                      style={{ color: 'red' }}
-                                                   ></i>
-                                                )}
-                                             </TableCell>
-                                             <TableCell
-                                                align='center'
-                                                style={{
-                                                   color: 'green',
-                                                   fontWeight: '700',
-                                                }}
-                                                className='table_th'
-                                             >
-                                                {order.isDelivered ? (
-                                                   format(
-                                                      new utcToZonedTime(
-                                                         order.deliveredAt,
-                                                         'Asia/Ho_Chi_Minh'
-                                                      ),
-                                                      'HH:mm:ss - dd/MM/yyyy',
-                                                      {
-                                                         timeZone:
-                                                            'Asia/Ho_Chi_Minh',
-                                                      }
-                                                   )
-                                                ) : (
-                                                   <i
-                                                      className='fas fa-times'
-                                                      style={{ color: 'red' }}
-                                                   ></i>
-                                                )}
-                                             </TableCell>
-                                             <TableCell
-                                                align='center'
-                                                className='table_th'
-                                             >
-                                                <LinkContainer
-                                                   to={`/admin/order/${order._id}/edit`}
+                                                <TableCell
+                                                   padding='checkbox'
+                                                   className='table_th'
                                                 >
-                                                   <Button
-                                                      variant='outline-dark'
-                                                      className='btn-sm btn-unique rounded-pill'
-                                                   >
-                                                      <BubbleChartOutlinedIcon
+                                                   <Checkbox
+                                                      checked={isItemSelected}
+                                                      inputProps={{
+                                                         'aria-labelledby':
+                                                            labelId,
+                                                      }}
+                                                   />
+                                                </TableCell>
+                                                <TableCell
+                                                   id={labelId}
+                                                   // scope='row'
+                                                   // padding='none'
+                                                   align='center'
+                                                   className='table_th '
+                                                >
+                                                   {order._id}
+                                                </TableCell>
+                                                <TableCell
+                                                   align='center'
+                                                   // component='th'
+                                                   className='text-capitalize table_th'
+                                                >
+                                                   {order.user &&
+                                                      order.user.name}
+                                                </TableCell>
+                                                <TableCell
+                                                   align='center'
+                                                   className='table_th'
+                                                >
+                                                   {format(
+                                                      new utcToZonedTime(
+                                                         order.createdAt,
+                                                         'Asia/Ho_Chi_Minh'
+                                                      ),
+                                                      'HH:mm:ss - dd/MM/yyyy',
+                                                      {
+                                                         timeZone:
+                                                            'Asia/Ho_Chi_Minh',
+                                                      }
+                                                   )}
+                                                </TableCell>
+                                                <TableCell
+                                                   align='center'
+                                                   className='table_th'
+                                                >
+                                                   {formatMoney(
+                                                      order.totalPrice,
+                                                      'đ'
+                                                   )}
+                                                </TableCell>
+                                                <TableCell
+                                                   align='center'
+                                                   className='table_th'
+                                                >
+                                                   {order.orderItems &&
+                                                      order.orderItems.map(
+                                                         (q) =>
+                                                            q.name.slice(
+                                                               0,
+                                                               20
+                                                            ) + '...'
+                                                      )}
+                                                </TableCell>
+
+                                                <TableCell
+                                                   align='center'
+                                                   style={{
+                                                      color: 'green',
+                                                      fontWeight: '700',
+                                                   }}
+                                                   className='table_th'
+                                                >
+                                                   {order.isPaid ? (
+                                                      format(
+                                                         new utcToZonedTime(
+                                                            order.paidAt,
+                                                            'Asia/Ho_Chi_Minh'
+                                                         ),
+                                                         'HH:mm:ss - dd/MM/yyyy',
+                                                         {
+                                                            timeZone:
+                                                               'Asia/Ho_Chi_Minh',
+                                                         }
+                                                      )
+                                                   ) : (
+                                                      <i
+                                                         className='fas fa-times'
                                                          style={{
-                                                            fontSize: '1.2rem',
+                                                            color: 'red',
                                                          }}
-                                                      />
-                                                   </Button>
-                                                </LinkContainer>
-                                             </TableCell>
-                                          </TableRow>
-                                       )
-                                    })}
+                                                      ></i>
+                                                   )}
+                                                </TableCell>
+                                                <TableCell
+                                                   align='center'
+                                                   style={{
+                                                      color: 'green',
+                                                      fontWeight: '700',
+                                                   }}
+                                                   className='table_th'
+                                                >
+                                                   {order.isDelivered ? (
+                                                      format(
+                                                         new utcToZonedTime(
+                                                            order.deliveredAt,
+                                                            'Asia/Ho_Chi_Minh'
+                                                         ),
+                                                         'HH:mm:ss - dd/MM/yyyy',
+                                                         {
+                                                            timeZone:
+                                                               'Asia/Ho_Chi_Minh',
+                                                         }
+                                                      )
+                                                   ) : (
+                                                      <i
+                                                         className='fas fa-times'
+                                                         style={{
+                                                            color: 'red',
+                                                         }}
+                                                      ></i>
+                                                   )}
+                                                </TableCell>
+                                                <TableCell
+                                                   align='center'
+                                                   className='table_th'
+                                                >
+                                                   <LinkContainer
+                                                      to={`/admin/order/${order._id}/edit`}
+                                                   >
+                                                      <Button
+                                                         variant='outline-dark'
+                                                         className='btn-sm btn-unique rounded-pill'
+                                                      >
+                                                         <BubbleChartOutlinedIcon
+                                                            style={{
+                                                               fontSize:
+                                                                  '1.2rem',
+                                                            }}
+                                                         />
+                                                      </Button>
+                                                   </LinkContainer>
+                                                </TableCell>
+                                             </TableRow>
+                                          )
+                                       })}
                                  {emptyRows > 0 && (
                                     <TableRow
                                        style={{
@@ -573,7 +583,7 @@ function OrderListScreen({ history, match }) {
                         <TablePagination
                            rowsPerPageOptions={[5, 10, 15, 20, 25]}
                            component='div'
-                           count={orders.length}
+                           count={ordersList?.orders.length}
                            rowsPerPage={rowsPerPage}
                            page={page}
                            onChangePage={handleChangePage}

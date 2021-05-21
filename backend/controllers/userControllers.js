@@ -6,220 +6,251 @@ import generateToken from '../utils/generateToken.js'
 //* @route      GET /api/users/login
 //* @access     Public
 const authUser = asyncHandler(async (req, res) => {
-  const { email, password } = req.body
+   const { email, password } = req.body
 
-  const user = await User.findOne({ email })
+   const user = await User.findOne({ email })
 
-  if (user && (await user.matchPassword(password))) {
-    res.json({
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-      avatar: user.avatar,
-      sex: user.sex,
-      isAdmin: user.isAdmin,
-      token: generateToken(user._id),
-    })
-  } else {
-    res.status(404)
-    throw new Error('Invalid email or password')
-  }
+   if (user && (await user.matchPassword(password))) {
+      res.json({
+         _id: user._id,
+         name: user.name,
+         email: user.email,
+         avatar: user.avatar,
+         sex: user.sex,
+         isAdmin: user.isAdmin,
+         token: generateToken(user._id),
+      })
+   } else {
+      res.status(404)
+      throw new Error('Invalid email or password')
+   }
 })
 
 //* @desc       Register a new user
 //* @route      POST /api/users
 //* @access     Public
 const registerUser = asyncHandler(async (req, res) => {
-  const { name, email, avatar, password } = req.body
+   const { name, email, avatar, password } = req.body
 
-  const user = await User.findOneAndUpdate(
-    { email },
-    { name, email, avatar, password },
-    { new: true }
-  )
-  if (user) {
-    res.status(201).json({
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-      avatar: user.avatar,
-      isAdmin: user.isAdmin,
-      token: generateToken(user._id),
-    })
-  } else {
-    const user = await User.create({
-      name,
-      email,
-      avatar,
-      password,
-    })
-    res.status(201).json({
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-      avatar: user.avatar,
-      isAdmin: user.isAdmin,
-      token: generateToken(user._id),
-    })
-  }
+   const user = await User.findOneAndUpdate(
+      { email },
+      { name, email, avatar, password },
+      { new: true }
+   )
+   if (user) {
+      res.status(201).json({
+         _id: user._id,
+         name: user.name,
+         email: user.email,
+         avatar: user.avatar,
+         isAdmin: user.isAdmin,
+         token: generateToken(user._id),
+      })
+   } else {
+      const user = await User.create({
+         name,
+         email,
+         avatar,
+         password,
+      })
+      res.status(201).json({
+         _id: user._id,
+         name: user.name,
+         email: user.email,
+         avatar: user.avatar,
+         isAdmin: user.isAdmin,
+         token: generateToken(user._id),
+      })
+   }
 })
 
 //* @desc       Get user profile
 //* @route      GET /api/users/profile
 //* @access     Public
 const getUserProfile = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.user._id)
+   const user = await User.findById(req.user._id)
 
-  console.log(user)
+   console.log(user)
 
-  if (user) {
-    res.json({
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-      avatar: user.avatar,
-      sex: user.sex,
-      birthDay: user.birthDay,
-      sex: user.sex,
-      numberPhone: user.numberPhone,
-      address: user.address,
-      isAdmin: user.isAdmin,
-    })
-  } else {
-    res.status(404)
-    throw new Error('User not found')
-  }
+   if (user) {
+      res.json({
+         _id: user._id,
+         name: user.name,
+         email: user.email,
+         avatar: user.avatar,
+         sex: user.sex,
+         birthDay: user.birthDay,
+         sex: user.sex,
+         numberPhone: user.numberPhone,
+         address: user.address,
+         isAdmin: user.isAdmin,
+      })
+   } else {
+      res.status(404)
+      throw new Error('User not found')
+   }
 })
 
 //* @desc       Update user profile
 //* @route      PUT /api/users/profile
 //* @access     Public
 const updateUserProfile = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.user._id)
+   const user = await User.findById(req.user._id)
 
-  if (user) {
-    user.name = req.body.name || user.name
-    user.email = req.body.email || user.email
-    user.avatar = req.body.avatar || user.avatar
-    user.birthDay = req.body.birthDay || user.birthDay
-    user.sex = req.body.sex || user.sex
-    user.numberPhone = req.body.numberPhone || user.numberPhone
-    user.birthDay = req.body.selectedDate || user.birthDay
-    user.address.diaChi = req.body.diaChi || user.address.diaChi
-    user.address.xa = req.body.xa || user.address.xa
-    user.address.huyen = req.body.huyen || user.address.huyen
-    user.address.thanhPho = req.body.thanhPho || user.address.thanhPho
-    if (req.body.password) {
-      user.password = req.body.password
-    }
+   if (user) {
+      user.name = req.body.name || user.name
+      user.email = req.body.email || user.email
+      user.avatar = req.body.avatar || user.avatar
+      user.birthDay = req.body.birthDay || user.birthDay
+      user.sex = req.body.sex || user.sex
+      user.numberPhone = req.body.numberPhone || user.numberPhone
+      user.birthDay = req.body.selectedDate || user.birthDay
+      user.address.diaChi = req.body.diaChi || user.address.diaChi
+      user.address.xa = req.body.xa || user.address.xa
+      user.address.huyen = req.body.huyen || user.address.huyen
+      user.address.thanhPho = req.body.thanhPho || user.address.thanhPho
+      if (req.body.password) {
+         user.password = req.body.password
+      }
 
-    console.log('user', user)
+      console.log('user', user)
 
-    const updateUser = await user.save()
+      const updateUser = await user.save()
 
-    res.json({
-      _id: updateUser._id,
-      name: updateUser.name,
-      email: updateUser.email,
-      avatar: updateUser.avatar,
-      birthDay: updateUser.birthDay,
-      sex: updateUser.sex,
-      numberPhone: updateUser.numberPhone,
-      address:
-        updateUser.address.diaChi +
-        updateUser.address.xa +
-        updateUser.address.huyen +
-        updateUser.address.thanhPho,
-      // '' +
-      // updateUser.xa +
-      // '' +
-      // updateUser.huyen +
-      // '' +
-      // updateUser.thanhPho,
-      isAdmin: updateUser.isAdmin,
-      token: generateToken(updateUser._id),
-    })
-  } else {
-    res.status(404)
-    throw new Error('User not found')
-  }
+      res.json({
+         _id: updateUser._id,
+         name: updateUser.name,
+         email: updateUser.email,
+         avatar: updateUser.avatar,
+         birthDay: updateUser.birthDay,
+         sex: updateUser.sex,
+         numberPhone: updateUser.numberPhone,
+         address:
+            updateUser.address.diaChi +
+            updateUser.address.xa +
+            updateUser.address.huyen +
+            updateUser.address.thanhPho,
+         // '' +
+         // updateUser.xa +
+         // '' +
+         // updateUser.huyen +
+         // '' +
+         // updateUser.thanhPho,
+         isAdmin: updateUser.isAdmin,
+         token: generateToken(updateUser._id),
+      })
+   } else {
+      res.status(404)
+      throw new Error('User not found')
+   }
 })
 
 //* @desc       Get all user
 //* @route      GET /api/users
 //* @access     Private/Admin
 const getUsers = asyncHandler(async (req, res) => {
-  const users = await User.find({})
-  setTimeout(() => {
-    res.json(users)
-  }, 100)
+   const users = await User.find({})
+   setTimeout(() => {
+      res.json(users)
+   }, 100)
 })
 
 //* @desc       Delete user user
 //* @route      DELETE /api/users/:id
 //* @access     Private/Admin
 const deleteUsers = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.params.id)
+   const user = await User.findById(req.params.id)
 
-  if (user) {
-    await user.remove()
-    res.json({ message: 'User removed' })
-  } else {
-    res.status(404)
-    throw new Error('User not found')
-  }
+   if (user) {
+      await user.remove()
+      res.json({ message: 'User removed' })
+   } else {
+      res.status(404)
+      throw new Error('User not found')
+   }
 })
 
 //* @desc       Get user by ID
 //* @route      GET /api/users/:id
 //* @access     Private/Admin
 const getUsersById = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.params.id)
-  if (user) {
-    res.json(user)
-  } else {
-    res.status(404)
-    throw new Error('User not found')
-  }
+   const user = await User.findById(req.params.id)
+   if (user) {
+      res.json(user)
+   } else {
+      res.status(404)
+      throw new Error('User not found')
+   }
 })
 
 //* @desc       Update user by ID
 //* @route      PUT /api/users/:id
 //* @access     Private/Admin
 const updateUser = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.params.id)
+   const user = await User.findById(req.params.id)
 
-  if (user) {
-    user.name = req.body.name || user.name
-    user.email = req.body.email || user.email
-    user.isAdmin = req.body.isAdmin || user.isAdmin
-    user.password = req.body.password || user.password
+   if (user) {
+      user.name = req.body.name || user.name
+      user.email = req.body.email || user.email
+      user.isAdmin = req.body.isAdmin || user.isAdmin
+      user.password = req.body.password || user.password
 
-    const updateUser = await user.save()
+      const updateUser = await user.save()
 
-    setTimeout(() => {
-      res.json({
-        _id: updateUser._id,
-        name: updateUser.name,
-        email: updateUser.email,
-        avatar: updateUser.avatar,
-        isAdmin: updateUser.isAdmin,
-        password: updateUser.password,
+      setTimeout(() => {
+         res.json({
+            _id: updateUser._id,
+            name: updateUser.name,
+            email: updateUser.email,
+            avatar: updateUser.avatar,
+            isAdmin: updateUser.isAdmin,
+            password: updateUser.password,
+         })
+      }, 2000)
+   } else {
+      res.status(404)
+      throw new Error('User not found')
+   }
+})
+
+const getNotifications = asyncHandler(async (req, res, next) => {
+   const { userId } = req.body
+   const { page = 1 } = req.query
+
+   try {
+      const userData = await User.findOne({ email: req.user.email })
+      console.log(userData)
+      const user = await User.findById(userData._id, {
+         'notifications.newNotifications': 1,
+         'notifications.list': { $slice: [-8 * +page, 8] },
+      }).populate({
+         path: 'notifications.list.logId',
+         populate: {
+            path: 'userId',
+            select: 'name avatar',
+         },
       })
-    }, 2000)
-  } else {
-    res.status(404)
-    throw new Error('User not found')
-  }
+
+      if (user.notifications.newNotifications) {
+         user.notifications.newNotifications = 0
+         await user.save()
+      }
+
+      res.json({ notifications: user.notifications.list })
+   } catch (error) {
+      console.log(error)
+      next(error)
+   }
 })
 
 export {
-  authUser,
-  getUserProfile,
-  updateUserProfile,
-  registerUser,
-  getUsers,
-  deleteUsers,
-  getUsersById,
-  updateUser,
+   authUser,
+   getUserProfile,
+   updateUserProfile,
+   registerUser,
+   getUsers,
+   deleteUsers,
+   getUsersById,
+   updateUser,
+   getNotifications,
 }

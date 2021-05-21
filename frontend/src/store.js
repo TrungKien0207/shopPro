@@ -28,10 +28,12 @@ import {
    productDetailsReducer,
    productFilterPriceReducer,
    productFilterReducer,
+   productListAllReducer,
    productListReducer,
    productOfCategoryReducer,
    productReviewCreateReducer,
    productTopRatedReducer,
+   productTopSoldReducer,
    productUpdateReducer,
 } from './reducers/productReducers'
 import {
@@ -48,6 +50,7 @@ import {
    userDetailsReducer,
    userListReducer,
    userLoginReducer,
+   userReducer,
    userRegisterReducer,
    userUpdateProfileReducer,
    userUpdateReducer,
@@ -64,6 +67,8 @@ const reducer = combineReducers({
    productOfCategory: productOfCategoryReducer,
    productFilter: productFilterReducer,
    productFilterPrice: productFilterPriceReducer,
+   productListAll: productListAllReducer,
+   productTopSold: productTopSoldReducer,
 
    cart: cartReducer,
 
@@ -75,6 +80,8 @@ const reducer = combineReducers({
    userUpdate: userUpdateReducer,
    userUpdateProfile: userUpdateProfileReducer,
    userAuth: authReducer,
+
+   notificationsAdm: userReducer,
 
    orderCreate: orderCreateReducer,
    orderDetails: orderDetailsReducer,

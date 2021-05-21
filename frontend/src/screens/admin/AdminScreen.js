@@ -1,27 +1,16 @@
-import { Button } from '@material-ui/core'
-import React, { useEffect, useState } from 'react'
-import { Card, Col, Row } from 'react-bootstrap'
-import { useDispatch, useSelector } from 'react-redux'
-import { consultOrder, listOrders } from '../../actions/orderActions'
-import { listProducts } from '../../actions/productActions'
-import { listSupplierAdm } from '../../actions/supplierActions'
-import Header from './components/Header'
-import SideBar from './components/SideBar'
-import {
-   BarChart,
-   Bar,
-   XAxis,
-   YAxis,
-   Tooltip,
-   Legend,
-   CartesianGrid,
-} from 'recharts'
-import { makeStyles } from '@material-ui/core/styles'
+import FormControl from '@material-ui/core/FormControl'
 import InputLabel from '@material-ui/core/InputLabel'
 import MenuItem from '@material-ui/core/MenuItem'
-import ListSubheader from '@material-ui/core/ListSubheader'
-import FormControl from '@material-ui/core/FormControl'
 import Select from '@material-ui/core/Select'
+import { makeStyles } from '@material-ui/core/styles'
+import React, { useState } from 'react'
+import { Col, Row } from 'react-bootstrap'
+import { useDispatch, useSelector } from 'react-redux'
+import { Bar, BarChart, CartesianGrid, Tooltip, XAxis, YAxis } from 'recharts'
+import { consultOrder } from '../../actions/orderActions'
+import Header from './components/Header'
+import ListNumbers from './components/ListNumber'
+import SideBar from './components/SideBar'
 
 const useStyles = makeStyles((theme) => ({
    formControl: {
@@ -40,36 +29,13 @@ const AdminScreen = ({ history }) => {
 
    const [consult, setConsult] = useState('')
 
-   const productList = useSelector((state) => state.productList)
-   const { products } = productList
-
    const orderConsult = useSelector((state) => state.orderConsult)
    const { order } = orderConsult
-
-   const supplierListAdm = useSelector((state) => state.supplierListAdm)
-   const { supplier } = supplierListAdm
-
-   const orderList = useSelector((state) => state.orderList)
-   const { orders } = orderList
-
-   const userLogin = useSelector((state) => state.userLogin)
-   const { userInfo } = userLogin
-
-   let outOfStock = 0
-   let productOut = []
-   products.map((product) => {
-      if (product.countInStock == 0) {
-         productOut.push(product)
-         outOfStock += 1
-      }
-   })
 
    const handleChange = (event) => {
       setConsult(event.target.value)
       dispatch(consultOrder({ values: event.target.value }))
    }
-
-   console.log('consult', order?.orderFilters)
 
    const data = order?.orderFilters.map((cn) => ({
       name: cn._id,
@@ -77,24 +43,6 @@ const AdminScreen = ({ history }) => {
       'Tổng doanh thu': cn.total,
    }))
 
-   // const data = [
-   //    { name: 'Page A', uv: 400 },
-   //    { name: 'Page B', uv: 200 },
-   //    { name: 'Page C', uv: 100 },
-   //    { name: 'Page D', uv: 500 },
-   // ]
-
-   useEffect(() => {
-      if (!userInfo.isAdmin) {
-         history.push('/login')
-      }
-
-      if (userInfo) {
-         dispatch(listOrders())
-         dispatch(listProducts())
-         dispatch(listSupplierAdm())
-      }
-   }, [dispatch, history, userInfo])
    return (
       <>
          <Header />
@@ -108,6 +56,7 @@ const AdminScreen = ({ history }) => {
                style={{ backgroundColor: '#fff' }}
             >
                <h3 className='text-center'>Thống kê</h3>
+               <ListNumbers />
                <div className='d-flex justify-content-end mr-4'>
                   <FormControl
                      className={classes.formControl}
@@ -133,18 +82,27 @@ const AdminScreen = ({ history }) => {
                   </FormControl>
                </div>
                <BarChart width={1100} height={500} data={data}>
-                  <XAxis dataKey='name' stroke='#334443' />
+                  <XAxis
+                     dataKey='name'
+                     stroke='#334443'
+                     style={{ fontWeight: '700' }}
+                  />
                   <YAxis />
                   <Tooltip
-                     wrapperStyle={{ width: 200, backgroundColor: '#ccc' }}
+                     wrapperStyle={{
+                        width: 220,
+                        backgroundColor: '#ccc',
+                        fontSize: '0.9rem',
+                        fontWeight: '700',
+                     }}
                   />
-                  
+
                   <CartesianGrid
-                     stroke='#334443'
+                     stroke='#2e5a1c'
                      // strokeDasharray='5 5'
                      type='monotone'
                   />
-                  <Bar dataKey={'Tổng doanh thu'} fill='#4e9525' barSize={40} />
+                  <Bar dataKey={'Tổng doanh thu'} fill='#4e9525' barSize={20} />
                   <Bar dataKey={'Số đơn hàng'} fill='#4e9525' barSize={1} />
                </BarChart>
             </Col>

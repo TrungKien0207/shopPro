@@ -32,10 +32,18 @@ function Product({ product }) {
                >
                   <Rating
                      value={product.rating}
-                     text={`(${product.numReviews} reviews)`}
+                     text={`(${product.numReviews} đánh giá)`}
                   />
                </Link>
             </Card.Text>
+            <Link
+               to={`/product/${product._id}`}
+               className='text-decoration-none title-product'
+            >
+               <Card.Text>
+                  <p>Đã bán: {product.sold}</p>
+               </Card.Text>
+            </Link>
             <Link
                to={`/product/${product._id}`}
                className='text-decoration-none title-product'

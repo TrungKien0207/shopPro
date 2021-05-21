@@ -1,4 +1,3 @@
-import { Link } from '@material-ui/core'
 import Checkbox from '@material-ui/core/Checkbox'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import IconButton from '@material-ui/core/IconButton'
@@ -24,22 +23,17 @@ import { default as React, useEffect } from 'react'
 import { Button, Col, Image, Row } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { LinkContainer } from 'react-router-bootstrap'
-import Skeleton from '@material-ui/lab/Skeleton'
-import '../../notisfied.css'
 import {
    getCategoryDetails,
    listCategoriesAdm,
 } from '../../actions/categoryAction'
-import {
-   // createProduct,
-   deleteProduct,
-   listProducts,
-} from '../../actions/productActions'
+import { deleteProduct, listAllProduct } from '../../actions/productActions'
 import Announcement from '../../components/Announcement'
 import Loader from '../../components/Loader'
 import Message from '../../components/Message'
-import SideBar from './components/SideBar'
+import '../../notisfied.css'
 import Header from './components/Header'
+import SideBar from './components/SideBar'
 
 function formatMoney(n, currency) {
    return n.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + currency
@@ -259,14 +253,10 @@ function ProductListScreen({ history, match }) {
    const dispatch = useDispatch()
 
    const categoriesList = useSelector((state) => state.categoriesList)
-   const {
-      loading: loadingCat,
-      error: errorCat,
-      category: categoryCat,
-   } = categoriesList
+   const { category: categoryCat } = categoriesList
 
-   const productList = useSelector((state) => state.productList)
-   const { loading, error, products } = productList
+   const productListAll = useSelector((state) => state.productListAll)
+   const { loading, error, products } = productListAll
 
    const emptyRows =
       products !== undefined &&
@@ -280,17 +270,10 @@ function ProductListScreen({ history, match }) {
    } = productDelete
 
    const productCreate = useSelector((state) => state.productCreate)
-   const {
-      loading: loadingCreate,
-      error: errorCreate,
-      success: successCreate,
-      product: createdProduct,
-   } = productCreate
+   const { success: successCreate, product: createdProduct } = productCreate
 
    const userLogin = useSelector((state) => state.userLogin)
    const { userInfo } = userLogin
-
-   const k = '6067d4b59f684c3fe0bd9def'
 
    useEffect(() => {
       if (!userInfo.isAdmin) {
@@ -305,7 +288,7 @@ function ProductListScreen({ history, match }) {
       if (successCreate) {
          history.push(`/admin/product/${createdProduct._id}/edit`)
       } else {
-         dispatch(listProducts('', pageNumber))
+         dispatch(listAllProduct())
       }
    }, [dispatch, history, userInfo, successDelete, successCreate])
 
@@ -341,7 +324,9 @@ function ProductListScreen({ history, match }) {
                   variant='h6'
                   id='tableTitle'
                   component='div'
-               ></Typography>
+               >
+                  <h2>Danh sách sản phẩm</h2>
+               </Typography>
             )}
 
             {numSelected > 0 ? (
@@ -375,22 +360,7 @@ function ProductListScreen({ history, match }) {
             <Col md={2} className='p-0'>
                <SideBar />
             </Col>
-            <Col md={10} className='pl-0 pr-4'>
-               <Row className='align-items-center'>
-                  <Col>
-                     <h4 className='text-uppercase'>Danh sách sản phẩm</h4>
-                  </Col>
-                  <Col className='text-right'>
-                     <LinkContainer to='/admin/product/create'>
-                        <Button
-                           variant='outline-light'
-                           className='my-2 text-uppercase rounded-pill pt-2 pb-2'
-                        >
-                           <i className='fas fa-plus'></i> Thêm sản phẩm
-                        </Button>
-                     </LinkContainer>
-                  </Col>
-               </Row>
+            <Col md={10} className='pl-0'>
                {loadingDelete && <Loader />}
                {errorDelete && <Message>{errorDelete}</Message>}
 
@@ -400,6 +370,16 @@ function ProductListScreen({ history, match }) {
                   <Announcement variant='danger'>{error}</Announcement>
                ) : (
                   <>
+                     <div className='text-right bg-light'>
+                        <LinkContainer to='/admin/product/create'>
+                           <Button
+                              variant='outline-dark'
+                              className='my-2 text-uppercase rounded-pill pt-2 pb-2'
+                           >
+                              <i className='fas fa-plus'></i> Thêm sản phẩm
+                           </Button>
+                        </LinkContainer>
+                     </div>
                      <div className={classes.root}>
                         <Paper
                            className={classes.paper}

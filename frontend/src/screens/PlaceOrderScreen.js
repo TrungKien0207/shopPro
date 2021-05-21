@@ -9,6 +9,8 @@ import Message from '../components/Message'
 import Step from '../components/Step'
 import Footer from '../components/Footer.js'
 import Header from '../components/Header.js'
+import { USER_DETAILS_RESET } from '../constants/userConstants'
+import { ORDER_CREATE_RESET } from '../constants/orderConstants'
 
 PlaceOrderScreen.propTypes = {}
 
@@ -57,8 +59,6 @@ function PlaceOrderScreen({ history }) {
    cart.taxPrice = addDecimals(Number((0.15 * cart.itemsPrice).toFixed(2)))
    cart.totalPrice = Number(cart.itemsPrice) + Number(cart.shippingPrice)
 
-   const tempPrice = Number(cart.itemsPrice) + Number(cart.shippingPrice)
-
    const orderCreate = useSelector((state) => state.orderCreate)
    const { order, success, error } = orderCreate
 
@@ -79,6 +79,8 @@ function PlaceOrderScreen({ history }) {
    useEffect(() => {
       if (success) {
          history.push(`/order/${order._id}`)
+         dispatch({ type: USER_DETAILS_RESET })
+         dispatch({ type: ORDER_CREATE_RESET })
          cart.cartItems.map((item) => dispatch(removeFromCart(item.product)))
       }
    }, [history, success])

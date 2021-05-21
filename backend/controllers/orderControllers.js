@@ -1,6 +1,15 @@
+import express from 'express'
 import asyncHandler from 'express-async-handler'
+import http from 'http'
+import { Server } from 'socket.io'
+import Log from '../models/logModel.js'
 import Order from '../models/orderModel.js'
 import Product from '../models/productModel.js'
+import User from '../models/userModel.js'
+
+const app = express()
+const https = http.createServer(app)
+const io = new Server(https)
 
 async function updateStock(id, quantity) {
    const product = await Product.findById(id)
@@ -24,36 +33,67 @@ const addOrderItems = asyncHandler(async (req, res) => {
       totalPrice,
    } = req.body
 
-   console.log('order', req.body)
-
    if (orderItems && orderItems.length === 0) {
       res.status(400)
       throw new Error('No order items')
    } else {
-      const order = new Order({
-         orderItems,
-         user: req.user._id,
-         shippingAddress,
-         paymentMethod,
-         itemsPrice,
-         taxPrice,
-         shippingPrice,
-         totalPrice,
-      })
+      try {
+         const order = new Order({
+            orderItems,
+            user: req.user._id,
+            shippingAddress,
+            paymentMethod,
+            itemsPrice,
+            taxPrice,
+            shippingPrice,
+            totalPrice,
+         })
+         console.log('order', order)
+         order.orderItems.map(async (item) => {
+            const p = item.product
+            const q = item.qty
 
-      order.orderItems.map(async (item) => {
-         const p = item.product
-         const q = item.qty
+            const product = await Product.findById(p)
 
-         const product = await Product.findById(p)
+            product.countInStock = product.countInStock - q
+            product.sold = product.sold + q
 
-         product.countInStock = product.countInStock - q
+            await product.save()
+         })
 
-         await product.save()
-      })
+         const createdOrder = await order.save()
 
-      const createdOrder = await order.save()
-      res.status(201).json(createdOrder)
+         //* CREATE LOG
+         const log = new Log({
+            userId: req.user._id,
+            rootId: createdOrder._id,
+            type: 'create order',
+         })
+
+         await log.save()
+
+         //* PUSH NOTIFICATION
+         const orderByUser = await User.findById(
+            '6083833b80fa5e3fa0952dd7',
+            'notifications'
+         )
+
+         orderByUser.notifications.newNotifications++
+         orderByUser.notifications.list.push({ logId: log })
+         await orderByUser.save()
+         io.on('connection', (socket) => {
+            console.log('socket', socket.id)
+            socket.emit('create order', {
+               user: req.user._id,
+               orderId: createdOrder._id,
+               content: createdOrder,
+            })
+         })
+
+         res.status(201).json(createdOrder)
+      } catch (error) {
+         console.log(error)
+      }
    }
 })
 
@@ -126,7 +166,9 @@ const updateOrderToDelivered = asyncHandler(async (req, res) => {
 //* @route      GET /api/orders/myorders
 //* @access     Private
 const getMyOrders = asyncHandler(async (req, res) => {
-   const orders = await Order.find({ user: req.user._id })
+   const orders = await Order.find({ user: req.user._id }).sort({
+      createdAt: -1,
+   })
    setTimeout(() => {
       res.json(orders)
    }, 200)
@@ -136,7 +178,9 @@ const getMyOrders = asyncHandler(async (req, res) => {
 //* @route      GET /api/orders
 //* @access     Private/Admin
 const getOrders = asyncHandler(async (req, res) => {
-   const orders = await Order.find({}).populate('user', 'id name')
+   const orders = await Order.find({})
+      .sort({ createdAt: -1 })
+      .populate('user', 'id name')
 
    let totalAmount = 0
 
@@ -145,7 +189,7 @@ const getOrders = asyncHandler(async (req, res) => {
    })
 
    setTimeout(() => {
-      res.json(orders)
+      res.json({ orders, totalAmount })
    }, 100)
 })
 

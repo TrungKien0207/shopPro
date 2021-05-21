@@ -5,10 +5,12 @@ import {
    deleteProduct,
    filterCategoriesProduct,
    filterPriceProduct,
+   getAllProduct,
    getCategoriesProduct,
    getProductById,
    getProducts,
    getTopProducts,
+   getTopProductsSold,
    newProduct,
    updateProduct,
 } from '../controllers/productControllers.js'
@@ -18,8 +20,11 @@ const router = express.Router()
 
 router.route('/').get(getProducts).post(protect, admin, createProduct)
 
+router.route('/adm').get(protect, admin, getAllProduct)
+
 router.route('/:id/reviews').post(protect, createProductReview)
 router.route('/top').get(getTopProducts)
+router.route('/topsold').get(getTopProductsSold)
 router.route('/:id/category').get(getCategoriesProduct)
 
 router.route('/filter/category').post(filterCategoriesProduct)

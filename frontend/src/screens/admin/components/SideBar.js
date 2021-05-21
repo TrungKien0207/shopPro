@@ -57,7 +57,7 @@ const SideBar = () => {
             >
                <Menu.Item key='/admin' icon={<PieChartOutlined />}>
                   <Link href='/admin' className='text-decoration-none '>
-                     Dashboard
+                     Thống kê
                   </Link>
                </Menu.Item>
                <Menu.Item key='/admin/userlist' icon={<DesktopOutlined />}>

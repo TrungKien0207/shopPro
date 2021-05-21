@@ -33,158 +33,197 @@ import RegisterScreen from './screens/RegisterScreen.js'
 import { ShippingScreen } from './screens/ShippingScreen'
 
 const THEME = createMuiTheme({
-  typography: {
-    fontFamily: `"Quicksand", "Roboto", "Arial", sans-serif`,
-  },
+   typography: {
+      fontFamily: `"Quicksand", "Roboto", "Arial", sans-serif`,
+   },
 })
 
 const App = () => {
-  const dispatch = useDispatch()
-  const userLogin = useSelector((state) => state.userLogin)
-  const { userInfo } = userLogin
+   const dispatch = useDispatch()
+   const userLogin = useSelector((state) => state.userLogin)
+   const { userInfo } = userLogin
 
-  const userDetails = useSelector((state) => state.userDetails)
-  const { user } = userDetails
+   const userDetails = useSelector((state) => state.userDetails)
+   const { user } = userDetails
 
-  useEffect(() => {
-    if (userInfo) {
-      dispatch(getUserDetails(userInfo._id))
-    }
-  }, [dispatch, userInfo])
+   useEffect(() => {
+      if (userInfo) {
+         dispatch(getUserDetails(userInfo._id))
+      }
+   }, [dispatch, userInfo])
 
-  return (
-    <>
-      <BackTop />
+   return (
+      <>
+         <BackTop />
 
-      <Router>
-        <div>
-          <ThemeProvider theme={THEME}>
-            {/* <Header /> */}
+         <Router>
+            <div>
+               <ThemeProvider theme={THEME}>
+                  {/* <Header /> */}
 
-            <Fragment className='mb-4'>
-              <Route path='/' component={HomeScreen} exact />
-              <Route path='/search/:keyword' component={HomeScreen} exact />
+                  <Fragment className='mb-4'>
+                     <Route path='/' component={HomeScreen} exact />
+                     <Route
+                        path='/search/:keyword'
+                        component={HomeScreen}
+                        exact
+                     />
 
-              <div>
-                <Route path='/profile' component={ProfileScreen} exact />
+                     <div>
+                        <Route
+                           path='/profile'
+                           component={ProfileScreen}
+                           exact
+                        />
 
-                <Route path='/cart/:id?' component={CartScreen} exact />
+                        <Route path='/cart/:id?' component={CartScreen} exact />
 
-                <Route
-                  path='/product/:id/category'
-                  component={ProductOfCategoryScreen}
-                  exact
-                />
+                        <Route
+                           path='/product/:id/category'
+                           component={ProductOfCategoryScreen}
+                           exact
+                        />
 
-                <Route path='/product/:id' component={ProductScreen} exact />
-                <Route path='/order/:id' component={OrderScreen} exact />
-                <Route path='/myorders' component={MyOrdersScreen} exact />
-                <Route path='/register' component={RegisterScreen} exact />
-                <Route path='/shipping' component={ShippingScreen} exact />
-                <Route path='/login' component={LoginScreen} exact />
-                <Route path='/placeorder' component={PlaceOrderScreen} exact />
-                <Route path='/payment' component={PaymentScreen} exact />
-              </div>
+                        <Route
+                           path='/product/:id'
+                           component={ProductScreen}
+                           exact
+                        />
+                        <Route
+                           path='/order/:id'
+                           component={OrderScreen}
+                           exact
+                        />
+                        <Route
+                           path='/myorders'
+                           component={MyOrdersScreen}
+                           exact
+                        />
+                        <Route
+                           path='/register'
+                           component={RegisterScreen}
+                           exact
+                        />
+                        <Route
+                           path='/shipping'
+                           component={ShippingScreen}
+                           exact
+                        />
+                        <Route path='/login' component={LoginScreen} exact />
+                        <Route
+                           path='/placeorder'
+                           component={PlaceOrderScreen}
+                           exact
+                        />
+                        <Route
+                           path='/payment'
+                           component={PaymentScreen}
+                           exact
+                        />
+                        <Route
+                           path='/page/:pageNumber'
+                           component={HomeScreen}
+                           exact
+                        />
+                        <Route
+                           path='/search/:keyword/page/:pageNumber'
+                           component={HomeScreen}
+                           exact
+                        />
+                     </div>
 
-              <Container>
-                <Route
-                  path='/admin/productlist/:pageNumber'
-                  component={ProductListScreen}
-                  exact
-                />
+                     <Container>
+                        <Route
+                           path='/admin/productlist/:pageNumber'
+                           component={ProductListScreen}
+                           exact
+                        />
+                     </Container>
+                  </Fragment>
+                  {/* <Footer /> */}
+                  <Route path='/admin' component={AdminScreen} exact />
 
-                <Route path='/page/:pageNumber' component={HomeScreen} exact />
-                <Route
-                  path='/search/:keyword/page/:pageNumber'
-                  component={HomeScreen}
-                  exact
-                />
-              </Container>
-            </Fragment>
-            {/* <Footer /> */}
-            <Route path='/admin' component={AdminScreen} exact />
+                  <ProtectedRoute
+                     path='/admin/userlist'
+                     isAdmin={true}
+                     component={UserListScreen}
+                     exact
+                  />
 
-            <ProtectedRoute
-              path='/admin/userlist'
-              isAdmin={true}
-              component={UserListScreen}
-              exact
-            />
+                  <ProtectedRoute
+                     isAdmin={true}
+                     path='/admin/categorieslist'
+                     component={CategoriesListScreen}
+                     exact
+                  />
 
-            <ProtectedRoute
-              isAdmin={true}
-              path='/admin/categorieslist'
-              component={CategoriesListScreen}
-              exact
-            />
+                  <ProtectedRoute
+                     isAdmin={true}
+                     path='/admin/productlist'
+                     component={ProductListScreen}
+                     exact
+                  />
 
-            <ProtectedRoute
-              isAdmin={true}
-              path='/admin/productlist'
-              component={ProductListScreen}
-              exact
-            />
+                  <ProtectedRoute
+                     isAdmin={true}
+                     path='/admin/product/create'
+                     component={ProductCreateScreen}
+                     exact
+                  />
 
-            <ProtectedRoute
-              isAdmin={true}
-              path='/admin/product/create'
-              component={ProductCreateScreen}
-              exact
-            />
+                  <ProtectedRoute
+                     isAdmin={true}
+                     path='/admin/supplierlist'
+                     component={SupplierListScreen}
+                     exact
+                  />
 
-            <ProtectedRoute
-              isAdmin={true}
-              path='/admin/supplierlist'
-              component={SupplierListScreen}
-              exact
-            />
+                  <ProtectedRoute
+                     isAdmin={true}
+                     path='/admin/orderlist'
+                     component={OrderListScreen}
+                     exact
+                  />
 
-            <ProtectedRoute
-              isAdmin={true}
-              path='/admin/orderlist'
-              component={OrderListScreen}
-              exact
-            />
+                  <ProtectedRoute
+                     isAdmin={true}
+                     path='/admin/category/:id/edit'
+                     component={CategoryEditScreen}
+                     exact
+                  />
 
-            <ProtectedRoute
-              isAdmin={true}
-              path='/admin/category/:id/edit'
-              component={CategoryEditScreen}
-              exact
-            />
+                  <ProtectedRoute
+                     isAdmin={true}
+                     path='/admin/order/:id/edit'
+                     component={OrderEditScreen}
+                     exact
+                  />
 
-            <ProtectedRoute
-              isAdmin={true}
-              path='/admin/order/:id/edit'
-              component={OrderEditScreen}
-              exact
-            />
+                  <ProtectedRoute
+                     isAdmin={true}
+                     path='/admin/product/:id/edit'
+                     component={ProductEditScreen}
+                     exact
+                  />
 
-            <ProtectedRoute
-              isAdmin={true}
-              path='/admin/product/:id/edit'
-              component={ProductEditScreen}
-              exact
-            />
+                  <ProtectedRoute
+                     isAdmin={true}
+                     path='/admin/supplier/:id/edit'
+                     component={SupplierEditScreen}
+                     exact
+                  />
 
-            <ProtectedRoute
-              isAdmin={true}
-              path='/admin/supplier/:id/edit'
-              component={SupplierEditScreen}
-              exact
-            />
-
-            <Route
-              isAdmin={true}
-              path='/admin/user/:id/edit'
-              component={UserEditScreen}
-              exact
-            />
-          </ThemeProvider>
-        </div>
-      </Router>
-    </>
-  )
+                  <Route
+                     isAdmin={true}
+                     path='/admin/user/:id/edit'
+                     component={UserEditScreen}
+                     exact
+                  />
+               </ThemeProvider>
+            </div>
+         </Router>
+      </>
+   )
 }
 
 export default App

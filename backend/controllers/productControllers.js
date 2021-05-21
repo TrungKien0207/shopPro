@@ -2,11 +2,11 @@ import asyncHandler from 'express-async-handler'
 import Product from '../models/productModel.js'
 import cloudinary from 'cloudinary'
 
-//* @desc       Fetch single product
-//* @route      GET /api/products/:id
+//* @desc       all product filter page
+//* @route      GET /api/products
 //* @access     Public
 const getProducts = asyncHandler(async (req, res) => {
-   const pageSize = 100
+   const pageSize = 6
    const page = Number(req.query.pageNumber) || 1
 
    const keyword = req.query.keyword
@@ -28,10 +28,25 @@ const getProducts = asyncHandler(async (req, res) => {
    }, 100)
 })
 
-//* @desc       Fetch all products
+//* @desc       Fetch  all products
 //* @route      GET /api/products
 //* @access     Public
+const getAllProduct = asyncHandler(async (req, res) => {
+   const product = await Product.find({})
 
+   if (product) {
+      setTimeout(() => {
+         res.json(product)
+      }, 100)
+   } else {
+      res.status(404)
+      throw new Error('Product not found')
+   }
+})
+
+//* @desc       Fetch products by id
+//* @route      GET /api/products/:id
+//* @access     Public
 const getProductById = asyncHandler(async (req, res) => {
    const product = await Product.findById(req.params.id)
 
@@ -104,15 +119,8 @@ const createProduct = asyncHandler(async (req, res) => {
 //* @route      PUT /api/products/:id
 //* @access     Private/Admin
 const updateProduct = asyncHandler(async (req, res) => {
-   const {
-      name,
-      price,
-      description,
-      image,
-      brand,
-      category,
-      countInStock,
-   } = req.body
+   const { name, price, description, image, brand, category, countInStock } =
+      req.body
 
    const product = await Product.findById(req.params.id)
 
@@ -186,7 +194,18 @@ const createProductReview = asyncHandler(async (req, res) => {
 //* @route      GET /api/products/top
 //* @access     Public
 const getTopProducts = asyncHandler(async (req, res) => {
-   const products = await Product.find({}).sort({ rating: -1 }).limit(3)
+   const products = await Product.find({}).sort({ rating: -1 }).limit(4)
+
+   setTimeout(() => {
+      res.json(products)
+   }, 100)
+})
+
+//* @desc       Get top rated products
+//* @route      GET /api/products/topsold
+//* @access     Public
+const getTopProductsSold = asyncHandler(async (req, res) => {
+   const products = await Product.find({}).sort({ sold: -1 }).limit(4)
 
    setTimeout(() => {
       res.json(products)
@@ -325,4 +344,6 @@ export {
    filterCategoriesProduct,
    filterPriceProduct,
    newProduct,
+   getAllProduct,
+   getTopProductsSold,
 }
