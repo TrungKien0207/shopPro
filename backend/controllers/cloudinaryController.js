@@ -26,6 +26,26 @@ const uploadImage = async (req, res) => {
    }
 }
 
+const uploadImageAvatar = async (req, res) => {
+   try {
+      console.log(req.body.image)
+      let result = await cloudinary.v2.uploader.upload(req.body.image, {
+         folder: 'avatars',
+         public_id: `${Date.now()}`,
+         resource_type: 'auto',
+      })
+
+      return setTimeout(() => {
+         res.status(200).json({
+            public_id: result.public_id,
+            url: result.secure_url,
+         })
+      }, 100)
+   } catch (error) {
+      return res.status(500).json({ msg: 'Server error' })
+   }
+}
+
 const deleteImage = async (req, res) => {
    try {
       let image_id = req.body.public_id
@@ -38,4 +58,4 @@ const deleteImage = async (req, res) => {
    }
 }
 
-export { uploadImage, deleteImage }
+export { uploadImage, deleteImage, uploadImageAvatar }

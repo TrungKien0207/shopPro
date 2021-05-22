@@ -216,7 +216,7 @@ function Header(props) {
       prevOpen.current = open
 
       const socket = OpenSocket('http://localhost:5000')
-console.log(socket)
+      console.log(socket)
       socket.on('create order', (orderUser) => {
          console.log('orderUser', orderUser)
 
@@ -274,22 +274,6 @@ console.log(socket)
       const token = localStorage.getItem('token')
    }
 
-   const menuAccount = (
-      <Menu className='user-menu'>
-         <Menu.Item>
-            <Link to='/tai-khoan/'>Thông tin tài khoản</Link>
-         </Menu.Item>
-
-         <Menu.Item>
-            <Link to='/doi-ma/'>Đổi mã keygame</Link>
-         </Menu.Item>
-
-         <Menu.Item>
-            <Link to='/lich-su'>Lịch sử giao dịch</Link>
-         </Menu.Item>
-      </Menu>
-   )
-
    return (
       <>
          <Navbar
@@ -301,7 +285,6 @@ console.log(socket)
             <Container fluid>
                <LinkContainer to='/'>
                   <Navbar.Brand className='text-uppercase font-weight-bold flex-grow-1 '>
-                     <h2>ProShop</h2>
                      <Image
                         src='/logo/logo_white.png'
                         style={{ width: '5rem', height: '4rem', zIndex: '0' }}
@@ -312,11 +295,11 @@ console.log(socket)
 
                <Navbar.Collapse id='basic-navbar-nav'>
                   <Nav className='ml-auto' inline>
-                     {/* <LinkContainer to='#'>
+                     <LinkContainer to='#'>
                         <Nav.Link className='text-uppercase'>
                            <IconButton aria-label='cart'>
                               <Badge
-                                 badgeContent={data?.notifications.length}
+                                 badgeContent={1}
                                  color='secondary'
                                  // variant='dot'
                               >
@@ -326,8 +309,8 @@ console.log(socket)
                               </Badge>
                            </IconButton>
                         </Nav.Link>
-                     </LinkContainer> */}
-                     <div className='user-group desktop-screen'>
+                     </LinkContainer>
+                     {/* <div className='user-group desktop-screen'>
                         <div className='notify-btn'>
                            <Button
                               type='link'
@@ -362,7 +345,7 @@ console.log(socket)
                               />
                            )}
                         </div>
-                     </div>
+                     </div> */}
 
                      {userInfo ? (
                         <>

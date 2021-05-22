@@ -37,16 +37,25 @@ const userSchema = mongoose.Schema(
          required: false,
       },
 
-      address: {
-         thanhPho: { type: String, required: false },
-         huyen: { type: String, required: false },
-         xa: { type: String, required: false },
-         diaChi: { type: String, required: false },
-      },
+      address: [
+         {
+            thanhPho: { type: String, required: false },
+            huyen: { type: String, required: false },
+            xa: { type: String, required: false },
+            diaChi: { type: String, required: false },
+            role: { type: Boolean, default: false },
+         },
+      ],
 
       avatar: {
-         type: String,
-         required: false,
+         public_id: {
+            type: String,
+            required: false,
+         },
+         url: {
+            type: String,
+            required: false,
+         },
       },
 
       isAdmin: {

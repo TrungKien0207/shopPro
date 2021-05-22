@@ -48,7 +48,7 @@ const addOrderItems = asyncHandler(async (req, res) => {
             shippingPrice,
             totalPrice,
          })
-         console.log('order', order)
+
          order.orderItems.map(async (item) => {
             const p = item.product
             const q = item.qty
@@ -214,18 +214,7 @@ const deleteOrder = asyncHandler(async (req, res) => {
 const updateStatus = asyncHandler(async (req, res) => {
    const { orderStatus } = req.body
 
-   // console.log(req.body)
-
    const order = await Order.findById(req.params.id)
-
-   async function updateStock(id, quantity) {
-      const product = await Product.findById(id)
-
-      product.stock = product.stock - quantity
-      await product.save()
-   }
-
-   // console.log('order', order)
 
    try {
       let updateOrderStatus = await Order.findByIdAndUpdate(
@@ -257,8 +246,6 @@ const updateStatusByMember = asyncHandler(async (req, res) => {
 
    console.log(req.body)
 
-   // console.log('order', order)
-
    try {
       let updateOrderStatus = await Order.findByIdAndUpdate(
          order,
@@ -267,6 +254,17 @@ const updateStatusByMember = asyncHandler(async (req, res) => {
          },
          { new: true }
       ).exec()
+      order.orderItems.map(async (item) => {
+         const p = item.product
+         const q = item.qty
+
+         const product = await Product.findById(p)
+         if (orderStatus === 'Huỷ')
+            product.countInStock = product.countInStock + q
+
+         await product.save()
+      })
+
       setTimeout(() => {
          res.status(200).json({
             updateOrderStatus,

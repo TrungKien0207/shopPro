@@ -37,6 +37,8 @@ const registerUser = asyncHandler(async (req, res) => {
       { name, email, avatar, password },
       { new: true }
    )
+
+   console.log('user,', user)
    if (user) {
       res.status(201).json({
          _id: user._id,
@@ -70,8 +72,6 @@ const registerUser = asyncHandler(async (req, res) => {
 const getUserProfile = asyncHandler(async (req, res) => {
    const user = await User.findById(req.user._id)
 
-   console.log(user)
-
    if (user) {
       res.json({
          _id: user._id,
@@ -98,47 +98,44 @@ const updateUserProfile = asyncHandler(async (req, res) => {
    const user = await User.findById(req.user._id)
 
    if (user) {
-      user.name = req.body.name || user.name
-      user.email = req.body.email || user.email
-      user.avatar = req.body.avatar || user.avatar
-      user.birthDay = req.body.birthDay || user.birthDay
-      user.sex = req.body.sex || user.sex
-      user.numberPhone = req.body.numberPhone || user.numberPhone
-      user.birthDay = req.body.selectedDate || user.birthDay
-      user.address.diaChi = req.body.diaChi || user.address.diaChi
-      user.address.xa = req.body.xa || user.address.xa
-      user.address.huyen = req.body.huyen || user.address.huyen
-      user.address.thanhPho = req.body.thanhPho || user.address.thanhPho
-      if (req.body.password) {
-         user.password = req.body.password
+      try {
+         user.name = req.body.name || user.name
+         user.email = req.body.email || user.email
+         user.avatar = req.body.avatar || user.avatar
+         user.birthDay = req.body.birthDay || user.birthDay
+         user.sex = req.body.sex || user.sex
+         user.numberPhone = req.body.numberPhone || user.numberPhone
+         user.birthDay = req.body.selectedDate || user.birthDay
+         user.address.diaChi = req.body.diaChi || user.address.diaChi
+         user.address.xa = req.body.xa || user.address.xa
+         user.address.huyen = req.body.huyen || user.address.huyen
+         user.address.thanhPho = req.body.thanhPho || user.address.thanhPho
+         if (req.body.password) {
+            user.password = req.body.password
+         }
+
+         const updateUser = await user.save()
+
+         res.json({
+            _id: updateUser._id,
+            name: updateUser.name,
+            email: updateUser.email,
+            avatar: updateUser.avatar,
+            birthDay: updateUser.birthDay,
+            sex: updateUser.sex,
+            numberPhone: updateUser.numberPhone,
+            address:
+               updateUser.address.diaChi +
+               updateUser.address.xa +
+               updateUser.address.huyen +
+               updateUser.address.thanhPho,
+
+            isAdmin: updateUser.isAdmin,
+            token: generateToken(updateUser._id),
+         })
+      } catch (error) {
+         console.log(error)
       }
-
-      console.log('user', user)
-
-      const updateUser = await user.save()
-
-      res.json({
-         _id: updateUser._id,
-         name: updateUser.name,
-         email: updateUser.email,
-         avatar: updateUser.avatar,
-         birthDay: updateUser.birthDay,
-         sex: updateUser.sex,
-         numberPhone: updateUser.numberPhone,
-         address:
-            updateUser.address.diaChi +
-            updateUser.address.xa +
-            updateUser.address.huyen +
-            updateUser.address.thanhPho,
-         // '' +
-         // updateUser.xa +
-         // '' +
-         // updateUser.huyen +
-         // '' +
-         // updateUser.thanhPho,
-         isAdmin: updateUser.isAdmin,
-         token: generateToken(updateUser._id),
-      })
    } else {
       res.status(404)
       throw new Error('User not found')
@@ -243,6 +240,17 @@ const getNotifications = asyncHandler(async (req, res, next) => {
    }
 })
 
+//* @desc       Update user by ID
+//* @route      PUT /api/users/:id
+//* @access     Private/Admin
+const createUserAddress = asyncHandler(async (req, res) => {
+   const user = await User.findById(req.user._id)
+
+   // setTimeout(() => {
+   //    res.status(201).json({ createAddress })
+   // }, 2500)
+})
+
 export {
    authUser,
    getUserProfile,
@@ -253,4 +261,5 @@ export {
    getUsersById,
    updateUser,
    getNotifications,
+   createUserAddress,
 }
