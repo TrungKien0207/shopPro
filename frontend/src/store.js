@@ -46,12 +46,16 @@ import {
 } from './reducers/supplierReducers'
 import {
    authReducer,
+   userCreateAddressReducer,
+   userDeleteAddressReducer,
    userDeleteReducer,
    userDetailsReducer,
    userListReducer,
    userLoginReducer,
    userReducer,
    userRegisterReducer,
+   userSelectRoleReducer,
+   userUpdateAddressReducer,
    userUpdateProfileReducer,
    userUpdateReducer,
 } from './reducers/userReducers'
@@ -80,6 +84,10 @@ const reducer = combineReducers({
    userUpdate: userUpdateReducer,
    userUpdateProfile: userUpdateProfileReducer,
    userAuth: authReducer,
+   userCreateAddress: userCreateAddressReducer,
+   userDeleteAddress: userDeleteAddressReducer,
+   userSelectRole: userSelectRoleReducer,
+   userUpdateAddress: userUpdateAddressReducer,
 
    notificationsAdm: userReducer,
 

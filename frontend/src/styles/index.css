@@ -329,3 +329,13 @@ p {
 .table_th {
   padding: 1rem 0 !important;
 }
+
+.select_default {
+  visibility: hidden;
+  transition: 0.3s;
+}
+
+.button_select_default:hover .select_default {
+  visibility: visible;
+  transition: 0.1s;
+}

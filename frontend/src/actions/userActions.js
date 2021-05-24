@@ -2,6 +2,12 @@ import axios from 'axios'
 import { ORDER_LIST_MY_RESET } from '../constants/orderConstants'
 import {
    CLEAR_ERRORS,
+   USER_CREATE_ADDRESS_FAIL,
+   USER_CREATE_ADDRESS_REQUEST,
+   USER_CREATE_ADDRESS_SUCCESS,
+   USER_DELETE_ADDRESS_FAIL,
+   USER_DELETE_ADDRESS_REQUEST,
+   USER_DELETE_ADDRESS_SUCCESS,
    USER_DELETE_FAIL,
    USER_DELETE_REQUEST,
    USER_DELETE_SUCCESS,
@@ -9,6 +15,9 @@ import {
    USER_DETAILS_REQUEST,
    USER_DETAILS_RESET,
    USER_DETAILS_SUCCESS,
+   USER_EDIT_ADDRESS_FAIL,
+   USER_EDIT_ADDRESS_REQUEST,
+   USER_EDIT_ADDRESS_SUCCESS,
    USER_LIST_FAIL,
    USER_LIST_REQUEST,
    USER_LIST_RESET,
@@ -20,6 +29,9 @@ import {
    USER_REGISTER_FAIL,
    USER_REGISTER_REQUEST,
    USER_REGISTER_SUCCESS,
+   USER_SELECT_ROLE_FAIL,
+   USER_SELECT_ROLE_REQUEST,
+   USER_SELECT_ROLE_SUCCESS,
    USER_UPDATE_FAIL,
    USER_UPDATE_PROFILE_FAIL,
    USER_UPDATE_PROFILE_REQUEST,
@@ -279,6 +291,137 @@ export const updateUser = (user) => async (dispatch, getState) => {
       })
    }
 }
+
+export const deleteAddressUser = (id) => async (dispatch, getState) => {
+   try {
+      dispatch({
+         type: USER_DELETE_ADDRESS_REQUEST,
+      })
+
+      const {
+         userLogin: { userInfo },
+      } = getState()
+
+      const config = {
+         headers: {
+            Authorization: `Bearer ${userInfo.token}`,
+         },
+      }
+
+      console.log('id address', id)
+
+      await axios.post('/api/users/deleteaddress', id, config)
+
+      dispatch({
+         type: USER_DELETE_ADDRESS_SUCCESS,
+      })
+   } catch (error) {
+      dispatch({
+         type: USER_DELETE_ADDRESS_FAIL,
+         payload:
+            error.response && error.response.data.message
+               ? error.response.data.message
+               : error.message,
+      })
+   }
+}
+
+export const createAddressUser = (address) => async (dispatch, getState) => {
+   try {
+      dispatch({
+         type: USER_CREATE_ADDRESS_REQUEST,
+      })
+
+      const {
+         userLogin: { userInfo },
+      } = getState()
+
+      const config = {
+         headers: {
+            Authorization: `Bearer ${userInfo.token}`,
+         },
+      }
+
+      await axios.post('/api/users/createaddress', address, config)
+
+      dispatch({
+         type: USER_CREATE_ADDRESS_SUCCESS,
+      })
+   } catch (error) {
+      dispatch({
+         type: USER_CREATE_ADDRESS_FAIL,
+         payload:
+            error.response && error.response.data.message
+               ? error.response.data.message
+               : error.message,
+      })
+   }
+}
+
+export const updateAddressUser = (address) => async (dispatch, getState) => {
+   try {
+      dispatch({
+         type: USER_EDIT_ADDRESS_REQUEST,
+      })
+
+      const {
+         userLogin: { userInfo },
+      } = getState()
+
+      const config = {
+         headers: {
+            Authorization: `Bearer ${userInfo.token}`,
+         },
+      }
+
+      await axios.post('/api/users/address', address, config)
+
+      dispatch({
+         type: USER_EDIT_ADDRESS_SUCCESS,
+      })
+   } catch (error) {
+      dispatch({
+         type: USER_EDIT_ADDRESS_FAIL,
+         payload:
+            error.response && error.response.data.message
+               ? error.response.data.message
+               : error.message,
+      })
+   }
+}
+
+export const selectRoleAddressUser =
+   (address) => async (dispatch, getState) => {
+      try {
+         dispatch({
+            type: USER_SELECT_ROLE_REQUEST,
+         })
+
+         const {
+            userLogin: { userInfo },
+         } = getState()
+
+         const config = {
+            headers: {
+               Authorization: `Bearer ${userInfo.token}`,
+            },
+         }
+
+         await axios.post('/api/users/roleaddress', address, config)
+
+         dispatch({
+            type: USER_SELECT_ROLE_SUCCESS,
+         })
+      } catch (error) {
+         dispatch({
+            type: USER_SELECT_ROLE_FAIL,
+            payload:
+               error.response && error.response.data.message
+                  ? error.response.data.message
+                  : error.message,
+         })
+      }
+   }
 
 export const clearErrors = () => async (dispatch) => {
    dispatch({

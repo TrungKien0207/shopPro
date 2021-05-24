@@ -33,6 +33,14 @@ import Meta from '../components/Meta'
 import ProgressLine from '../components/ProgressLine.js'
 import Rating from '../components/Rating'
 import { PRODUCT_CREATE_REVIEW_RESET } from '../constants/productConstants.js'
+import {
+   Magnifier,
+   GlassMagnifier,
+   SideBySideMagnifier,
+   PictureInPictureMagnifier,
+   MOUSE_ACTIVATION,
+   TOUCH_ACTIVATION,
+} from 'react-image-magnifiers'
 
 format(new Date(2014, 1, 11), 'dd/MM/yyyy')
 
@@ -206,27 +214,54 @@ function ProductScreen({ history, match }) {
                <>
                   <Meta title={product.name} />
                   <Row className='container-productGreen mb-2 rounded shadow card_color'>
-                     <Col md={6} className='p-3 img-productGreen'>
-                        <Carousel vertical fade dots>
-                           {product.images &&
-                              product.images.map((img) => (
-                                 <Image
-                                    width={650}
-                                    height={650}
-                                    src={img.url}
-                                 />
-                              ))}
-                        </Carousel>
-
-                        {/* <Image.PreviewGroup>
-                           {product.images &&
-                              product.images.map((img) => (
-                                 <Image src={img.url} />
-                              ))}
-                        </Image.PreviewGroup> */}
+                     <Col
+                        md={7}
+                        className='p-3 img-productGreen mt-5 align-items-center'
+                     >
+                        <Row>
+                           <Col md={10} className='mt-3'>
+                              <Carousel vertical fade dots>
+                                 {product.images &&
+                                    product.images.map((img) => (
+                                       <>
+                                          <GlassMagnifier
+                                             style={{
+                                                objectFit: 'cover',
+                                                zIndex: '5',
+                                                borderRadius: '2rem',
+                                                border: '0.5rem solid #ddd',
+                                             }}
+                                             imageSrc={img && img?.url}
+                                             imageAlt='Example'
+                                             largeImageSrc={
+                                                product.images && img?.url
+                                             } // Optional
+                                          />
+                                       </>
+                                    ))}
+                              </Carousel>
+                           </Col>
+                           <Col md={2} className='mt-5'>
+                              <Image.PreviewGroup>
+                                 {product.images &&
+                                    product.images.map((img) => (
+                                       <div className='d-flex p-1'>
+                                          <Image
+                                             src={img.url}
+                                             style={{
+                                                height: '5rem',
+                                                width: '5rem',
+                                             }}
+                                             className='rounded-circle  shadow'
+                                          />
+                                       </div>
+                                    ))}
+                              </Image.PreviewGroup>
+                           </Col>
+                        </Row>
                      </Col>
 
-                     <Col md={6} className='text-left p-1'>
+                     <Col md={5} className='text-left p-1'>
                         <Row className='pl-4 pr-2'>
                            <ListGroup variant='flush' className='pr-3'>
                               <ListGroup.Item className='border-0 pb-0'>
@@ -270,7 +305,8 @@ function ProductScreen({ history, match }) {
 
                            <ListGroup
                               variant='flush'
-                              className='border-0 pt-0 mb-4'
+                              className='border-0 pt-0 mb-4 '
+                              style={{ zIndex: '1' }}
                            >
                               <div className='group-items pt-2 pb-2 ml-4 mr-4 rounded shadow'>
                                  <ListGroup.Item className='border-0 pt-0 pb-0 mb-0 pr-0 group-items'>
@@ -432,7 +468,7 @@ function ProductScreen({ history, match }) {
                                              {review ? (
                                                 <Image
                                                    className='rounded-circle'
-                                                   src={user.avatar}
+                                                   src={user.avatar?.url}
                                                    style={{
                                                       height: '2rem',
                                                       width: '2rem',

@@ -73,18 +73,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
    const user = await User.findById(req.user._id)
 
    if (user) {
-      res.json({
-         _id: user._id,
-         name: user.name,
-         email: user.email,
-         avatar: user.avatar,
-         sex: user.sex,
-         birthDay: user.birthDay,
-         sex: user.sex,
-         numberPhone: user.numberPhone,
-         address: user.address,
-         isAdmin: user.isAdmin,
-      })
+      res.json(user)
    } else {
       res.status(404)
       throw new Error('User not found')
@@ -106,10 +95,8 @@ const updateUserProfile = asyncHandler(async (req, res) => {
          user.sex = req.body.sex || user.sex
          user.numberPhone = req.body.numberPhone || user.numberPhone
          user.birthDay = req.body.selectedDate || user.birthDay
-         user.address.diaChi = req.body.diaChi || user.address.diaChi
-         user.address.xa = req.body.xa || user.address.xa
-         user.address.huyen = req.body.huyen || user.address.huyen
-         user.address.thanhPho = req.body.thanhPho || user.address.thanhPho
+         user.address = req.body.address || user.address
+
          if (req.body.password) {
             user.password = req.body.password
          }
@@ -124,12 +111,7 @@ const updateUserProfile = asyncHandler(async (req, res) => {
             birthDay: updateUser.birthDay,
             sex: updateUser.sex,
             numberPhone: updateUser.numberPhone,
-            address:
-               updateUser.address.diaChi +
-               updateUser.address.xa +
-               updateUser.address.huyen +
-               updateUser.address.thanhPho,
-
+            address: updateUser.address,
             isAdmin: updateUser.isAdmin,
             token: generateToken(updateUser._id),
          })
@@ -240,15 +222,143 @@ const getNotifications = asyncHandler(async (req, res, next) => {
    }
 })
 
-//* @desc       Update user by ID
-//* @route      PUT /api/users/:id
-//* @access     Private/Admin
-const createUserAddress = asyncHandler(async (req, res) => {
-   const user = await User.findById(req.user._id)
+//* @desc       Add address user by ID
+//* @route      POST /api/users/address
+//* @access     Private
+const getUserAddress = asyncHandler(async (req, res) => {
+   const id = req.user._id
+   const idAddress = req.body.id
 
-   // setTimeout(() => {
-   //    res.status(201).json({ createAddress })
-   // }, 2500)
+   try {
+      const adress = await User.find({
+         $where: function () {
+            return 'address.$._id' == idAddress
+         },
+      })
+
+      setTimeout(() => {
+         res.status(200).json(adress)
+      }, 1500)
+   } catch (error) {
+      console.log(error)
+   }
+})
+
+//* @desc       Add address user by ID
+//* @route      POST /api/users/address
+//* @access     Private
+const updateUserAddress = asyncHandler(async (req, res) => {
+   const id = req.user._id
+   const { thanhPho, huyen, xa, diaChi, numberPhone } = req.body
+   const idAddress = req.body.idAddress
+
+   console.log(req.body)
+
+   try {
+      await User.updateOne(
+         { _id: id, 'address._id': idAddress },
+         {
+            $set: {
+               'address.$.thanhPho': thanhPho,
+               'address.$.huyen': huyen,
+               'address.$.xa': xa,
+               'address.$.diaChi': diaChi,
+               'address.$.numberPhone': numberPhone,
+            },
+         }
+      )
+
+      const user = await User.findById(req.user._id)
+      setTimeout(() => {
+         res.status(200).json(user)
+      }, 1500)
+   } catch (error) {
+      console.log(error)
+   }
+})
+
+//* @desc       Add address user by ID
+//* @route      POST /api/users/address
+//* @access     Private
+const createUserAddress = asyncHandler(async (req, res) => {
+   const id = req.user._id
+   const add = req.body
+
+   try {
+      await User.findOneAndUpdate(
+         { _id: id },
+         {
+            $push: {
+               address: {
+                  $each: [add],
+                  $slice: 5,
+               },
+            },
+         }
+      )
+
+      const user = await User.findById(req.user._id)
+      setTimeout(() => {
+         res.status(200).json(user)
+      }, 1500)
+   } catch (error) {
+      console.log(error)
+   }
+})
+
+//* @desc       Add address user by ID
+//* @route      POST /api/users/address
+//* @access     Private
+const updateRoleUserAddress = asyncHandler(async (req, res) => {
+   const id = req.user._id
+   const role = req.body.role
+   const idAddress = req.body.id
+
+   try {
+      await User.updateOne(
+         { _id: id, 'address._id': idAddress },
+         {
+            $set: { 'address.$.role': role },
+         }
+      )
+
+      const user = await User.findById(req.user._id)
+      setTimeout(() => {
+         res.status(200).json(user)
+      }, 1500)
+   } catch (error) {
+      console.log(error)
+   }
+})
+
+//* @desc       DELETE address user by ID
+//* @route      DELETE /api/users/address
+//* @access     Private
+const deleteUserAddress = asyncHandler(async (req, res) => {
+   const id = req.user._id
+   const idAddress = req.body.id
+
+   console.log(req.body)
+
+   try {
+      await User.findOneAndUpdate(
+         { _id: id },
+         {
+            $pull: {
+               address: {
+                  _id: idAddress,
+               },
+            },
+         }
+      )
+
+      const user = await User.findById(req.user._id)
+      setTimeout(() => {
+         res.status(200).json(user)
+      }, 1500)
+   } catch (error) {
+      console.log(error)
+   }
 })
 
 export {
@@ -262,4 +372,8 @@ export {
    updateUser,
    getNotifications,
    createUserAddress,
+   deleteUserAddress,
+   updateRoleUserAddress,
+   updateUserAddress,
+   getUserAddress,
 }

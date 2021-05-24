@@ -25,13 +25,6 @@ const userSchema = mongoose.Schema(
          required: false,
       },
 
-      numberPhone: {
-         type: String,
-         required: false,
-         minLength: [10, 'Số điện thoại ít nhất là 10 số'],
-         maxLength: [10, 'Số điện thoại nhiều nhất là 10 số'],
-      },
-
       sex: {
          type: String,
          required: false,
@@ -44,6 +37,12 @@ const userSchema = mongoose.Schema(
             xa: { type: String, required: false },
             diaChi: { type: String, required: false },
             role: { type: Boolean, default: false },
+            numberPhone: {
+               type: String,
+               required: false,
+               minLength: [10, 'Số điện thoại ít nhất là 10 số'],
+               maxLength: [10, 'Số điện thoại nhiều nhất là 10 số'],
+            },
          },
       ],
 

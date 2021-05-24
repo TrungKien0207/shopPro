@@ -361,13 +361,9 @@ function Header(props) {
                               {userInfo ? (
                                  <Image
                                     className='rounded-circle border border-grey'
-                                    src={
-                                       userDetails.user &&
-                                       userDetails.user.avatar
-                                    }
+                                    src={userDetails.user.avatar?.url}
                                     alt={
-                                       userDetails.user &&
-                                       userDetails.user.avatar
+                                       userDetails.user && userDetails.user.name
                                     }
                                     style={{
                                        width: '2.5rem',

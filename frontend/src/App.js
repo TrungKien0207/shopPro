@@ -31,6 +31,7 @@ import ProductScreen from './screens/ProductScreen.js'
 import ProfileScreen from './screens/ProfileScreen'
 import RegisterScreen from './screens/RegisterScreen.js'
 import { ShippingScreen } from './screens/ShippingScreen'
+import UsersAddressListScreen from './screens/UsersAddressListScreen'
 
 const THEME = createMuiTheme({
    typography: {
@@ -123,6 +124,11 @@ const App = () => {
                         <Route
                            path='/page/:pageNumber'
                            component={HomeScreen}
+                           exact
+                        />
+                        <Route
+                           path='/profile/address'
+                           component={UsersAddressListScreen}
                            exact
                         />
                         <Route
