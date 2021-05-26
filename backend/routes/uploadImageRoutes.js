@@ -1,13 +1,13 @@
-import express from 'express'
-import {
+var express = require('express')
+var {
    deleteImage,
    uploadImage,
    uploadImageAvatar,
-} from '../controllers/cloudinaryController.js'
+} = require('../controllers/cloudinaryController.js')
 
 const router = express.Router()
 
 router.route('/').post(uploadImage).post(deleteImage)
 router.route('/avatar').post(uploadImageAvatar)
 
-export default router
+module.exports = router

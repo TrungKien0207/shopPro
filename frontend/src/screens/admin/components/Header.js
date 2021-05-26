@@ -1,19 +1,19 @@
 // import { Menu } from '@material-ui/core'
 // import { Link } from '@material-ui/core'
+import { Badge, Button, Menu, notification } from 'antd'
 import Avatar from '@material-ui/core/Avatar'
-import Badge from '@material-ui/core/Badge'
-import Button from '@material-ui/core/Button'
 import ClickAwayListener from '@material-ui/core/ClickAwayListener'
 import { deepOrange } from '@material-ui/core/colors'
 import Grow from '@material-ui/core/Grow'
 import IconButton from '@material-ui/core/IconButton'
 import MenuItem from '@material-ui/core/MenuItem'
-import MenuList from '@material-ui/core/MenuList'
+import Buttonn from '@material-ui/core/Button'
+import { MenuList } from '@material-ui/core'
 import Paper from '@material-ui/core/Paper'
 import Popper from '@material-ui/core/Popper'
 import { makeStyles, withStyles } from '@material-ui/core/styles'
 import NotificationsIcon from '@material-ui/icons/Notifications'
-import { Menu } from 'antd'
+
 import 'antd/dist/antd.css'
 import { black } from 'colors'
 import firebase from 'firebase'
@@ -26,7 +26,7 @@ import { listCategories } from '../../../actions/categoryAction'
 import { BellOutlined } from '@ant-design/icons'
 import {
    getNotifications,
-   notificationsCount,
+   notificationCount,
 } from '../../../actions/notificationsAction'
 import { logout } from '../../../actions/userActions'
 import OpenSocket from 'socket.io-client'
@@ -131,7 +131,7 @@ function Header(props) {
    const dispatch = useDispatch()
 
    const notificationsAdm = useSelector((state) => state.notificationsAdm)
-   const { notificationCount, userData } = notificationsAdm
+   const { notificationsCount, userData } = notificationsAdm
 
    const logoutHandler = () => {
       firebase.auth().signOut()
@@ -169,9 +169,9 @@ function Header(props) {
 
          switch (type) {
             case 'create order':
-               action = `đã thanh toán thành công đơn hàng #${data.content?.paymentIntent.id}.`
+               action = `đã đặt đơn hàng #${data.content?.user}.`
                // description = `"${data.content}..."`
-               url = `/order/${data.orderId}`
+               url = `/admin/orderlist/${data.orderId}`
                break
 
             default:
@@ -179,15 +179,15 @@ function Header(props) {
          }
 
          if (data) {
-            notifications.open({
+            notification.open({
                message: (
                   <span>
-                     <strong>{data.user.name}</strong> đã {action}
+                     <strong>{data.user}</strong> đã {action}
                   </span>
                ),
                // description,
                placement: 'bottomLeft',
-               icon: <Avatar alt='avatar user' src={data.user.avatar} />,
+               icon: <Avatar alt='avatar user' src={data.user.avatar?.url} />,
                duration: 10,
                key: Math.random(),
                closeIcon: null,
@@ -197,7 +197,7 @@ function Header(props) {
                   cursor: 'pointer',
                },
                onClick() {
-                  props.history.push(url)
+                  props.history.push(`/admin/orderlist/${data.orderId}`)
                },
             })
          }
@@ -216,36 +216,34 @@ function Header(props) {
       prevOpen.current = open
 
       const socket = OpenSocket('http://localhost:5000')
-      console.log(socket)
-      socket.on('create order', (orderUser) => {
-         console.log('orderUser', orderUser)
 
+      socket.on('create order', (orderUser) => {
          openNotification('create order', orderUser)
+
+         console.log('notificationCount', orderUser)
          dispatch(
-            notificationsCount({
-               count: notificationCount + 1,
+            notificationCount({
+               count: notificationsCount + 1,
             })
          )
       })
 
-      console.log('notificationCount', notificationCount)
-
       return () => {
          socket.emit('logout')
       }
-   }, [open, userInfo, user, notificationCount])
+   }, [dispatch, notificationsCount, getNotifications])
 
    const openNotificationsDropdown = () => {
       // Nếu có notifications mới hoặc chưa fetch lần nào thì sẽ fetch notifications
       if (!visibleNoti) {
-         if (userData.notifications.newNotifications || !hasFirstFetch) {
+         if (userData.notifications?.newNotifications || !hasFirstFetch) {
             setLoadingNotifications(true)
             setNotifications([])
             getNotifications()
                .then((res) => {
                   setHasFirstFetch(true)
                   setNotifications(res.data.notifications.reverse())
-                  dispatch(notificationsCount({ count: 0 }))
+                  dispatch(notificationCount({ count: 0 }))
                })
                .catch((err) => {
                   console.log(err)
@@ -295,32 +293,22 @@ function Header(props) {
 
                <Navbar.Collapse id='basic-navbar-nav'>
                   <Nav className='ml-auto' inline>
-                     <LinkContainer to='#'>
-                        <Nav.Link className='text-uppercase'>
-                           <IconButton aria-label='cart'>
-                              <Badge
-                                 badgeContent={1}
-                                 color='secondary'
-                                 // variant='dot'
-                              >
-                                 <NotificationsIcon
-                                    style={{ fontSize: '1.7rem' }}
-                                 />
-                              </Badge>
-                           </IconButton>
-                        </Nav.Link>
-                     </LinkContainer>
-                     {/* <div className='user-group desktop-screen'>
+                     <div className='user-group desktop-screen'>
                         <div className='notify-btn'>
                            <Button
                               type='link'
                               size='large'
                               onClick={openNotificationsDropdown}
+                              className='mt-2'
                            >
                               <Badge count={notificationsCount}>
                                  <BellOutlined
                                     className='notify-button'
-                                    style={{ color: '#888', fontSize: '24px' }}
+                                    style={{
+                                       color: '#888',
+                                       fontSize: '24px',
+                                       zIndex: '3',
+                                    }}
                                  />
                               </Badge>
                            </Button>
@@ -345,11 +333,11 @@ function Header(props) {
                               />
                            )}
                         </div>
-                     </div> */}
+                     </div>
 
                      {userInfo ? (
                         <>
-                           <Button
+                           <Buttonn
                               ref={anchorRef}
                               aria-controls={
                                  open ? 'menu-list-grow' : undefined
@@ -376,7 +364,7 @@ function Header(props) {
                                     {userInfo.name.substring(0, 1)}
                                  </Avatar>
                               )}
-                           </Button>
+                           </Buttonn>
                            <Popper
                               open={open}
                               anchorEl={anchorRef.current}
@@ -451,7 +439,7 @@ function Header(props) {
                         </>
                      ) : (
                         <>
-                           <Button
+                           <Buttonn
                               ref={anchorRef}
                               aria-controls={
                                  open ? 'menu-list-grow' : undefined
@@ -461,7 +449,7 @@ function Header(props) {
                               className='ml-2 mt-1 mb-1 rounded-circle'
                            >
                               <Image src='https://img.icons8.com/fluent/30/000000/circled-menu.png' />
-                           </Button>
+                           </Buttonn>
                            <Popper
                               open={open}
                               anchorEl={anchorRef.current}

@@ -42,6 +42,9 @@ import {
    USER_UPDATE_REQUEST,
    USER_UPDATE_RESET,
    USER_UPDATE_SUCCESS,
+   NOTIFICATION_API_ORDER,
+   NOTIFICATION_API_ORDER_FAIL,
+   NOTIFICATION_API_ORDER_SUCCESS,
 } from '../constants/userConstants'
 
 export const userLoginReducer = (state = { products: [] }, action) => {
@@ -262,16 +265,30 @@ export const authReducer = (state = { user: {} }, action) => {
 const initialState = {
    token: null,
    userData: {},
-   notificationCount: 0,
+   notificationsCount: 0,
 }
 
 export const userReducer = (state = initialState, action) => {
    switch (action.type) {
       case NOTIFICATION_ORDER:
-         return { ...state, notificationCount: action.payload.count }
+         return { ...state, notificationsCount: action.payload.count }
       case NOTIFICATION_ORDER_SUCCESS:
          return { ...state }
       case NOTIFICATION_ORDER_FAIL:
+         return { loading: false, error: action.payload }
+
+      default:
+         return state
+   }
+}
+
+export const userNotificationReducer = (state = { not: {} }, action) => {
+   switch (action.type) {
+      case NOTIFICATION_API_ORDER:
+         return { loading: true }
+      case NOTIFICATION_API_ORDER_SUCCESS:
+         return { loading: false, not: action.payload }
+      case NOTIFICATION_API_ORDER_FAIL:
          return { loading: false, error: action.payload }
 
       default:

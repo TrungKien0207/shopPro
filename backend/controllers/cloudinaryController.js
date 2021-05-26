@@ -1,4 +1,4 @@
-import cloudinary from 'cloudinary'
+var cloudinary = require('cloudinary')
 
 cloudinary.config({
    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -8,7 +8,7 @@ cloudinary.config({
 
 const uploadImage = async (req, res) => {
    try {
-      console.log(req.body.image)
+      // console.log(req.body.image)
       let result = await cloudinary.v2.uploader.upload(req.body.image, {
          folder: 'products',
          public_id: `${Date.now()}`,
@@ -28,7 +28,7 @@ const uploadImage = async (req, res) => {
 
 const uploadImageAvatar = async (req, res) => {
    try {
-      console.log(req.body.image)
+      // console.log(req.body.image)
       let result = await cloudinary.v2.uploader.upload(req.body.image, {
          folder: 'avatars',
          public_id: `${Date.now()}`,
@@ -58,4 +58,4 @@ const deleteImage = async (req, res) => {
    }
 }
 
-export { uploadImage, deleteImage, uploadImageAvatar }
+module.exports = { uploadImage, deleteImage, uploadImageAvatar }

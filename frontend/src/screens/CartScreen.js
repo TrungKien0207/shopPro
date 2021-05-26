@@ -73,6 +73,7 @@ export const CartScreen = ({ match, location, history }) => {
       if (productId) {
          dispatch(addToCart(productId, qty))
       }
+      window.scrollTo(0, 0)
    }, [dispatch, productId, qty, userInfo])
 
    const removeFromCartHandler = (id) => {
@@ -326,7 +327,7 @@ export const CartScreen = ({ match, location, history }) => {
                                                               className='pr-1'
                                                               fontSize='large'
                                                            />
-                                                           {`Số lượng không được vượt quá ${item.countInStock}`}
+                                                           {`Số lượng đặt hàng không được vượt quá số lượng hàng hoá trong kho (${item.countInStock} sản phẩm)`}
                                                         </div>,
                                                         {
                                                            className:

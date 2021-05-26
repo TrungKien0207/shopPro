@@ -266,7 +266,7 @@ function OrderListScreen({ history, match }) {
    const { loading, error, ordersList } = orderList
 
    const ord = ordersList?.orders
-   console.log('ord', ordersList && ordersList.orders)
+
 
    const orderDelete = useSelector((state) => state.orderDelete)
    const {

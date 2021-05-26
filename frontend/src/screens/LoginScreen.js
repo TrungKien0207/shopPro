@@ -71,6 +71,7 @@ function LoginScreen({ location, history }) {
             console.log('No User')
          }
       })
+      window.scrollTo(0, 0)
    }, [])
 
    useEffect(() => {

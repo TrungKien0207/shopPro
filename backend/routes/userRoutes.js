@@ -1,5 +1,5 @@
-import express from 'express'
-import {
+var express = require('express')
+var {
    authUser,
    createUserAddress,
    deleteUserAddress,
@@ -13,8 +13,8 @@ import {
    updateUser,
    updateUserAddress,
    updateUserProfile,
-} from '../controllers/userControllers.js'
-import { admin, protect } from '../middleware/authMiddleware.js'
+} = require('../controllers/userControllers.js')
+var { admin, protect } = require('../middleware/authMiddleware.js')
 
 const router = express.Router()
 
@@ -37,4 +37,4 @@ router
    .delete(protect, admin, deleteUsers)
    .put(protect, admin, updateUser)
 
-export default router
+module.exports = router

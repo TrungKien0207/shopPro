@@ -1,6 +1,6 @@
-import express from 'express'
-import { orderStatisticalByDate } from '../controllers/consultController.js'
-import {
+var express = require('express')
+var { orderStatisticalByDate } = require('../controllers/consultController.js')
+var {
    addOrderItems,
    deleteOrder,
    getMyOrders,
@@ -10,8 +10,8 @@ import {
    updateOrderToPaid,
    updateStatus,
    updateStatusByMember,
-} from '../controllers/orderControllers.js'
-import { admin, protect } from '../middleware/authMiddleware.js'
+} = require('../controllers/orderControllers.js')
+var { admin, protect } = require('../middleware/authMiddleware.js')
 
 const router = express.Router()
 
@@ -30,4 +30,4 @@ router.route('/consult').post(protect, admin, orderStatisticalByDate)
 router.route('/:id/pay').put(protect, updateOrderToPaid)
 router.route('/:id/deliver').put(protect, updateOrderToDelivered)
 
-export default router
+module.exports = router

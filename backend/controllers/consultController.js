@@ -1,7 +1,7 @@
 // current week
-import Order from '../models/orderModel.js'
-import asyncHandler from 'express-async-handler'
-import moment from 'moment'
+var Order = require('../models/orderModel.js')
+var asyncHandler = require('express-async-handler')
+var moment = require('moment')
 
 const handleCurrentWeek = (req, res) => {
    let currentDate = moment()
@@ -163,7 +163,7 @@ const handleDay7Ago = (req, res) => {
 
 const orderStatisticalByDate = asyncHandler(async (req, res) => {
    try {
-      console.log(req.body)
+      // console.log(req.body)
 
       if (req.body.values === 'day7Ago') {
          await handleDay7Ago(req, res)
@@ -182,4 +182,4 @@ const orderStatisticalByDate = asyncHandler(async (req, res) => {
    }
 })
 
-export { orderStatisticalByDate }
+module.exports = { orderStatisticalByDate }

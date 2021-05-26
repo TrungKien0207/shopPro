@@ -41,7 +41,9 @@ export const getNotifications = () => async (dispatch, getState) => {
    }
 }
 
-export const notificationsCount = (data) => {
+export const notificationCount = (data) => {
+   console.log('notificationsCount A', data)
+
    return {
       type: NOTIFICATION_ORDER,
       payload: data,

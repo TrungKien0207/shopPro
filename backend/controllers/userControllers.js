@@ -1,6 +1,6 @@
-import asyncHandler from 'express-async-handler'
-import User from '../models/userModel.js'
-import generateToken from '../utils/generateToken.js'
+var asyncHandler = require('express-async-handler')
+var User = require('../models/userModel.js')
+var generateToken = require('../utils/generateToken.js')
 
 //* @desc       Auth users & get token
 //* @route      GET /api/users/login
@@ -38,7 +38,7 @@ const registerUser = asyncHandler(async (req, res) => {
       { new: true }
    )
 
-   console.log('user,', user)
+   // console.log('user,', user)
    if (user) {
       res.status(201).json({
          _id: user._id,
@@ -198,7 +198,7 @@ const getNotifications = asyncHandler(async (req, res, next) => {
 
    try {
       const userData = await User.findOne({ email: req.user.email })
-      console.log(userData)
+      // console.log(userData)
       const user = await User.findById(userData._id, {
          'notifications.newNotifications': 1,
          'notifications.list': { $slice: [-8 * +page, 8] },
@@ -252,7 +252,7 @@ const updateUserAddress = asyncHandler(async (req, res) => {
    const { thanhPho, huyen, xa, diaChi, numberPhone } = req.body
    const idAddress = req.body.idAddress
 
-   console.log(req.body)
+   // console.log(req.body)
 
    try {
       await User.updateOne(
@@ -338,7 +338,7 @@ const deleteUserAddress = asyncHandler(async (req, res) => {
    const id = req.user._id
    const idAddress = req.body.id
 
-   console.log(req.body)
+   // console.log(req.body)
 
    try {
       await User.findOneAndUpdate(
@@ -361,7 +361,7 @@ const deleteUserAddress = asyncHandler(async (req, res) => {
    }
 })
 
-export {
+module.exports = {
    authUser,
    getUserProfile,
    updateUserProfile,

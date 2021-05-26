@@ -1,6 +1,6 @@
-import asyncHandler from 'express-async-handler'
-import Product from '../models/productModel.js'
-import cloudinary from 'cloudinary'
+var asyncHandler = require('express-async-handler')
+var Product = require('../models/productModel.js')
+var cloudinary = require('cloudinary')
 
 //* @desc       all product filter page
 //* @route      GET /api/products
@@ -255,7 +255,7 @@ const filterCategoriesProduct = asyncHandler(async (req, res) => {
 const filterPriceProduct = asyncHandler(async (req, res) => {
    const { price } = req.body
    try {
-      console.log('price', price)
+      // console.log('price', price)
 
       let products = await Product.find({
          price: { $gte: price[0], $lte: price[1] },
@@ -295,7 +295,7 @@ const newProduct = asyncHandler(async (req, res, next) => {
    req.body.images = imagesLinks
    // req.body.user = req.user.id
 
-   console.log(req.body)
+   // console.log(req.body)
 
    const {
       name,
@@ -332,7 +332,7 @@ const newProduct = asyncHandler(async (req, res, next) => {
    }, 1500)
 })
 
-export {
+module.exports = {
    getProducts,
    getCategoriesProduct,
    getProductById,

@@ -103,6 +103,7 @@ export const ShippingScreen = ({ history }) => {
             }
          }
       }
+      window.scrollTo(0, 0)
    }, [dispatch, history, user])
 
    return (

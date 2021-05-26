@@ -231,6 +231,7 @@ function ProfileScreen({ location, history }) {
             setSex(user.sex)
          }
       }
+      window.scrollTo(0, 0)
    }, [dispatch, history, success, user])
 
    return (

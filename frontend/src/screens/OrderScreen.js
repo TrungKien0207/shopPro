@@ -109,6 +109,7 @@ const OrderScreen = ({ match, history }) => {
             setSdkReady(true)
          }
       }
+      window.scrollTo(0, 0)
    }, [dispatch, orderId, successPay, successDeliver, successByMember, order])
 
    const successPaymentHandler = (paymentResult) => {

@@ -1,5 +1,4 @@
 import Dialog from '@material-ui/core/Dialog'
-import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
 import Link from '@material-ui/core/Link'
 import { Close } from '@material-ui/icons'
@@ -13,6 +12,7 @@ import {
    selectRoleAddressUser,
    updateAddressUser,
 } from '../actions/userActions'
+import Announcement from '../components/Announcement.js'
 import Footer from '../components/Footer.js'
 import Header from '../components/Header.js'
 import Message from '../components/Message'
@@ -75,9 +75,6 @@ const UsersAddressListScreen = ({ history }) => {
    const userLogin = useSelector((state) => state.userLogin)
    const { userInfo } = userLogin
 
-   const userUpdateProfile = useSelector((state) => state.userUpdateProfile)
-   const { loading: loadingUpdate, success } = userUpdateProfile
-
    const userDetails = useSelector((state) => state.userDetails)
    const { loading, error, user } = userDetails
 
@@ -85,11 +82,7 @@ const UsersAddressListScreen = ({ history }) => {
    const { success: successDeleteAddress } = userDeleteAddress
 
    const userCreateAddress = useSelector((state) => state.userCreateAddress)
-   const {
-      loading: loadingCreateAddreess,
-      error: errorCreateAddreess,
-      success: successCreateAddress,
-   } = userCreateAddress
+   const { success: successCreateAddress } = userCreateAddress
 
    const userSelectRole = useSelector((state) => state.userSelectRole)
    const { success: successSelectRole } = userSelectRole
@@ -109,9 +102,11 @@ const UsersAddressListScreen = ({ history }) => {
          ) {
             setOpen(false)
             setOpenEdit(false)
+
             dispatch(getUserDetails('profile'))
          }
       }
+      window.scrollTo(0, 0)
    }, [
       history,
       dispatch,
@@ -142,6 +137,7 @@ const UsersAddressListScreen = ({ history }) => {
    return (
       <>
          <Header />
+
          {loading ? (
             <SkeletonEffect />
          ) : error ? (
@@ -469,10 +465,21 @@ const UsersAddressListScreen = ({ history }) => {
                         variant='outline-light'
                         size='sm'
                         onClick={handleClickOpen}
+                        disabled={user.address && user?.address.length === 5}
                      >
                         <i className='fas fa-plus pr-1'></i>Thêm địa chỉ mới
                      </Button>
                   </div>
+                  {user.address && user?.address.length === 5 && (
+                     <Announcement
+                        variant='warning'
+                        className='d-flex justify-content-center'
+                     >
+                        Danh sách địa chỉ đã đầy. Nếu bạn muốn thêm một địa chỉ
+                        mới, xin vui lòng xoá địa chỉ không cần thiết. Xin cảm
+                        ơn!
+                     </Announcement>
+                  )}
                   {user.address?.map((add) => (
                      <div
                         className='p-3 mt-1 mb-1'

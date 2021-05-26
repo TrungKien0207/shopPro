@@ -83,6 +83,7 @@ function PlaceOrderScreen({ history }) {
          dispatch({ type: ORDER_CREATE_RESET })
          cart.cartItems.map((item) => dispatch(removeFromCart(item.product)))
       }
+      window.scrollTo(0, 0)
    }, [history, success])
 
    return (

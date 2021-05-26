@@ -1,23 +1,10 @@
-import express from 'express'
-import asyncHandler from 'express-async-handler'
-import http from 'http'
-import { Server } from 'socket.io'
-import Log from '../models/logModel.js'
-import Order from '../models/orderModel.js'
-import Product from '../models/productModel.js'
-import User from '../models/userModel.js'
-
-const app = express()
-const https = http.createServer(app)
-const io = new Server(https)
-
-async function updateStock(id, quantity) {
-   const product = await Product.findById(id)
-
-   product.countInStock = product.countInStock - quantity
-
-   await product.save()
-}
+var express = require('express')
+var asyncHandler = require('express-async-handler')
+const SocketIO = require('../io')
+var Log = require('../models/logModel.js')
+var Order = require('../models/orderModel.js')
+var Product = require('../models/productModel.js')
+var User = require('../models/userModel.js')
 
 //* @desc       Create new order
 //* @route      POST /api/order
@@ -62,7 +49,7 @@ const addOrderItems = asyncHandler(async (req, res) => {
          })
 
          const createdOrder = await order.save()
-
+         const io = SocketIO.getIO()
          //* CREATE LOG
          const log = new Log({
             userId: req.user._id,
@@ -81,13 +68,13 @@ const addOrderItems = asyncHandler(async (req, res) => {
          orderByUser.notifications.newNotifications++
          orderByUser.notifications.list.push({ logId: log })
          await orderByUser.save()
-         io.on('connection', (socket) => {
-            console.log('socket', socket.id)
-            socket.emit('create order', {
-               user: req.user._id,
-               orderId: createdOrder._id,
-               content: createdOrder,
-            })
+
+         console.log('emit', io)
+
+         io.emit('create order', {
+            user: req.user._id,
+            orderId: createdOrder._id,
+            content: createdOrder,
          })
 
          res.status(201).json(createdOrder)
@@ -244,7 +231,7 @@ const updateStatusByMember = asyncHandler(async (req, res) => {
 
    const order = await Order.findById(_id)
 
-   console.log(req.body)
+   // console.log(req.body)
 
    try {
       let updateOrderStatus = await Order.findByIdAndUpdate(
@@ -277,7 +264,7 @@ const updateStatusByMember = asyncHandler(async (req, res) => {
    }
 })
 
-export {
+module.exports = {
    addOrderItems,
    getOrderById,
    updateOrderToPaid,

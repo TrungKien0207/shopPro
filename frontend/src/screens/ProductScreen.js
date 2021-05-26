@@ -14,6 +14,7 @@ import { Carousel, Image, Skeleton } from 'antd'
 import { format, utcToZonedTime } from 'date-fns-tz'
 import React, { useEffect, useState } from 'react'
 import { Button, Col, Form, ListGroup, Row } from 'react-bootstrap'
+import { GlassMagnifier } from 'react-image-magnifiers'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { toast, ToastContainer } from 'react-toastify'
@@ -33,14 +34,6 @@ import Meta from '../components/Meta'
 import ProgressLine from '../components/ProgressLine.js'
 import Rating from '../components/Rating'
 import { PRODUCT_CREATE_REVIEW_RESET } from '../constants/productConstants.js'
-import {
-   Magnifier,
-   GlassMagnifier,
-   SideBySideMagnifier,
-   PictureInPictureMagnifier,
-   MOUSE_ACTIVATION,
-   TOUCH_ACTIVATION,
-} from 'react-image-magnifiers'
 
 format(new Date(2014, 1, 11), 'dd/MM/yyyy')
 
@@ -129,6 +122,7 @@ function ProductScreen({ history, match }) {
       }
 
       dispatch(listProductDetails(match.params.id))
+      window.scrollTo(0, 0)
    }, [dispatch, match, successProductReview])
 
    const submitHandle = (e) => {
@@ -181,12 +175,12 @@ function ProductScreen({ history, match }) {
          toast.error(
             <div>
                <ErrorOutlineIcon className='pr-1' fontSize='large' />
-               {`Số lượng không được vượt quá ${product.countInStock}`}
+               {`Số lượng đặt hàng không được vượt quá số lượng hàng hoá trong kho (${product.countInStock} sản phẩm)`}
             </div>,
             {
                className: 'Toastify__toast--success',
                position: 'top-right',
-               autoClose: 3000,
+               autoClose: 3500,
                hideProgressBar: true,
                closeOnClick: true,
                pauseOnHover: true,

@@ -73,6 +73,8 @@ function RegisterScreen({ location, history }) {
       if (userInfo) {
          history.push(redirect)
       }
+
+      window.scrollTo(0, 0)
    }, [history, userInfo, redirect])
 
    return (
