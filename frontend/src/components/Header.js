@@ -27,6 +27,7 @@ import { listCategories } from '../actions/categoryAction'
 import { logout } from '../actions/userActions'
 import SearchBox from './SearchBox'
 import { USER_DETAILS_RESET } from '../constants/userConstants'
+import { listSubCategory } from '../actions/subCategoryAction'
 
 const StyledMenu = withStyles({
    paper: {
@@ -129,7 +130,10 @@ function Header(props) {
    const { user } = userDetails
 
    const categoriesList = useSelector((state) => state.categoriesList)
-   const { loading, success, category } = categoriesList
+   const { category } = categoriesList
+
+   const subCategoryList = useSelector((state) => state.subCategoryList)
+   const { Sub } = subCategoryList
 
    const userLogin = useSelector((state) => state.userLogin)
    const { userInfo } = userLogin
@@ -173,6 +177,7 @@ function Header(props) {
       }
 
       dispatch(listCategories())
+      dispatch(listSubCategory())
 
       prevOpen.current = open
    }, [open, userInfo, user])
@@ -525,10 +530,10 @@ function Header(props) {
                         style={{ borderRadius: '2rem' }}
                         role='menu'
                      >
-                        <div className='row g-6' style={{ width: '70rem' }}>
+                        <div className='row g-6' style={{ width: '30rem' }}>
                            {category &&
                               category.map((cat) => (
-                                 <div className='col-lg-2 col-8 text-center pt-2 pb-2'>
+                                 <div className='col-lg-4 col-8 text-center pt-2 pb-2'>
                                     <div className='col-megamenu container_link_color'>
                                        <LinkContainer
                                           to={`/product/${cat._id}/category`}
@@ -542,12 +547,17 @@ function Header(props) {
                                           </h6>
                                        </LinkContainer>
                                        <ul className='list-unstyled'>
-                                          <li>
-                                             <a to='#'>Custom Menu</a>
-                                          </li>
-                                          <li>
-                                             <a to='#'>Custom Menu</a>
-                                          </li>
+                                          {Sub &&
+                                             Sub?.map((s) => (
+                                                <li>
+                                                   <Link
+                                                      to={`/product/${s._id}/category`}
+                                                   >
+                                                      {s.category === cat._id &&
+                                                         s.name}
+                                                   </Link>
+                                                </li>
+                                             ))}
                                        </ul>
                                     </div>
                                  </div>

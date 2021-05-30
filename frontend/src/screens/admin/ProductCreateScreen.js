@@ -14,6 +14,7 @@ import { PRODUCT_CREATE_RESET } from '../../constants/productConstants'
 import Header from './components/Header'
 import SideBar from './components/SideBar'
 import { CloseOutlined } from '@ant-design/icons'
+import { listSubCategoryAdm } from '../../actions/subCategoryAction'
 
 function formatPrice(n, currency) {
    return n.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + currency
@@ -25,6 +26,7 @@ const ProductCreateScreen = () => {
    const [images, setImages] = useState([])
    const [brand, setBrand] = useState('')
    const [categoryy, setCategory] = useState('')
+   const [subCategory, setSubCategory] = useState('')
    const [countInStock, setCountInStock] = useState(0)
    const [description, setDescription] = useState('')
    const [mass, setMass] = useState('')
@@ -83,6 +85,9 @@ const ProductCreateScreen = () => {
    const categoriesList = useSelector((state) => state.categoriesList)
    const { category } = categoriesList
 
+   const subCategoryList = useSelector((state) => state.subCategoryList)
+   const { Sub } = subCategoryList
+
    const supplierListAdm = useSelector((state) => state.supplierListAdm)
    const { supplier } = supplierListAdm
 
@@ -102,6 +107,7 @@ const ProductCreateScreen = () => {
             hdbq,
             images,
             hdsd,
+            subCategory,
          })
       )
    }
@@ -112,6 +118,7 @@ const ProductCreateScreen = () => {
       } else {
          if (userInfo) {
             dispatch(listCategoriesAdm())
+            dispatch(listSubCategoryAdm())
             dispatch(listSupplierAdm())
          }
       }
@@ -322,7 +329,42 @@ const ProductCreateScreen = () => {
                            </Row>
 
                            <Row>
-                              <Col md={6}>
+                              <Col md={4}>
+                                 <Form.Group
+                                    controlId='category'
+                                    className='pl-3 pr-3'
+                                 >
+                                    <Form.Label
+                                       as='p'
+                                       className='mb-1 text-center'
+                                    >
+                                       Danh mục con
+                                    </Form.Label>
+                                    <Form.Control
+                                       className='border border-grey rounded-pill '
+                                       type='text'
+                                       as='select'
+                                       placeholder='Enter category'
+                                       value={subCategory}
+                                       onChange={(e) =>
+                                          setSubCategory(e.target.value)
+                                       }
+                                    >
+                                       <option></option>
+                                       {Sub &&
+                                          Sub.map((cat, index) => (
+                                             <option
+                                                style={{ color: 'black' }}
+                                                key={index}
+                                                value={cat._id}
+                                             >
+                                                {cat.name}
+                                             </option>
+                                          ))}
+                                    </Form.Control>
+                                 </Form.Group>
+                              </Col>
+                              <Col md={4}>
                                  <Form.Group
                                     controlId='countInStock'
                                     className='pl-3 pr-3'
@@ -342,7 +384,7 @@ const ProductCreateScreen = () => {
                                     ></Form.Control>
                                  </Form.Group>
                               </Col>
-                              <Col md={6}>
+                              <Col md={4}>
                                  <Form.Group
                                     controlId='category'
                                     className='pl-3 pr-3'

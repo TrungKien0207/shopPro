@@ -64,6 +64,12 @@ const productSchema = mongoose.Schema(
          required: false,
       },
 
+      subCategory: {
+         type: mongoose.Schema.Types.ObjectId,
+         ref: 'subCategory',
+         required: false,
+      },
+
       supplier: {
          type: mongoose.Schema.Types.ObjectId,
          ref: 'Supplier',

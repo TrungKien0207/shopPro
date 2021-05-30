@@ -271,7 +271,11 @@ const initialState = {
 export const userReducer = (state = initialState, action) => {
    switch (action.type) {
       case NOTIFICATION_ORDER:
-         return { ...state, notificationsCount: action.payload.count }
+         return {
+            ...state,
+            notificationsCount: action.payload.count,
+            userData: action.payload,
+         }
       case NOTIFICATION_ORDER_SUCCESS:
          return { ...state }
       case NOTIFICATION_ORDER_FAIL:
@@ -282,12 +286,12 @@ export const userReducer = (state = initialState, action) => {
    }
 }
 
-export const userNotificationReducer = (state = { not: {} }, action) => {
+export const userNotificationReducer = (state = { notifi: {} }, action) => {
    switch (action.type) {
       case NOTIFICATION_API_ORDER:
          return { loading: true }
       case NOTIFICATION_API_ORDER_SUCCESS:
-         return { loading: false, not: action.payload }
+         return { loading: false, notifi: action.payload }
       case NOTIFICATION_API_ORDER_FAIL:
          return { loading: false, error: action.payload }
 

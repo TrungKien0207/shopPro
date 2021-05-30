@@ -195,3 +195,13 @@
     transparent 82px
   );
 }
+
+.notifications:hover {
+  text-decoration: none !important;
+  opacity: 0.5 !important;
+}
+
+.notifications:hover .notifications_items {
+  /* opacity: 0.5 !important; */
+  background-color: rgba(8, 8, 8, 0.04);
+}

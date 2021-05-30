@@ -17,7 +17,9 @@ import Loader from '../components/Loader'
 import Message from '../components/Message'
 import ProgressShipping from '../components/ProgressShipping'
 import {
+   ORDER_CREATE_RESET,
    ORDER_DELIVER_RESET,
+   ORDER_DETAIL_RESET,
    ORDER_PAY_RESET,
    ORDER_UPDATE_BY_MEMBER_RESET,
 } from '../constants/orderConstants'
@@ -97,10 +99,17 @@ const OrderScreen = ({ match, history }) => {
          document.body.appendChild(script)
       }
 
-      if (!order || successPay || successDeliver || successByMember) {
+      if (
+         !order ||
+         successPay ||
+         successDeliver ||
+         successByMember ||
+         order._id !== orderId
+      ) {
          dispatch({ type: ORDER_PAY_RESET })
          dispatch({ type: ORDER_DELIVER_RESET })
          dispatch({ type: ORDER_UPDATE_BY_MEMBER_RESET })
+
          dispatch(getOrderDetails(orderId))
       } else if (!order.isPaid) {
          if (!window.paypal) {

@@ -31,11 +31,21 @@ import {
    productListAllReducer,
    productListReducer,
    productOfCategoryReducer,
+   productOfSubCategoryReducer,
    productReviewCreateReducer,
+   productSubFilterReducer,
    productTopRatedReducer,
    productTopSoldReducer,
    productUpdateReducer,
 } from './reducers/productReducers'
+import {
+   subCategoryCreateReducer,
+   subCategoryDeleteReducer,
+   subCategoryDetailsReducer,
+   subCategoryListReducer,
+   subCategoryListReducerAdm,
+   subCategoryUpdateReducer,
+} from './reducers/subCategoryReducers.js'
 import {
    supplierCreateReducer,
    supplierDeleteReducer,
@@ -74,6 +84,8 @@ const reducer = combineReducers({
    productFilterPrice: productFilterPriceReducer,
    productListAll: productListAllReducer,
    productTopSold: productTopSoldReducer,
+   productOfSubCategory: productOfSubCategoryReducer,
+   productSubFilter: productSubFilterReducer,
 
    cart: cartReducer,
 
@@ -110,6 +122,14 @@ const reducer = combineReducers({
    categoryUpdate: categoryUpdateReducer,
    categoryCreate: categoryCreateReducer,
    categoryDelete: categoryDeleteReducer,
+
+   subCategoryDetails: subCategoryDetailsReducer,
+   subCategoryList: subCategoryListReducer,
+   subCategoryListAdm: subCategoryListReducerAdm,
+   subCategoryCreate: subCategoryCreateReducer,
+   subCategoryDetails: subCategoryDetailsReducer,
+   subCategoryUpdate: subCategoryUpdateReducer,
+   subCategoryDelete: subCategoryDeleteReducer,
 
    supplierList: supplierListReducer,
    supplierListAdm: supplierListReducerAdm,

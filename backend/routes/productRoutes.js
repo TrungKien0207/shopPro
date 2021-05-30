@@ -13,6 +13,8 @@ var {
    getTopProductsSold,
    newProduct,
    updateProduct,
+   getSubCategoriesProduct,
+   filterSubCategoriesProduct,
 } = require('../controllers/productControllers.js')
 var { admin, protect } = require('../middleware/authMiddleware.js')
 
@@ -26,8 +28,10 @@ router.route('/:id/reviews').post(protect, createProductReview)
 router.route('/top').get(getTopProducts)
 router.route('/topsold').get(getTopProductsSold)
 router.route('/:id/category').get(getCategoriesProduct)
+router.route('/:id/subcategory').get(getSubCategoriesProduct)
 
 router.route('/filter/category').post(filterCategoriesProduct)
+router.route('/filter/subcategory').post(filterSubCategoriesProduct)
 router.route('/filter/price').post(filterPriceProduct)
 
 router

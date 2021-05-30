@@ -1,36 +1,41 @@
 // import { Menu } from '@material-ui/core'
 // import { Link } from '@material-ui/core'
-import { Badge, Button, Menu, notification } from 'antd'
+import { MenuList } from '@material-ui/core'
 import Avatar from '@material-ui/core/Avatar'
+import Badge from '@material-ui/core/Badge'
+import Buttonn from '@material-ui/core/Button'
 import ClickAwayListener from '@material-ui/core/ClickAwayListener'
 import { deepOrange } from '@material-ui/core/colors'
 import Grow from '@material-ui/core/Grow'
 import IconButton from '@material-ui/core/IconButton'
+import List from '@material-ui/core/List'
+import ListItem from '@material-ui/core/ListItem'
+import ListItemAvatar from '@material-ui/core/ListItemAvatar'
 import MenuItem from '@material-ui/core/MenuItem'
-import Buttonn from '@material-ui/core/Button'
-import { MenuList } from '@material-ui/core'
 import Paper from '@material-ui/core/Paper'
 import Popper from '@material-ui/core/Popper'
 import { makeStyles, withStyles } from '@material-ui/core/styles'
 import NotificationsIcon from '@material-ui/icons/Notifications'
-
+import { Menu, notification } from 'antd'
 import 'antd/dist/antd.css'
 import { black } from 'colors'
 import firebase from 'firebase'
-import React, { useEffect, useState, useCallback } from 'react'
+import moment from 'moment'
+import 'moment/locale/vi'
+import React, { useCallback, useEffect, useState } from 'react'
 import { Container, Image, Nav, Navbar } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { LinkContainer } from 'react-router-bootstrap'
 import { Link, useHistory } from 'react-router-dom'
+import OpenSocket from 'socket.io-client'
 import { listCategories } from '../../../actions/categoryAction'
-import { BellOutlined } from '@ant-design/icons'
 import {
-   getNotifications,
+   getNotification,
    notificationCount,
 } from '../../../actions/notificationsAction'
 import { logout } from '../../../actions/userActions'
-import OpenSocket from 'socket.io-client'
-import NotificationsDropDown from './NotificationsDropDown'
+
+moment.locale('vi')
 
 const StyledMenu = withStyles({
    paper: {
@@ -65,7 +70,9 @@ const StyledMenuItem = withStyles((theme) => ({
 
 const useStyles = makeStyles((theme) => ({
    root: {
-      display: 'flex',
+      width: '100%',
+      maxWidth: '40ch',
+      backgroundColor: theme.palette.background.paper,
    },
    paper: {
       marginRight: theme.spacing(1),
@@ -107,10 +114,12 @@ function Header(props) {
    const classes = useStyles()
 
    const [open, setOpen] = React.useState(false)
+   const [open1, setOpen1] = React.useState(false)
    const anchorRef = React.useRef(null)
-   const anchorReff = React.useRef(null)
+   const anchorRef1 = React.useRef(null)
    const history = useHistory()
    const [anchorEl, setAnchorEl] = useState(null)
+   const [anchorEl1, setAnchorEl1] = useState(null)
    // const [menu, setMenu] = useState(false)
 
    const [loadingNotifications, setLoadingNotifications] = useState(false)
@@ -133,6 +142,11 @@ function Header(props) {
    const notificationsAdm = useSelector((state) => state.notificationsAdm)
    const { notificationsCount, userData } = notificationsAdm
 
+   const userNotification = useSelector((state) => state.userNotification)
+   const { notifi } = userNotification
+
+   const not = notifi?.notifications?.reverse()
+
    const logoutHandler = () => {
       firebase.auth().signOut()
       dispatch(logout())
@@ -143,12 +157,24 @@ function Header(props) {
       setOpen((prevOpen) => !prevOpen)
    }
 
+   const handleToggle1 = () => {
+      setOpen1((prevOpen) => !prevOpen)
+   }
+
    const handleClose = (event) => {
       if (anchorRef.current && anchorRef.current.contains(event.target)) {
          return
       }
 
       setOpen(false)
+   }
+
+   const handleClose1 = (event) => {
+      if (anchorRef1.current && anchorRef1.current.contains(event.target)) {
+         return
+      }
+
+      setOpen1(false)
    }
 
    function handleListKeyDown(event) {
@@ -158,8 +184,16 @@ function Header(props) {
       }
    }
 
+   function handleListKeyDown1(event) {
+      if (event.key === 'Tab') {
+         event.preventDefault()
+         setOpen1(false)
+      }
+   }
+
    // return focus to the button when we transitioned from !open -> open
    const prevOpen = React.useRef(open)
+   const prevOpen1 = React.useRef(open1)
 
    const openNotification = useCallback(
       (type, data) => {
@@ -169,7 +203,7 @@ function Header(props) {
 
          switch (type) {
             case 'create order':
-               action = `đã đặt đơn hàng #${data.content?.user}.`
+               action = `đã đặt đơn hàng #${data.content?._id}.`
                // description = `"${data.content}..."`
                url = `/admin/orderlist/${data.orderId}`
                break
@@ -182,7 +216,7 @@ function Header(props) {
             notification.open({
                message: (
                   <span>
-                     <strong>{data.user}</strong> đã {action}
+                     <strong>{data.user.name}</strong> đã {action}
                   </span>
                ),
                // description,
@@ -197,7 +231,7 @@ function Header(props) {
                   cursor: 'pointer',
                },
                onClick() {
-                  props.history.push(`/admin/orderlist/${data.orderId}`)
+                  history.push(`/admin/orderlist/${data.orderId}`)
                },
             })
          }
@@ -210,17 +244,21 @@ function Header(props) {
          anchorRef.current.focus()
       }
 
+      if (prevOpen1.current === true && open1 === false) {
+         anchorRef1.current.focus()
+      }
+
       dispatch(listCategories())
-      dispatch(getNotifications())
+      // dispatch(getNotifications())
 
       prevOpen.current = open
+      prevOpen1.current = open1
 
       const socket = OpenSocket('http://localhost:5000')
 
       socket.on('create order', (orderUser) => {
          openNotification('create order', orderUser)
 
-         console.log('notificationCount', orderUser)
          dispatch(
             notificationCount({
                count: notificationsCount + 1,
@@ -231,46 +269,25 @@ function Header(props) {
       return () => {
          socket.emit('logout')
       }
-   }, [dispatch, notificationsCount, getNotifications])
+   }, [dispatch, notificationsCount, user])
 
    const openNotificationsDropdown = () => {
       // Nếu có notifications mới hoặc chưa fetch lần nào thì sẽ fetch notifications
       if (!visibleNoti) {
-         if (userData.notifications?.newNotifications || !hasFirstFetch) {
+         if (user.notifications?.newNotifications || !hasFirstFetch) {
             setLoadingNotifications(true)
             setNotifications([])
-            getNotifications()
-               .then((res) => {
-                  setHasFirstFetch(true)
-                  setNotifications(res.data.notifications.reverse())
-                  dispatch(notificationCount({ count: 0 }))
-               })
-               .catch((err) => {
-                  console.log(err)
-               })
-               .finally(() => {
-                  setLoadingNotifications(false)
-               })
+            dispatch(getNotification())
+            if (not) {
+               setNotifications(notifi?.notifications.reverse())
+               dispatch(notificationCount({ count: 0 }))
+            }
          }
       }
       setVisibleNoti((pre) => !pre)
    }
 
-   const markAsReadHandler = (index, url) => {
-      props.history.push(url)
-
-      if (notifications[index].hasRead) return
-
-      let notifyId
-      setNotifications((notifications) => {
-         const newNotifications = [...notifications]
-         newNotifications[index].hasRead = true
-         notifyId = newNotifications[index]._id
-         return newNotifications
-      })
-
-      const token = localStorage.getItem('token')
-   }
+   const markAsReadHandler = (index) => {}
 
    return (
       <>
@@ -293,47 +310,102 @@ function Header(props) {
 
                <Navbar.Collapse id='basic-navbar-nav'>
                   <Nav className='ml-auto' inline>
-                     <div className='user-group desktop-screen'>
-                        <div className='notify-btn'>
-                           <Button
-                              type='link'
-                              size='large'
-                              onClick={openNotificationsDropdown}
-                              className='mt-2'
+                     <Buttonn
+                        ref={anchorRef1}
+                        aria-controls={open1 ? 'menu-list-grow' : undefined}
+                        aria-haspopup='true'
+                        onClick={handleToggle1}
+                        className='ml-2 mt-1 mb-1 rounded-circle'
+                     >
+                        <IconButton
+                           aria-label='cart'
+                           onClick={openNotificationsDropdown}
+                        >
+                           <StyledBadge
+                              badgeContent={notificationsCount}
+                              max={9}
+                              color='secondary'
                            >
-                              <Badge count={notificationsCount}>
-                                 <BellOutlined
-                                    className='notify-button'
-                                    style={{
-                                       color: '#888',
-                                       fontSize: '24px',
-                                       zIndex: '3',
-                                    }}
-                                 />
-                              </Badge>
-                           </Button>
-                           {visibleNoti && (
-                              <NotificationsDropDown
-                                 desktopSize
-                                 loading={loadingNotifications}
-                                 notifications={notifications}
-                                 setVisibleNoti={setVisibleNoti}
-                                 markAsReadHandler={markAsReadHandler}
-                                 className='notifications-dropdown'
-                                 header={
-                                    <span className='px-4 font-semibold'>
-                                       Thông báo đơn hàng
-                                    </span>
-                                 }
-                                 footer={
-                                    <Link to='/thong-bao'>
-                                       Tất cả thông báo
-                                    </Link>
-                                 }
-                              />
-                           )}
-                        </div>
-                     </div>
+                              <NotificationsIcon />
+                           </StyledBadge>
+                        </IconButton>
+                     </Buttonn>
+                     <Popper
+                        open={open1}
+                        anchorEl={anchorRef1.current}
+                        role={undefined}
+                        transition
+                        disablePortal
+                        style={{ zIndex: '5' }}
+                     >
+                        {({ TransitionProps, placement }) => (
+                           <Grow {...TransitionProps}>
+                              <Paper>
+                                 <ClickAwayListener onClickAway={handleClose1}>
+                                    <List
+                                       className={classes.root}
+                                       autoFocusItem={open}
+                                       id='menu-list-grow'
+                                       onKeyDown={handleListKeyDown1}
+                                    >
+                                       {not?.map((notify, index) => (
+                                          <Link
+                                             to={`/admin/order/${notify.logId.rootId}/edit`}
+                                             className='notifications'
+                                             // onClick={() =>
+                                             //    markAsReadHandler(index)
+                                             // }
+                                          >
+                                             <ListItem
+                                                alignItems='flex-start'
+                                                onClick={handleClose1}
+                                                className='notifications_items'
+                                             >
+                                                <ListItemAvatar>
+                                                   <Avatar
+                                                      alt='Remy Sharp'
+                                                      src={
+                                                         notify.logId.userId
+                                                            .avatar.url
+                                                      }
+                                                      style={{
+                                                         width: '2.5rem',
+                                                         height: '2.5rem',
+                                                      }}
+                                                   />
+                                                </ListItemAvatar>
+                                                <div>
+                                                   <strong className='text-capitalize'>
+                                                      {`${notify.logId.userId.name} đã đặt hàng #${notify.logId.rootId} thành công.`}
+                                                   </strong>
+
+                                                   <p className='text-lowercase'>
+                                                      {moment(
+                                                         notify.logId.createdAt
+                                                      ).fromNow()}
+                                                   </p>
+                                                </div>
+                                                <p>
+                                                   {notify.hasRead === true ? (
+                                                      ''
+                                                   ) : (
+                                                      <i
+                                                         className='fas fa-circle'
+                                                         style={{
+                                                            color: 'blueviolet',
+                                                         }}
+                                                      ></i>
+                                                   )}
+                                                </p>
+                                             </ListItem>
+                                          </Link>
+                                       ))}
+                                    </List>
+                                 </ClickAwayListener>
+                              </Paper>
+                           </Grow>
+                        )}
+                     </Popper>
 
                      {userInfo ? (
                         <>

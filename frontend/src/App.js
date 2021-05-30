@@ -15,6 +15,8 @@ import OrderListScreen from './screens/admin/OrderListScreen'
 import ProductCreateScreen from './screens/admin/ProductCreateScreen'
 import ProductEditScreen from './screens/admin/ProductEditScreen'
 import ProductListScreen from './screens/admin/ProductListScreen'
+import SubCategoryEditScreen from './screens/admin/SubCategoryEditScreen'
+import SubCategoriesListScreen from './screens/admin/SubCategoryListScreen'
 import SupplierEditScreen from './screens/admin/SupplierEditScreen'
 import SupplierListScreen from './screens/admin/SupplierListScreen'
 import UserEditScreen from './screens/admin/UserEditScreen'
@@ -165,6 +167,13 @@ const App = () => {
 
                   <ProtectedRoute
                      isAdmin={true}
+                     path='/admin/subcategorieslist'
+                     component={SubCategoriesListScreen}
+                     exact
+                  />
+
+                  <ProtectedRoute
+                     isAdmin={true}
                      path='/admin/productlist'
                      component={ProductListScreen}
                      exact
@@ -195,6 +204,13 @@ const App = () => {
                      isAdmin={true}
                      path='/admin/category/:id/edit'
                      component={CategoryEditScreen}
+                     exact
+                  />
+
+                  <ProtectedRoute
+                     isAdmin={true}
+                     path='/admin/subcategory/:id/edit'
+                     component={SubCategoryEditScreen}
                      exact
                   />
 

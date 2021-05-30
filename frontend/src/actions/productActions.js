@@ -17,6 +17,9 @@ import {
    PRODUCT_FILTER_PRICE_REQUEST,
    PRODUCT_FILTER_PRICE_SUCCESS,
    PRODUCT_FILTER_REQUEST,
+   PRODUCT_FILTER_SUB_FAIL,
+   PRODUCT_FILTER_SUB_REQUEST,
+   PRODUCT_FILTER_SUB_SUCCESS,
    PRODUCT_FILTER_SUCCESS,
    PRODUCT_LIST_ALL_FAIL,
    PRODUCT_LIST_ALL_REQUEST,
@@ -27,6 +30,9 @@ import {
    PRODUCT_OF_CATEGORY_FAIL,
    PRODUCT_OF_CATEGORY_REQUEST,
    PRODUCT_OF_CATEGORY_SUCCESS,
+   PRODUCT_OF_SUB_CATEGORY_FAIL,
+   PRODUCT_OF_SUB_CATEGORY_REQUEST,
+   PRODUCT_OF_SUB_CATEGORY_SUCCESS,
    PRODUCT_TOP_FAIL,
    PRODUCT_TOP_REQUEST,
    PRODUCT_TOP_SOLD_FAIL,
@@ -131,6 +137,26 @@ export const getProductOfCategory = (id) => async (dispatch) => {
    } catch (error) {
       dispatch({
          type: PRODUCT_OF_CATEGORY_FAIL,
+         payload:
+            error.response && error.response.data.message
+               ? error.response.data.message
+               : error.message,
+      })
+   }
+}
+export const getProductOfSubCategory = (id) => async (dispatch) => {
+   try {
+      dispatch({ type: PRODUCT_OF_SUB_CATEGORY_REQUEST })
+
+      const { data } = await axios.get(`/api/products/${id}/subcategory`)
+
+      dispatch({
+         type: PRODUCT_OF_SUB_CATEGORY_SUCCESS,
+         payload: data,
+      })
+   } catch (error) {
+      dispatch({
+         type: PRODUCT_OF_SUB_CATEGORY_FAIL,
          payload:
             error.response && error.response.data.message
                ? error.response.data.message
@@ -348,6 +374,43 @@ export const filterProduct = (category) => async (dispatch, getState) => {
    }
 }
 
+export const filterSubProduct = (sub) => async (dispatch, getState) => {
+   try {
+      dispatch({ type: PRODUCT_FILTER_SUB_REQUEST })
+
+      const {
+         userLogin: { userInfo },
+      } = getState()
+
+      // console.log('category post', category)
+
+      const config = {
+         headers: {
+            Authorization: `Bearer ${userInfo.token}`,
+         },
+      }
+
+      const { data } = await axios.post(
+         '/api/products/filter/subcategory',
+         { sub },
+         config
+      )
+
+      dispatch({
+         type: PRODUCT_FILTER_SUB_SUCCESS,
+         payload: data,
+      })
+   } catch (error) {
+      dispatch({
+         type: PRODUCT_FILTER_SUB_FAIL,
+         payload:
+            error.response && error.response.data.message
+               ? error.response.data.message
+               : error.message,
+      })
+   }
+}
+
 export const filterPriceProduct = (price) => async (dispatch, getState) => {
    try {
       dispatch({ type: PRODUCT_FILTER_PRICE_REQUEST })
@@ -355,8 +418,6 @@ export const filterPriceProduct = (price) => async (dispatch, getState) => {
       const {
          userLogin: { userInfo },
       } = getState()
-
-      console.log('price post', price)
 
       const config = {
          headers: {

@@ -110,7 +110,6 @@ const updateUserProfile = asyncHandler(async (req, res) => {
             avatar: updateUser.avatar,
             birthDay: updateUser.birthDay,
             sex: updateUser.sex,
-            numberPhone: updateUser.numberPhone,
             address: updateUser.address,
             isAdmin: updateUser.isAdmin,
             token: generateToken(updateUser._id),
@@ -193,15 +192,12 @@ const updateUser = asyncHandler(async (req, res) => {
 })
 
 const getNotifications = asyncHandler(async (req, res, next) => {
-   const { userId } = req.body
-   const { page = 1 } = req.query
-
    try {
       const userData = await User.findOne({ email: req.user.email })
-      // console.log(userData)
+
       const user = await User.findById(userData._id, {
          'notifications.newNotifications': 1,
-         'notifications.list': { $slice: [-8 * +page, 8] },
+         'notifications.list': { $slice: 8 },
       }).populate({
          path: 'notifications.list.logId',
          populate: {
@@ -214,6 +210,8 @@ const getNotifications = asyncHandler(async (req, res, next) => {
          user.notifications.newNotifications = 0
          await user.save()
       }
+
+      console.log('data', user.notifications.list)
 
       res.json({ notifications: user.notifications.list })
    } catch (error) {
@@ -283,6 +281,8 @@ const updateUserAddress = asyncHandler(async (req, res) => {
 const createUserAddress = asyncHandler(async (req, res) => {
    const id = req.user._id
    const add = req.body
+
+   console.log(req.body)
 
    try {
       await User.findOneAndUpdate(

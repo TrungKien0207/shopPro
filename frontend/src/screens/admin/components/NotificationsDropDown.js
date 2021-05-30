@@ -21,14 +21,14 @@ export default function NotificationsDropDown(props) {
    return (
       <List
          className={props.className}
-         dataSource={props.notifications.slice(0, 5)}
+         dataSource={props.notifications}
          renderItem={(notify, index) => {
             let title
             let url = '/'
 
             switch (notify.logId.type) {
                case 'create order':
-                  title = `${notify.logId.userId.name} đã thanh toán thành công đơn hàng.`
+                  title = `${notify.logId.userId.name} đã đặt hàng.`
                   url = `/order-detail/${notify.logId.rootId}`
                   break
                default:
@@ -45,7 +45,7 @@ export default function NotificationsDropDown(props) {
                   <List.Item.Meta
                      avatar={
                         <Avatar
-                           src={notify.logId.userId.photoURL}
+                           src={notify.logId.userId.avatar.url}
                            size='large'
                         />
                      }

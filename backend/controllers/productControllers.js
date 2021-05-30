@@ -91,6 +91,7 @@ const createProduct = asyncHandler(async (req, res) => {
       hdsd,
       hdbq,
       images,
+      subCategory,
    } = req.body
 
    const product = new Product({
@@ -106,6 +107,7 @@ const createProduct = asyncHandler(async (req, res) => {
       hdbq: hdbq,
       hdsd: hdsd,
       supplier: supplierr,
+      subCategory: subCategory,
    })
 
    const createdProduct = await product.save()
@@ -119,8 +121,20 @@ const createProduct = asyncHandler(async (req, res) => {
 //* @route      PUT /api/products/:id
 //* @access     Private/Admin
 const updateProduct = asyncHandler(async (req, res) => {
-   const { name, price, description, image, brand, category, countInStock } =
-      req.body
+   const {
+      name,
+      price,
+      description,
+      brand,
+      categoryy,
+      countInStock,
+      supplierr,
+      mass,
+      hdsd,
+      hdbq,
+      images,
+      subCategory,
+   } = req.body
 
    const product = await Product.findById(req.params.id)
 
@@ -128,10 +142,15 @@ const updateProduct = asyncHandler(async (req, res) => {
       product.name = name
       product.price = price
       product.description = description
-      product.image = image
+      product.images = images
       product.brand = brand
-      product.category = category
+      product.category = categoryy
       product.countInStock = countInStock
+      product.supplier = supplierr
+      product.mass = mass
+      product.hdsd = hdsd
+      product.hdbq = hdbq
+      product.subCategory = subCategory
 
       const updatedProduct = await product.save()
       res.json(updatedProduct)
@@ -231,15 +250,51 @@ const getCategoriesProduct = asyncHandler(async (req, res, category) => {
    }
 })
 
+//* @desc       Get category for products
+//* @route      GET /api/products/category
+//* @access     Public
+const getSubCategoriesProduct = asyncHandler(async (req, res, category) => {
+   const product = await Product.find({ subCategory: req.params.id })
+
+   if (product) {
+      setTimeout(() => {
+         res.json(product)
+      }, 1000)
+   } else {
+      res.status(404)
+      throw new Error('Product not found')
+   }
+})
+
 //* @desc       Filter category for products
 //* @route      GET /api/products/filter/category
 //* @access     Public
 const filterCategoriesProduct = asyncHandler(async (req, res) => {
    const { category } = req.body
+
+   console.log(category)
    try {
       let products = await Product.find({ category })
          .populate('category', '_id name')
          .exec()
+
+      setTimeout(() => {
+         res.json(products)
+      }, 1000)
+   } catch (error) {
+      console.log(error)
+   }
+})
+
+//* @desc       Filter category for products
+//* @route      GET /api/products/filter/category
+//* @access     Public
+const filterSubCategoriesProduct = asyncHandler(async (req, res) => {
+   const { sub } = req.body
+   try {
+      let products = await Product.find({ subCategory: sub })
+      // .populate('subCategory', '_id name')
+      // .exec()
 
       setTimeout(() => {
          res.json(products)
@@ -346,4 +401,6 @@ module.exports = {
    newProduct,
    getAllProduct,
    getTopProductsSold,
+   getSubCategoriesProduct,
+   filterSubCategoriesProduct,
 }

@@ -56,7 +56,7 @@ export const orderCreateReducer = (state = {}, action) => {
             error: action.payload,
          }
       case ORDER_CREATE_RESET:
-         return {}
+         return { order: {} }
 
       default:
          return state
@@ -84,7 +84,7 @@ export const orderDetailsReducer = (
             error: action.payload,
          }
       case ORDER_DETAIL_RESET:
-         return {}
+         return { ...state }
 
       default:
          return state

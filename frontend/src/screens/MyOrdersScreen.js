@@ -396,7 +396,10 @@ const MyOrdersScreen = ({ history }) => {
                                                             className='border-0'
                                                             align='center'
                                                          >
-                                                            {item.name}
+                                                            {item.name.slice(
+                                                               0,
+                                                               30
+                                                            ) + '...'}
                                                          </TableCell>
                                                       </Col>
                                                    </Row>

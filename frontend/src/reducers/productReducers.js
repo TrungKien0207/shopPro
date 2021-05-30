@@ -20,6 +20,10 @@ import {
    PRODUCT_FILTER_PRICE_SUCCESS,
    PRODUCT_FILTER_REQUEST,
    PRODUCT_FILTER_RESET,
+   PRODUCT_FILTER_SUB_FAIL,
+   PRODUCT_FILTER_SUB_REQUEST,
+   PRODUCT_FILTER_SUB_RESET,
+   PRODUCT_FILTER_SUB_SUCCESS,
    PRODUCT_FILTER_SUCCESS,
    PRODUCT_LIST_ALL_FAIL,
    PRODUCT_LIST_ALL_REQUEST,
@@ -29,7 +33,12 @@ import {
    PRODUCT_LIST_SUCCESS,
    PRODUCT_OF_CATEGORY_FAIL,
    PRODUCT_OF_CATEGORY_REQUEST,
+   PRODUCT_OF_CATEGORY_RESET,
    PRODUCT_OF_CATEGORY_SUCCESS,
+   PRODUCT_OF_SUB_CATEGORY_FAIL,
+   PRODUCT_OF_SUB_CATEGORY_REQUEST,
+   PRODUCT_OF_SUB_CATEGORY_RESET,
+   PRODUCT_OF_SUB_CATEGORY_SUCCESS,
    PRODUCT_TOP_FAIL,
    PRODUCT_TOP_REQUEST,
    PRODUCT_TOP_SOLD_FAIL,
@@ -105,6 +114,31 @@ export const productOfCategoryReducer = (state = { products: [] }, action) => {
          }
       case PRODUCT_OF_CATEGORY_FAIL:
          return { loading: false, error: action.payload }
+      case PRODUCT_OF_CATEGORY_RESET:
+         return {}
+      default:
+         return state
+   }
+}
+
+export const productOfSubCategoryReducer = (
+   state = { products: [] },
+   action
+) => {
+   switch (action.type) {
+      case PRODUCT_OF_SUB_CATEGORY_REQUEST:
+         return { loading: true, products: [] }
+      case PRODUCT_OF_SUB_CATEGORY_SUCCESS:
+         return {
+            loading: false,
+            products: action.payload,
+            // pages: action.payload.pages,
+            // page: action.payload.page,
+         }
+      case PRODUCT_OF_SUB_CATEGORY_FAIL:
+         return { loading: false, error: action.payload }
+      case PRODUCT_OF_SUB_CATEGORY_RESET:
+         return {}
       default:
          return state
    }
@@ -203,6 +237,21 @@ export const productFilterReducer = (state = { products: [] }, action) => {
       case PRODUCT_FILTER_FAIL:
          return { loading: false, error: action.payload }
       case PRODUCT_FILTER_RESET:
+         return {}
+      default:
+         return state
+   }
+}
+
+export const productSubFilterReducer = (state = { products: [] }, action) => {
+   switch (action.type) {
+      case PRODUCT_FILTER_SUB_REQUEST:
+         return { loading: true }
+      case PRODUCT_FILTER_SUB_SUCCESS:
+         return { loading: false, success: true, product: action.payload }
+      case PRODUCT_FILTER_SUB_FAIL:
+         return { loading: false, error: action.payload }
+      case PRODUCT_FILTER_SUB_RESET:
          return {}
       default:
          return state

@@ -67,12 +67,13 @@ const addOrderItems = asyncHandler(async (req, res) => {
 
          orderByUser.notifications.newNotifications++
          orderByUser.notifications.list.push({ logId: log })
+
          await orderByUser.save()
 
-         console.log('emit', io)
+         const userInfo = await User.findById(req.user._id)
 
          io.emit('create order', {
-            user: req.user._id,
+            user: userInfo,
             orderId: createdOrder._id,
             content: createdOrder,
          })

@@ -7,7 +7,7 @@ import {
    NOTIFICATION_ORDER_FAIL,
    NOTIFICATION_ORDER_SUCCESS,
 } from '../constants/userConstants'
-export const getNotifications = () => async (dispatch, getState) => {
+export const getNotification = () => async (dispatch, getState) => {
    try {
       dispatch({
          type: NOTIFICATION_API_ORDER,
@@ -23,6 +23,8 @@ export const getNotifications = () => async (dispatch, getState) => {
             Authorization: `Bearer ${userInfo.token}`,
          },
       }
+
+      // console.log('datas', datas)
 
       const { data } = await axios.get('/api/notifications', config)
 
@@ -41,9 +43,11 @@ export const getNotifications = () => async (dispatch, getState) => {
    }
 }
 
-export const notificationCount = (data) => {
-   console.log('notificationsCount A', data)
+export const getNotifications = (data) => {
+   return axios.get('/api/notifications', data)
+}
 
+export const notificationCount = (data) => {
    return {
       type: NOTIFICATION_ORDER,
       payload: data,

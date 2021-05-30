@@ -22,7 +22,7 @@ const getCategory = asyncHandler(async (req, res) => {
    const cat = await Category.find({})
    setTimeout(() => {
       res.json(cat)
-   }, 1500)
+   }, 100)
 })
 
 //* @desc       Get all orders
@@ -74,20 +74,38 @@ const deleteCategoryById = asyncHandler(async (req, res) => {
 const updateCategoryById = asyncHandler(async (req, res) => {
    const cat = await Category.findById(req.params.id)
 
-   if (cat) {
-      cat.name = req.body.name || cat.name
-      cat.slug = slugify(req.body.name) || cat.slug
-      const updateCat = await cat.save()
-      setTimeout(() => {
-         res.json({
-            _id: updateCat._id,
-            name: updateCat.name,
-            slug: updateCat.slug,
-         })
-      }, 2500)
-   } else {
-      res.status(404)
-      throw new Error('Danh mục không tìm thấy')
+   const id = req.params.id
+   const { name, subCategory } = req.body
+
+   try {
+      if (cat) {
+         const slug = slugify(req.body.name) || cat.slug
+
+         await Category.updateOne(
+            { _id: id },
+            {
+               name: name,
+               slug: slug,
+               $push: {
+                  subCategory: {
+                     $each: [subCategory],
+                     $slice: 5,
+                  },
+               },
+            }
+         )
+
+         setTimeout(() => {
+            res.json({
+               cat,
+            })
+         }, 2500)
+      } else {
+         res.status(404)
+         throw new Error('Danh mục không tìm thấy')
+      }
+   } catch (error) {
+      console.log(error)
    }
 })
 

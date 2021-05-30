@@ -1,21 +1,26 @@
+import Chip from '@material-ui/core/Chip'
+import { makeStyles } from '@material-ui/core/styles'
 import React, { useEffect } from 'react'
 import { Col, Row } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { getCategoryDetails } from '../actions/categoryAction'
-import { getProductOfCategory } from '../actions/productActions'
+import {
+   getProductOfCategory,
+   getProductOfSubCategory,
+} from '../actions/productActions'
+import { getSubCategoryDetails } from '../actions/subCategoryAction'
 import FilterNav from '../components/FilterNav'
+import Footer from '../components/Footer.js'
+import Header from '../components/Header.js'
 import Message from '../components/Message'
 import Meta from '../components/Meta'
 import Paginate from '../components/Paginate'
 import Product from '../components/Product'
 import SkeletonEffect from '../components/SkeletonEffect'
-import { makeStyles } from '@material-ui/core/styles'
-import Avatar from '@material-ui/core/Avatar'
-import Chip from '@material-ui/core/Chip'
-import FaceIcon from '@material-ui/icons/Face'
-import DoneIcon from '@material-ui/icons/Done'
-import Footer from '../components/Footer.js'
-import Header from '../components/Header.js'
+import {
+   PRODUCT_OF_CATEGORY_RESET,
+   PRODUCT_OF_SUB_CATEGORY_RESET,
+} from '../constants/productConstants'
 
 const useStyles = makeStyles((theme) => ({
    root: {
@@ -48,12 +53,24 @@ const ProductOfCategoryScreen = ({ match }) => {
    const productOfCategory = useSelector((state) => state.productOfCategory)
    const { loading, error, products, pages, page } = productOfCategory
 
+   const productOfSubCategory = useSelector(
+      (state) => state.productOfSubCategory
+   )
+   const {
+      loading: loadingSub,
+      error: errorSub,
+      products: productSub,
+   } = productOfSubCategory
+
    const categoryDetails = useSelector((state) => state.categoryDetails)
    const {
       loading: loadingCat,
       success: successCat,
       category,
    } = categoryDetails
+
+   const subCategoryDetails = useSelector((state) => state.subCategoryDetails)
+   const { subcat } = subCategoryDetails
 
    const userLogin = useSelector((state) => state.userLogin)
    const { userInfo } = userLogin
@@ -65,6 +82,13 @@ const ProductOfCategoryScreen = ({ match }) => {
       product: productsFilter,
    } = productFilter
 
+   const productSubFilter = useSelector((state) => state.productSubFilter)
+   const {
+      loading: loadingSubFilter,
+      success: successSubFilter,
+      product: productsSubFilter,
+   } = productSubFilter
+
    const productFilterPrice = useSelector((state) => state.productFilterPrice)
    const {
       loading: loadingFilterPrice,
@@ -72,13 +96,20 @@ const ProductOfCategoryScreen = ({ match }) => {
       product: productsFilterPrice,
    } = productFilterPrice
 
-   // console.log('product', product)
+   console.log('product', productSub)
 
    useEffect(() => {
       dispatch(getProductOfCategory(catId))
+      // dispatch({ type: PRODUCT_OF_SUB_CATEGORY_RESET })
+
+      if (products.length === 0) {
+         dispatch({ type: PRODUCT_OF_CATEGORY_RESET })
+         dispatch(getProductOfSubCategory(catId))
+      }
 
       if (userInfo) {
          dispatch(getCategoryDetails(catId))
+         dispatch(getSubCategoryDetails(catId))
       }
 
       window.scrollTo(0, 0)
@@ -88,26 +119,19 @@ const ProductOfCategoryScreen = ({ match }) => {
       <>
          <Header />
          <div className='pt-2'>
-            <Meta />
+            <>
+               <Meta />
 
-            {loading ? (
-               <SkeletonEffect />
-            ) : error ? (
-               <Message variant='danger'>{error}</Message>
-            ) : (
                <>
                   <Row
-                     className='card_color shadow ml-2 mr-2'
-                     style={{ minHeight: '105vh', backgroundColor: '#f8e4b7' }}
+                     className='card_color shadow '
+                     style={{ minHeight: '105vh', backgroundColor: '#FFF' }}
                   >
-                     <Col md={3} className='border-right border-danger'>
+                     <Col md={3} className='border-right border-gray'>
                         <FilterNav />
                      </Col>
                      <Col md={9}>
                         <div className='pt-2 pl-3 pr-3 '>
-                           {/* <div className='text-center'>
-                    <h5>{category && category.name}</h5>
-                  </div> */}
                            <Col
                               md={12}
                               className='d-flex justify-content-center '
@@ -123,39 +147,31 @@ const ProductOfCategoryScreen = ({ match }) => {
                                  ))}
                            </Col>
                            <Row>
-                              {/* {loadingFilterPrice ? (
-                      <SkeletonEffect />
-                    ) : productsFilterPrice ? (
-                      productsFilterPrice.map((
-                        product // phai co ? de kiem tra product === null
-                      ) => (
-                        <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
-                          <Product product={product} />
-                        </Col>
-                      ))
-                    ) : */}
-                              {loadingFilter ? (
+                              {loadingFilterPrice ? (
                                  <SkeletonEffect />
-                              ) : productsFilter ? (
-                                 productsFilter.map(
+                              ) : (
+                                 productsFilterPrice?.map(
                                     (
-                                       product // phai co ? de kiem tra product === null
+                                       price // phai co ? de kiem tra price === null
                                     ) => (
                                        <>
                                           <Col
-                                             key={product._id}
+                                             key={price._id}
                                              sm={12}
                                              md={6}
                                              lg={4}
                                              xl={3}
                                           >
-                                             <Product product={product} />
+                                             <Product product={price} />
                                           </Col>
                                        </>
                                     )
                                  )
-                              ) : productsFilterPrice ? (
-                                 productsFilterPrice.map(
+                              )}
+                              {loadingFilter ? (
+                                 <SkeletonEffect />
+                              ) : (
+                                 productsFilter?.map(
                                     (
                                        product // phai co ? de kiem tra product === null
                                     ) => (
@@ -170,8 +186,49 @@ const ProductOfCategoryScreen = ({ match }) => {
                                        </Col>
                                     )
                                  )
+                              )}
+                              {loadingSubFilter ? (
+                                 <SkeletonEffect />
                               ) : (
-                                 products.map(
+                                 productsSubFilter?.map(
+                                    (
+                                       product // phai co ? de kiem tra product === null
+                                    ) => (
+                                       <Col
+                                          key={product._id}
+                                          sm={12}
+                                          md={6}
+                                          lg={4}
+                                          xl={3}
+                                       >
+                                          <Product product={product} />
+                                       </Col>
+                                    )
+                                 )
+                              )}
+                              {loading ? (
+                                 <SkeletonEffect />
+                              ) : (
+                                 products?.map(
+                                    (
+                                       product // phai co ? de kiem tra product === null
+                                    ) => (
+                                       <Col
+                                          key={product._id}
+                                          sm={12}
+                                          md={6}
+                                          lg={4}
+                                          xl={3}
+                                       >
+                                          <Product product={product} />
+                                       </Col>
+                                    )
+                                 )
+                              )}
+                              {loadingSub ? (
+                                 <SkeletonEffect />
+                              ) : (
+                                 productSub?.map(
                                     (
                                        product // phai co ? de kiem tra product === null
                                     ) => (
@@ -199,7 +256,7 @@ const ProductOfCategoryScreen = ({ match }) => {
                      </Col>
                   </Row>
                </>
-            )}
+            </>
          </div>
          <Footer />
       </>

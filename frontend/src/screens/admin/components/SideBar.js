@@ -77,6 +77,17 @@ const SideBar = () => {
                   </Link>
                </Menu.Item>
                <Menu.Item
+                  key='/admin/subcategorieslist'
+                  icon={<ContainerOutlined />}
+               >
+                  <Link
+                     href='/admin/subcategorieslist'
+                     className='text-decoration-none'
+                  >
+                     Danh mục con
+                  </Link>
+               </Menu.Item>
+               <Menu.Item
                   key='/admin/supplierlist'
                   icon={<ContainerOutlined />}
                >

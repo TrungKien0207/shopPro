@@ -10,7 +10,10 @@ import Step from '../components/Step'
 import Footer from '../components/Footer.js'
 import Header from '../components/Header.js'
 import { USER_DETAILS_RESET } from '../constants/userConstants'
-import { ORDER_CREATE_RESET } from '../constants/orderConstants'
+import {
+   ORDER_CREATE_RESET,
+   ORDER_DETAIL_RESET,
+} from '../constants/orderConstants'
 
 PlaceOrderScreen.propTypes = {}
 
@@ -81,6 +84,7 @@ function PlaceOrderScreen({ history }) {
          history.push(`/order/${order._id}`)
          dispatch({ type: USER_DETAILS_RESET })
          dispatch({ type: ORDER_CREATE_RESET })
+
          cart.cartItems.map((item) => dispatch(removeFromCart(item.product)))
       }
       window.scrollTo(0, 0)
