@@ -353,3 +353,12 @@ p {
   visibility: visible;
   transition: 0.1s;
 }
+
+.tag_sale {
+  /* margin-bottom: -5%; */
+  clip-path: polygon(100% 0, 100% 50%, 100% 100%, 0% 100%, 14% 50%, 0% 0%);
+  border-radius: 0.2rem;
+  background-color: #ff9a8b;
+  background-image: linear-gradient(11deg, #ff9a8b 0%, #ff6a88 55%, #ff99ac 100%);
+  margin-right: -10%;
+}

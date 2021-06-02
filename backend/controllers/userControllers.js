@@ -211,8 +211,6 @@ const getNotifications = asyncHandler(async (req, res, next) => {
          await user.save()
       }
 
-      console.log('data', user.notifications.list)
-
       res.json({ notifications: user.notifications.list })
    } catch (error) {
       console.log(error)

@@ -1,24 +1,28 @@
 var mongoose = require('mongoose')
 
-const saleSchema = mongoose.Schema(
+const codeSchema = mongoose.Schema(
    {
       name: {
          type: String,
          trim: true,
          required: true,
          minlength: [1, 'Quá ngắn'],
-         maxlength: [4, 'Quá dài'],
+         maxlength: [40, 'Quá dài'],
          text: true,
       },
 
-      percent: {
+      discount: {
          type: Number,
+         required: true,
+      },
+
+      date: {
+         type: String,
          require: true,
-         default: 0.0,
       },
    },
    { timestamps: true }
 )
 
-const Sale = mongoose.model('Sale', saleSchema)
-module.exports = Sale
+const Code = mongoose.model('Code', codeSchema)
+module.exports = Code

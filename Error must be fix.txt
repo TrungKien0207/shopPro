@@ -1,4 +1,0 @@
-- Lỗi thông báo liên tục ở trang register
-- Lỗi thông báo liên tục ở trang edit user admin
-- Không hiển thị show password ở trang register
-- Edit password ở admin

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Card, Col, Image, ListGroup, Row } from 'react-bootstrap'
+import { Button, Card, Col, Image, ListGroup, Row, Form } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { removeFromCart } from '../actions/cartActions'
@@ -14,6 +14,9 @@ import {
    ORDER_CREATE_RESET,
    ORDER_DETAIL_RESET,
 } from '../constants/orderConstants'
+import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline'
+import { toast, ToastContainer } from 'react-toastify'
+import { listCode } from '../actions/codeAction'
 
 PlaceOrderScreen.propTypes = {}
 
@@ -50,17 +53,32 @@ function PlaceOrderScreen({ history }) {
       return Math.round(num)
    }
 
-   if (cart.shippingAddress.thanhPho === 'Thành phố Hà Nội') {
+   if (
+      cart.shippingAddress.thanhPho === 'Thành phố Hà Nội' ||
+      cart.shippingAddress.thanhPho === 'Thành phố Hồ Chí Minh'
+   ) {
       cart.shippingPrice = 25000
-   } else if (cart.shippingAddress.thanhPho === 'Thành phố Hồ Chí Minh') {
+   } else if (cart.shippingAddress.thanhPho === 'Thành phố Cần Thơ') {
       cart.shippingPrice = 15000
    } else {
       cart.shippingPrice = 35000
    }
 
+   const [discountCode, setDiscountCode] = useState('')
+
+   const codeList = useSelector((state) => state.codeList)
+   const { code } = codeList
+
    // cart.shippingPrice = addDecimals(cart.itemsPrice > 100 ? 0 : 100)
+   let discounted = ''
+
+   code?.map((c) =>
+      c.name === discountCode ? (discounted = c.discount) : (discounted = 0)
+   )
+
    cart.taxPrice = addDecimals(Number((0.15 * cart.itemsPrice).toFixed(2)))
-   cart.totalPrice = Number(cart.itemsPrice) + Number(cart.shippingPrice)
+   cart.totalPrice =
+      Number(cart.itemsPrice) + Number(cart.shippingPrice) - Number(discounted)
 
    const orderCreate = useSelector((state) => state.orderCreate)
    const { order, success, error } = orderCreate
@@ -75,11 +93,30 @@ function PlaceOrderScreen({ history }) {
             shippingPrice: cart.shippingPrice,
             taxPrice: cart.taxPrice,
             totalPrice: cart.totalPrice,
+            discount: discounted,
          })
       )
+      // } else {
+      //    toast.error(
+      //       <div>
+      //          <ErrorOutlineIcon className='pr-1' fontSize='large' /> Mã giảm
+      //          giá không tồn tại
+      //       </div>,
+      //       {
+      //          position: 'top-right',
+      //          autoClose: 2500,
+      //          hideProgressBar: true,
+      //          closeOnClick: true,
+      //          pauseOnHover: true,
+      //          draggable: true,
+      //          progress: undefined,
+      //       }
+      //    )
+      // }
    }
 
    useEffect(() => {
+      dispatch(listCode())
       if (success) {
          history.push(`/order/${order._id}`)
          dispatch({ type: USER_DETAILS_RESET })
@@ -131,6 +168,25 @@ function PlaceOrderScreen({ history }) {
                               Chưa chọn phương thức thanh toán
                            </strong>
                         )}
+                     </div>
+                  </ListGroup.Item>
+
+                  <ListGroup.Item>
+                     <h4 className='text-uppercase mt-2'>Mã giảm giá</h4>
+                     <div style={{ fontSize: '0.9rem', width: '20rem' }}>
+                        <Form>
+                           <Form.Group controlId='email'>
+                              <Form.Control
+                                 className='border-1 border-grey rounded-pill'
+                                 type='text'
+                                 placeholder='Nhập địa chỉ mã giảm giá'
+                                 value={discountCode}
+                                 onChange={(e) =>
+                                    setDiscountCode(e.target.value)
+                                 }
+                              ></Form.Control>
+                           </Form.Group>
+                        </Form>
                      </div>
                   </ListGroup.Item>
 
@@ -209,6 +265,20 @@ function PlaceOrderScreen({ history }) {
                            </Col>
                         </Row>
                      </ListGroup.Item>
+                     <ListGroup.Item>
+                        <Row>
+                           <Col md={8}>Giảm giá</Col>
+                           <Col m={4}>
+                              {code?.map((c) => (
+                                 <strong>
+                                    {discountCode === c.name
+                                       ? format(c.discount, 'đ')
+                                       : '0đ'}
+                                 </strong>
+                              ))}
+                           </Col>
+                        </Row>
+                     </ListGroup.Item>
 
                      <ListGroup.Item>
                         <Row>
@@ -226,6 +296,14 @@ function PlaceOrderScreen({ history }) {
                               Vui lòng chọn phương thức thanh toán
                            </Announcement>
                         )}
+                        {/* {code?.map(
+                           (c) =>
+                              c.name !== discountCode && (
+                                 <Announcement variant='danger'>
+                                    Mã giảm giá không tồn tại
+                                 </Announcement>
+                              )
+                        )} */}
                      </ListGroup.Item>
                      <ListGroup.Item>
                         <Button
@@ -239,6 +317,7 @@ function PlaceOrderScreen({ history }) {
                         </Button>
                      </ListGroup.Item>
                   </ListGroup>
+                  <ToastContainer />
                </Card>
             </Col>
          </Row>

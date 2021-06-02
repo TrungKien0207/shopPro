@@ -11,6 +11,13 @@ import {
    categoryUpdateReducer,
 } from './reducers/categoriesReducers.js'
 import {
+   codeCreateReducer,
+   codeDeleteReducer,
+   codeDetailsReducer,
+   codeListReducer,
+   codeUpdateReducer,
+} from './reducers/codeReducers.js'
+import {
    orderConsultReducer,
    orderCreateReducer,
    orderDeleteReducer,
@@ -38,6 +45,13 @@ import {
    productTopSoldReducer,
    productUpdateReducer,
 } from './reducers/productReducers'
+import {
+   saleCreateReducer,
+   saleDeleteReducer,
+   saleDetailsReducer,
+   saleListReducer,
+   saleUpdateReducer,
+} from './reducers/saleReducer.js'
 import {
    subCategoryCreateReducer,
    subCategoryDeleteReducer,
@@ -127,7 +141,6 @@ const reducer = combineReducers({
    subCategoryList: subCategoryListReducer,
    subCategoryListAdm: subCategoryListReducerAdm,
    subCategoryCreate: subCategoryCreateReducer,
-   subCategoryDetails: subCategoryDetailsReducer,
    subCategoryUpdate: subCategoryUpdateReducer,
    subCategoryDelete: subCategoryDeleteReducer,
 
@@ -137,6 +150,18 @@ const reducer = combineReducers({
    supplierUpdate: supplierUpdateReducer,
    supplierCreate: supplierCreateReducer,
    supplierDelete: supplierDeleteReducer,
+
+   saleList: saleListReducer,
+   saleCreate: saleCreateReducer,
+   saleDetails: saleDetailsReducer,
+   saleUpdate: saleUpdateReducer,
+   saleDelete: saleDeleteReducer,
+
+   codeList: codeListReducer,
+   codeCreate: codeCreateReducer,
+   codeDetails: codeDetailsReducer,
+   codeUpdate: codeUpdateReducer,
+   codeDelete: codeDeleteReducer,
 })
 
 const cartItemsFromStorage = localStorage.getItem('cartItems')

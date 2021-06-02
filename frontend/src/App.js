@@ -10,11 +10,15 @@ import ProtectedRoute from './components/ProtectedRoute'
 import AdminScreen from './screens/admin/AdminScreen'
 import CategoriesListScreen from './screens/admin/CategoriesListScreen'
 import CategoryEditScreen from './screens/admin/CategoryEditScreen'
+import CodeEditScreen from './screens/admin/CodeEditScreen'
+import CodeListScreen from './screens/admin/CodeListScreen'
 import OrderEditScreen from './screens/admin/OrderEditScreen'
 import OrderListScreen from './screens/admin/OrderListScreen'
 import ProductCreateScreen from './screens/admin/ProductCreateScreen'
 import ProductEditScreen from './screens/admin/ProductEditScreen'
 import ProductListScreen from './screens/admin/ProductListScreen'
+import SaleEditScreen from './screens/admin/SaleEditScreen'
+import SaleListScreen from './screens/admin/SaleListScreen'
 import SubCategoryEditScreen from './screens/admin/SubCategoryEditScreen'
 import SubCategoriesListScreen from './screens/admin/SubCategoryListScreen'
 import SupplierEditScreen from './screens/admin/SupplierEditScreen'
@@ -195,6 +199,13 @@ const App = () => {
 
                   <ProtectedRoute
                      isAdmin={true}
+                     path='/admin/codelist'
+                     component={CodeListScreen}
+                     exact
+                  />
+
+                  <ProtectedRoute
+                     isAdmin={true}
                      path='/admin/orderlist'
                      component={OrderListScreen}
                      exact
@@ -209,8 +220,28 @@ const App = () => {
 
                   <ProtectedRoute
                      isAdmin={true}
+                     path='/admin/code/:id/edit'
+                     component={CodeEditScreen}
+                     exact
+                  />
+
+                  <ProtectedRoute
+                     isAdmin={true}
+                     path='/admin/salelist'
+                     component={SaleListScreen}
+                     exact
+                  />
+
+                  <ProtectedRoute
+                     isAdmin={true}
                      path='/admin/subcategory/:id/edit'
                      component={SubCategoryEditScreen}
+                     exact
+                  />
+                  <ProtectedRoute
+                     isAdmin={true}
+                     path='/admin/sale/:id/edit'
+                     component={SaleEditScreen}
                      exact
                   />
 

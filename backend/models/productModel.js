@@ -76,6 +76,12 @@ const productSchema = mongoose.Schema(
          required: false,
       },
 
+      sales: {
+         type: mongoose.Schema.Types.ObjectId,
+         ref: 'Sale',
+         required: false,
+      },
+
       description: {
          type: String,
          required: true,

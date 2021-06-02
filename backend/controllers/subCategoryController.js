@@ -11,7 +11,7 @@ const createsubCategory = asyncHandler(async (req, res) => {
       slug: slugify(req.body.name),
       category: req.body.selectCategory,
    })
- 
+
    setTimeout(() => {
       res.status(201).json(createsubCategory)
    }, 2500)
@@ -60,8 +60,6 @@ const deletesubCategoryById = asyncHandler(async (req, res) => {
    const id = req.params.id
 
    var array = id.split(',')
-
-   console.log(req.params.id)
 
    const cat = await subCategory.find({ _id: { $in: array } })
    try {

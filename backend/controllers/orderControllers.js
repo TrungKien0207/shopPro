@@ -18,6 +18,7 @@ const addOrderItems = asyncHandler(async (req, res) => {
       taxPrice,
       shippingPrice,
       totalPrice,
+      discount,
    } = req.body
 
    if (orderItems && orderItems.length === 0) {
@@ -34,6 +35,7 @@ const addOrderItems = asyncHandler(async (req, res) => {
             taxPrice,
             shippingPrice,
             totalPrice,
+            discount,
          })
 
          order.orderItems.map(async (item) => {

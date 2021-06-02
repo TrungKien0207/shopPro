@@ -23,6 +23,7 @@ import {
    createProductReview,
    listProductDetails,
 } from '../actions/productActions.js'
+import { listSale } from '../actions/saleAction.js'
 import ActiveRating from '../components/ActiveRating'
 import Announcement from '../components/Announcement.js'
 import ButtonComponent from '../components/ButtonComponent'
@@ -90,6 +91,9 @@ function ProductScreen({ history, match }) {
    const userLogin = useSelector((state) => state.userLogin)
    const { userInfo } = userLogin
 
+   const saleList = useSelector((state) => state.saleList)
+   const { sale } = saleList
+
    const productReviewCreate = useSelector((state) => state.productReviewCreate)
    const {
       loading: loadingProductReview,
@@ -115,6 +119,7 @@ function ProductScreen({ history, match }) {
    }
 
    useEffect(() => {
+      dispatch(listSale())
       if (successProductReview) {
          setRating(0)
          setComment(' ')
@@ -304,10 +309,28 @@ function ProductScreen({ history, match }) {
                            >
                               <div className='group-items pt-2 pb-2 ml-4 mr-4 rounded shadow'>
                                  <ListGroup.Item className='border-0 pt-0 pb-0 mb-0 pr-0 group-items'>
-                                    <h2 className='text-lowercase'>
-                                       {product.price &&
-                                          formatPrice(product.price, 'đ')}
-                                    </h2>
+                                    {product.sales ? (
+                                       <div className='d-flex justify-content-around'>
+                                          <h4 className='text-lowercase text-danger text-decoration-line-through'>
+                                             {product.price &&
+                                                formatPrice(product.price, 'đ')}
+                                          </h4>
+                                          <h2 className='text-lowercase'>
+                                             {product.price &&
+                                                formatPrice(
+                                                   product.price -
+                                                      product.price *
+                                                         product.sales.percent,
+                                                   'đ'
+                                                )}
+                                          </h2>
+                                       </div>
+                                    ) : (
+                                       <h2 className='text-lowercase'>
+                                          {product.price &&
+                                             formatPrice(product.price, 'đ')}
+                                       </h2>
+                                    )}
                                  </ListGroup.Item>
 
                                  <ListGroup.Item className='border-0 group-items'>
@@ -342,12 +365,12 @@ function ProductScreen({ history, match }) {
                                     <ListGroup.Item className='border-0 pt-0 pb-0 group-items '>
                                        <Row>
                                           <Col
-                                             md={4}
+                                             md={5}
                                              className='d-flex align-items-center'
                                           >
                                              <p className='mb-0'>Số lượng:</p>
                                           </Col>
-                                          <Col md={7} className='d-flex'>
+                                          <Col md={2} className='d-flex'>
                                              <ButtonGroupp
                                                 size='small'
                                                 aria-label='small '
