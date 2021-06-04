@@ -1,5 +1,6 @@
 .btn_color {
-  background-color: #7563c8;
+  background-color: #ff9a8b;
+  background-image: linear-gradient(11deg, #ff9a8b 0%, #ff6a88 55%, #ff99ac 100%);
   font-size: 0.9rem;
   color: #fff;
   letter-spacing: 0.25rem;
@@ -10,9 +11,11 @@
 .btn_color:active,
 .btn_color:visited,
 .btn_color:focus {
-  background-color: #6353a7 !important;
+  background-color: #ff9a8b;
+  background-image: linear-gradient(11deg, #ff9a8b 0%, #ff6a88 55%, #ff99ac 100%);
   /* border: 0px !important; */
-  box-shadow: 0 0 0 0.2rem #6351aa70 !important;
+  box-shadow: 0 0 0 0.2rem #ff9a8b !important;
+  color: #fff;
 }
 
 .card_color {

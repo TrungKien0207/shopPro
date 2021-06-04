@@ -473,7 +473,8 @@ export const CartScreen = ({ match, location, history }) => {
                <Card className='mt-3 border-0'>
                   <Button
                      type='button'
-                     className='btn-block rounded-pill text-uppercase p-3 text-light'
+                     variant='outline-light'
+                     className='btn-block btn_color rounded-pill text-uppercase p-3 text-light'
                      disabled={
                         cartItems.length === 0 ||
                         cartItems.reduce((acc, item) => acc + item.qty, 0) <

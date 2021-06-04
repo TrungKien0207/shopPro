@@ -110,7 +110,7 @@ function Product({ product }) {
                      <div className='d-flex justify-content-between'>
                         <Card.Text
                            as='h5'
-                           className='text-lowercase text-decoration-line-through mb-0'
+                           className='text-lowercase text-secondary text-decoration-line-through mb-0'
                         >
                            {format(product.price, 'đ')}
                         </Card.Text>
@@ -121,6 +121,9 @@ function Product({ product }) {
                                     <Card.Text
                                        as='h5'
                                        className='text-lowercase'
+                                       style={{
+                                          color: '#ff6a88',
+                                       }}
                                     >
                                        {format(
                                           discount(product.price, s.percent),

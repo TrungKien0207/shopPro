@@ -311,11 +311,16 @@ function ProductScreen({ history, match }) {
                                  <ListGroup.Item className='border-0 pt-0 pb-0 mb-0 pr-0 group-items'>
                                     {product.sales ? (
                                        <div className='d-flex justify-content-around'>
-                                          <h4 className='text-lowercase text-danger text-decoration-line-through'>
+                                          <h4 className='text-lowercase text-secondary text-decoration-line-through'>
                                              {product.price &&
                                                 formatPrice(product.price, 'đ')}
                                           </h4>
-                                          <h2 className='text-lowercase'>
+                                          <h2
+                                             className='text-lowercase'
+                                             style={{
+                                                color: '#ff6a88',
+                                             }}
+                                          >
                                              {product.price &&
                                                 formatPrice(
                                                    product.price -
@@ -427,6 +432,7 @@ function ProductScreen({ history, match }) {
                                  <Button
                                     onClick={addToCartHandler}
                                     className='btn-block btn_color rounded-pill'
+                                    variant='outline-light'
                                     type='button'
                                     disabled={product.countInStock === 0}
                                     style={{ fontSize: '1em', width: '20rem' }}

@@ -362,3 +362,33 @@ p {
   background-image: linear-gradient(11deg, #ff9a8b 0%, #ff6a88 55%, #ff99ac 100%);
   margin-right: -10%;
 }
+
+.title_home_buy {
+  clip-path: polygon(100% 0, 95% 50%, 100% 100%, 0% 100%, 5% 50%, 0% 0%);
+  border-radius: 0.2rem;
+  background-color: #ff9a8b;
+  background-image: linear-gradient(11deg, #ff9a8b 0%, #ff6a88 55%, #ff99ac 100%);
+  color: #fff;
+  padding: 0.5rem !important;
+  width: 24rem;
+}
+
+.title_home_rate {
+  clip-path: polygon(100% 0, 95% 50%, 100% 100%, 0% 100%, 5% 50%, 0% 0%);
+  border-radius: 0.2rem;
+  background-color: #ff9a8b;
+  background-image: linear-gradient(11deg, #ff9a8b 0%, #ff6a88 55%, #ff99ac 100%);
+  color: #fff;
+  padding: 0.5rem !important;
+  width: 24rem;
+}
+
+.title_home {
+  clip-path: polygon(100% 0, 95% 50%, 100% 100%, 0% 100%, 5% 50%, 0% 0%);
+  border-radius: 0.2rem;
+  background-color: #ff9a8b;
+  background-image: linear-gradient(11deg, #ff9a8b 0%, #ff6a88 55%, #ff99ac 100%);
+  color: #fff;
+  padding: 0.5rem !important;
+  width: 24rem;
+}

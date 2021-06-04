@@ -158,15 +158,11 @@ function HomeScreen({ match, history }) {
       )} */}
          {!keyword && <Banner />}
          <div>
-            <h3
-               className='ml-5 mt-4 mb-2'
-               style={{
-                  borderBottom: '0.15rem solid #a20a0a',
-                  width: '13rem',
-               }}
-            >
-               Top bán chạy
-            </h3>
+            <div className='d-flex justify-content-center'>
+               <h4 className='ml-5 mt-4 mb-4 title_home_buy text-center shadow'>
+                  Top bán chạy
+               </h4>
+            </div>
             {loadingSold ? (
                <Loader />
             ) : errorSold ? (
@@ -192,15 +188,11 @@ function HomeScreen({ match, history }) {
          </div>
 
          <div>
-            <h3
-               className='ml-5 mt-4 mb-2'
-               style={{
-                  borderBottom: '0.15rem solid #a20a0a',
-                  width: '12.8rem',
-               }}
-            >
-               Top đánh giá
-            </h3>
+            <div className='d-flex justify-content-center'>
+               <h4 className='ml-5 mt-4 mb-4 title_home_rate text-center'>
+                  Top đánh giá
+               </h4>
+            </div>
             {loadingRate ? (
                <Loader />
             ) : errorRate ? (
@@ -226,12 +218,11 @@ function HomeScreen({ match, history }) {
          </div>
 
          <div>
-            <h3
-               className='ml-5 mt-4 mb-2'
-               style={{ borderBottom: '0.15rem solid #a20a0a', width: '16rem' }}
-            >
-               Tất cả sản phẩm
-            </h3>
+            <div className='d-flex justify-content-center'>
+               <h4 className='ml-5 mt-4 mb-4 title_home text-center'>
+                  Tất cả sản phẩm
+               </h4>
+            </div>
             {loading ? (
                <Loader />
             ) : error ? (
