@@ -15,6 +15,9 @@ import {
    ORDER_DETAILS_FAIL,
    ORDER_DETAILS_REQUEST,
    ORDER_DETAILS_SUCCESS,
+   ORDER_FILTER_FAIL,
+   ORDER_FILTER_REQUEST,
+   ORDER_FILTER_SUCCESS,
    ORDER_LIST_FAIL,
    ORDER_LIST_MY_FAIL,
    ORDER_LIST_MY_REQUEST,
@@ -29,7 +32,7 @@ import {
    ORDER_UPDATE_BY_MEMBER_SUCCESS,
    ORDER_UPDATE_FAIL,
    ORDER_UPDATE_REQUEST,
-   ORDER_UPDATE_SUCCESS,
+   ORDER_UPDATE_SUCCESS
 } from '../constants/orderConstants'
 
 export const createOrder = (order) => async (dispatch, getState) => {
@@ -374,6 +377,43 @@ export const consultOrder = (consult) => async (dispatch, getState) => {
    } catch (error) {
       dispatch({
          type: ORDER_CONSULT_FAIL,
+         payload:
+            error.response && error.response.data.message
+               ? error.response.data.message
+               : error.message,
+      })
+   }
+}
+
+export const filterOrder = (orderStatus) => async (dispatch, getState) => {
+   try {
+      dispatch({
+         type: ORDER_FILTER_REQUEST,
+      })
+
+      const {
+         userLogin: { userInfo },
+      } = getState()
+
+      const config = {
+         headers: {
+            Authorization: `Bearer ${userInfo.token}`,
+         },
+      }
+
+      const { data } = await axios.post(
+         `/api/orders/filter`,
+         orderStatus,
+         config
+      )
+
+      dispatch({
+         type: ORDER_FILTER_SUCCESS,
+         payload: data,
+      })
+   } catch (error) {
+      dispatch({
+         type: ORDER_FILTER_FAIL,
          payload:
             error.response && error.response.data.message
                ? error.response.data.message

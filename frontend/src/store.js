@@ -23,6 +23,7 @@ import {
    orderDeleteReducer,
    orderDeliverReducer,
    orderDetailsReducer,
+   orderFilterReducer,
    orderListMyReducer,
    orderListReducer,
    orderPayReducer,
@@ -129,6 +130,7 @@ const reducer = combineReducers({
    orderUpdate: orderUpdateReducer,
    orderUpdateByMember: orderUpdateByMemberReducer,
    orderConsult: orderConsultReducer,
+   orderFilter: orderFilterReducer,
 
    categoriesList: categoriesListReducer,
    categoriesListAdm: categoriesListReducerAdm,

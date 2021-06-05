@@ -267,6 +267,25 @@ const updateStatusByMember = asyncHandler(async (req, res) => {
    }
 })
 
+const filterOrder = asyncHandler(async (req, res) => {
+   try {
+      const order = await Order.find({
+         orderStatus: req.body.orderStatus,
+      }).sort({
+         createdAt: -1,
+      })
+
+      if (order) {
+         res.json(order)
+      } else {
+         res.status(404)
+         throw new Error('Order not found')
+      }
+   } catch (error) {
+      console.log(error)
+   }
+})
+
 module.exports = {
    addOrderItems,
    getOrderById,
@@ -277,4 +296,5 @@ module.exports = {
    deleteOrder,
    updateStatus,
    updateStatusByMember,
+   filterOrder,
 }

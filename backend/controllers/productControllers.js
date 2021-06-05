@@ -48,7 +48,6 @@ const getAllProduct = asyncHandler(async (req, res) => {
 //* @route      GET /api/products/:id
 //* @access     Public
 const getProductById = asyncHandler(async (req, res) => {
-   console.log('hello', req.params.id)
    const product = await Product.findOne({ _id: req.params.id }).populate(
       'sales'
    )

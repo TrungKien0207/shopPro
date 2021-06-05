@@ -10,6 +10,7 @@ var {
    updateOrderToPaid,
    updateStatus,
    updateStatusByMember,
+   filterOrder,
 } = require('../controllers/orderControllers.js')
 var { admin, protect } = require('../middleware/authMiddleware.js')
 
@@ -29,5 +30,7 @@ router.route('/consult').post(protect, admin, orderStatisticalByDate)
 
 router.route('/:id/pay').put(protect, updateOrderToPaid)
 router.route('/:id/deliver').put(protect, updateOrderToDelivered)
+
+router.route('/filter').post(protect, admin, filterOrder)
 
 module.exports = router

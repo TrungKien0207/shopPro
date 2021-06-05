@@ -1,12 +1,16 @@
 import Checkbox from '@material-ui/core/Checkbox'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import IconButton from '@material-ui/core/IconButton'
+import Select from '@material-ui/core/Select'
 import Paper from '@material-ui/core/Paper'
 import { lighten, makeStyles } from '@material-ui/core/styles'
 import Switch from '@material-ui/core/Switch'
 import TableBody from '@material-ui/core/TableBody'
 import TableCell from '@material-ui/core/TableCell'
 import TableContainer from '@material-ui/core/TableContainer'
+import FormControl from '@material-ui/core/FormControl'
+import InputLabel from '@material-ui/core/InputLabel'
+import MenuItem from '@material-ui/core/MenuItem'
 import TableHead from '@material-ui/core/TableHead'
 import TablePagination from '@material-ui/core/TablePagination'
 import TableRow from '@material-ui/core/TableRow'
@@ -18,12 +22,16 @@ import DeleteIcon from '@material-ui/icons/Delete'
 import FilterListIcon from '@material-ui/icons/FilterList'
 import clsx from 'clsx'
 import PropTypes from 'prop-types'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button, Col, Row, Table } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { LinkContainer } from 'react-router-bootstrap'
 import '../../notisfied.css'
-import { listOrders, deleteOrder } from '../../actions/orderActions'
+import {
+   listOrders,
+   deleteOrder,
+   filterOrder,
+} from '../../actions/orderActions'
 import Announcement from '../../components/Announcement'
 import Message from '../../components/Message'
 import Loader from '../../components/Loader'
@@ -79,6 +87,12 @@ const headCells = [
       numeric: true,
       disablePadding: false,
       label: 'GIAO HÀNG',
+   },
+   {
+      id: 'status',
+      numeric: true,
+      disablePadding: false,
+      label: 'TRẠNG THÁI',
    },
    { id: 'action', numeric: false, disablePadding: false, label: '' },
 ]
@@ -199,6 +213,11 @@ const useStyles = makeStyles((theme) => ({
       top: 20,
       width: 1,
    },
+
+   formControl: {
+      margin: theme.spacing(1),
+      minWidth: 300,
+   },
 }))
 
 function OrderListScreen({ history, match }) {
@@ -208,7 +227,7 @@ function OrderListScreen({ history, match }) {
    const [selected, setSelected] = React.useState([])
    const [page, setPage] = React.useState(0)
    const [dense, setDense] = React.useState(false)
-   const [rowsPerPage, setRowsPerPage] = React.useState(5)
+   const [rowsPerPage, setRowsPerPage] = React.useState(10)
 
    const handleRequestSort = (event, property) => {
       const isAsc = orderBy === property && order === 'asc'
@@ -267,13 +286,20 @@ function OrderListScreen({ history, match }) {
 
    const ord = ordersList?.orders
 
-
    const orderDelete = useSelector((state) => state.orderDelete)
    const {
       loading: loadingDelete,
       error: errorDelete,
       success: successDelete,
    } = orderDelete
+
+   const orderFilter = useSelector((state) => state.orderFilter)
+   const {
+      loading: loadingFilter,
+      error: errorFilter,
+      success: successFilter,
+      filter,
+   } = orderFilter
 
    const emptyRows =
       ordersList?.orders !== undefined &&
@@ -289,7 +315,7 @@ function OrderListScreen({ history, match }) {
       } else {
          history.push('/login')
       }
-   }, [dispatch, history, userInfo, successDelete])
+   }, [dispatch, history, userInfo, successDelete, successFilter])
 
    const deleteHandle = (id) => {
       if (window.confirm('You are sure?')) {
@@ -352,17 +378,320 @@ function OrderListScreen({ history, match }) {
       numSelected: PropTypes.number.isRequired,
    }
 
+   const [open, setOpen] = React.useState(false)
+
+   const handleClose = () => {
+      setOpen(false)
+   }
+
+   const handleOpen = () => {
+      setOpen(true)
+   }
+
+   const [orderStatus, setOrderStatus] = useState('')
+
+   const stateOrder = ['Chờ xác nhận', 'Đang vận chuyển', 'Đã giao hàng', 'Huỷ']
+
+   const handleChange = (event) => {
+      setOrderStatus(event.target.value)
+      dispatch(filterOrder({ orderStatus: event.target.value }))
+   }
+
    return (
       <>
          <Header />
+
          <Row style={{ backgroundColor: '#fff' }}>
             <Col md={2} className='p-0'>
                <SideBar fluid />
             </Col>
             <Col md={10} className='pl-0'>
+               <FormControl className={classes.formControl}>
+                  <InputLabel
+                     id='demo-controlled-open-select-label'
+                     style={{ fontSize: '1.2rem' }}
+                  >
+                     Trạng thái đơn hàng
+                  </InputLabel>
+                  <Select
+                     labelId='demo-controlled-open-select-label'
+                     id='demo-controlled-open-select'
+                     open={open}
+                     onClose={handleClose}
+                     onOpen={handleOpen}
+                     value={orderStatus}
+                     onChange={handleChange}
+                     className='text-danger text-center text-uppercase'
+                  >
+                     {stateOrder.map((t) => (
+                        <MenuItem className='justify-content-center' value={t}>
+                           {t}
+                        </MenuItem>
+                     ))}
+                  </Select>
+               </FormControl>
                {loadingDelete && <Loader />}
                {errorDelete && <Message>{errorDelete}</Message>}
-               {loading ? (
+               {loadingFilter ? (
+                  <Loader />
+               ) : errorFilter ? (
+                  <Announcement variant='danger'>{error}</Announcement>
+               ) : filter?.length !== 0 ? (
+                  <div className={classes.root}>
+                     <Paper className={classes.paper}>
+                        <TableContainer
+                           className='text-center '
+                           style={{
+                              borderRadius: '1rem',
+                           }}
+                        >
+                           <EnhancedTableToolbar
+                              numSelected={selected.length}
+                           />
+                           <Table
+                              className={classes.table}
+                              aria-labelledby='tableTitle'
+                              size={dense ? 'small' : 'medium'}
+                              aria-label='enhanced table'
+                           >
+                              <EnhancedTableHead
+                                 classes={classes}
+                                 numSelected={selected.length}
+                                 order={order}
+                                 orderBy={orderBy}
+                                 onSelectAllClick={handleSelectAllClick}
+                                 onRequestSort={handleRequestSort}
+                                 rowCount={filter?.length}
+                              />
+                              <TableBody>
+                                 {filter &&
+                                    filter
+                                       .slice(
+                                          page * rowsPerPage,
+                                          page * rowsPerPage + rowsPerPage
+                                       )
+                                       .map((order, index) => {
+                                          const isItemSelected = isSelected(
+                                             order._id
+                                          )
+                                          const labelId = `enhanced-table-checkbox-${index}`
+
+                                          return (
+                                             <TableRow
+                                                hover
+                                                onClick={(event) =>
+                                                   handleClick(event, order._id)
+                                                }
+                                                role='checkbox'
+                                                aria-checked={isItemSelected}
+                                                tabIndex={-1}
+                                                key={order._id}
+                                                selected={isItemSelected}
+                                                className='p-0'
+                                             >
+                                                <TableCell
+                                                   padding='checkbox'
+                                                   className='table_th'
+                                                >
+                                                   <Checkbox
+                                                      checked={isItemSelected}
+                                                      inputProps={{
+                                                         'aria-labelledby':
+                                                            labelId,
+                                                      }}
+                                                   />
+                                                </TableCell>
+                                                <TableCell
+                                                   id={labelId}
+                                                   // scope='row'
+                                                   // padding='none'
+                                                   align='center'
+                                                   className='table_th '
+                                                >
+                                                   {order._id}
+                                                </TableCell>
+                                                <TableCell
+                                                   align='center'
+                                                   // component='th'
+                                                   className='text-capitalize table_th'
+                                                >
+                                                   {order.user &&
+                                                      order.user.name}
+                                                </TableCell>
+                                                <TableCell
+                                                   align='center'
+                                                   className='table_th'
+                                                >
+                                                   {format(
+                                                      new utcToZonedTime(
+                                                         order.createdAt,
+                                                         'Asia/Ho_Chi_Minh'
+                                                      ),
+                                                      'HH:mm:ss - dd/MM/yyyy',
+                                                      {
+                                                         timeZone:
+                                                            'Asia/Ho_Chi_Minh',
+                                                      }
+                                                   )}
+                                                </TableCell>
+                                                <TableCell
+                                                   align='center'
+                                                   className='table_th'
+                                                >
+                                                   {formatMoney(
+                                                      order.totalPrice,
+                                                      'đ'
+                                                   )}
+                                                </TableCell>
+                                                <TableCell
+                                                   align='center'
+                                                   className='table_th'
+                                                >
+                                                   {order.orderItems &&
+                                                      order.orderItems.map(
+                                                         (q) =>
+                                                            q.name.slice(
+                                                               0,
+                                                               20
+                                                            ) + '...'
+                                                      )}
+                                                </TableCell>
+
+                                                <TableCell
+                                                   align='center'
+                                                   style={{
+                                                      color: 'green',
+                                                      fontWeight: '700',
+                                                   }}
+                                                   className='table_th'
+                                                >
+                                                   {order.isPaid ? (
+                                                      format(
+                                                         new utcToZonedTime(
+                                                            order.paidAt,
+                                                            'Asia/Ho_Chi_Minh'
+                                                         ),
+                                                         'HH:mm:ss - dd/MM/yyyy',
+                                                         {
+                                                            timeZone:
+                                                               'Asia/Ho_Chi_Minh',
+                                                         }
+                                                      )
+                                                   ) : (
+                                                      <i
+                                                         className='fas fa-times'
+                                                         style={{
+                                                            color: 'red',
+                                                         }}
+                                                      ></i>
+                                                   )}
+                                                </TableCell>
+                                                <TableCell
+                                                   align='center'
+                                                   style={{
+                                                      color: 'green',
+                                                      fontWeight: '700',
+                                                   }}
+                                                   className='table_th'
+                                                >
+                                                   {order.isDelivered ? (
+                                                      format(
+                                                         new utcToZonedTime(
+                                                            order.deliveredAt,
+                                                            'Asia/Ho_Chi_Minh'
+                                                         ),
+                                                         'HH:mm:ss - dd/MM/yyyy',
+                                                         {
+                                                            timeZone:
+                                                               'Asia/Ho_Chi_Minh',
+                                                         }
+                                                      )
+                                                   ) : (
+                                                      <i
+                                                         className='fas fa-times'
+                                                         style={{
+                                                            color: 'red',
+                                                         }}
+                                                      ></i>
+                                                   )}
+                                                </TableCell>
+                                                <TableCell
+                                                   align='center'
+                                                   // component='th'
+                                                   className='text-capitalize table_th'
+                                                >
+                                                   {order.orderStatus ===
+                                                   'Huỷ' ? (
+                                                      <strong className='text-danger  p-2 rounded-pill'>
+                                                         {order.orderStatus}
+                                                      </strong>
+                                                   ) : order.orderStatus ===
+                                                     'Đã giao hàng' ? (
+                                                      <strong className='text-success  p-2 rounded-pill'>
+                                                         {order.orderStatus}
+                                                      </strong>
+                                                   ) : (
+                                                      <strong className='text-warning p-2 rounded-pill'>
+                                                         {order.orderStatus}
+                                                      </strong>
+                                                   )}
+                                                </TableCell>
+                                                <TableCell
+                                                   align='center'
+                                                   className='table_th'
+                                                >
+                                                   <LinkContainer
+                                                      to={`/admin/order/${order._id}/edit`}
+                                                   >
+                                                      <Button
+                                                         variant='outline-dark'
+                                                         className='btn-sm btn-unique rounded-pill'
+                                                      >
+                                                         <BubbleChartOutlinedIcon
+                                                            style={{
+                                                               fontSize:
+                                                                  '1.2rem',
+                                                            }}
+                                                         />
+                                                      </Button>
+                                                   </LinkContainer>
+                                                </TableCell>
+                                             </TableRow>
+                                          )
+                                       })}
+                                 {emptyRows > 0 && (
+                                    <TableRow
+                                       style={{
+                                          height: (dense ? 33 : 53) * emptyRows,
+                                       }}
+                                    >
+                                       <TableCell colSpan={6} />
+                                    </TableRow>
+                                 )}
+                              </TableBody>
+                           </Table>
+                        </TableContainer>
+                        <TablePagination
+                           rowsPerPageOptions={[5, 10, 15, 20, 25]}
+                           component='div'
+                           count={filter?.length}
+                           rowsPerPage={rowsPerPage}
+                           page={page}
+                           onChangePage={handleChangePage}
+                           onChangeRowsPerPage={handleChangeRowsPerPage}
+                        />
+                     </Paper>
+                     <FormControlLabel
+                        control={
+                           <Switch
+                              checked={dense}
+                              onChange={handleChangeDense}
+                           />
+                        }
+                        label='Dense padding'
+                     />
+                  </div>
+               ) : loading ? (
                   <Loader />
                ) : error ? (
                   <Announcement variant='danger'>{error}</Announcement>
@@ -543,6 +872,27 @@ function OrderListScreen({ history, match }) {
                                                             color: 'red',
                                                          }}
                                                       ></i>
+                                                   )}
+                                                </TableCell>
+                                                <TableCell
+                                                   align='center'
+                                                   // component='th'
+                                                   className='text-capitalize table_th'
+                                                >
+                                                   {order.orderStatus ===
+                                                   'Huỷ' ? (
+                                                      <strong className='text-danger  p-2 rounded-pill'>
+                                                         {order.orderStatus}
+                                                      </strong>
+                                                   ) : order.orderStatus ===
+                                                     'Đã giao hàng' ? (
+                                                      <strong className='text-success  p-2 rounded-pill'>
+                                                         {order.orderStatus}
+                                                      </strong>
+                                                   ) : (
+                                                      <strong className='text-warning p-2 rounded-pill'>
+                                                         {order.orderStatus}
+                                                      </strong>
                                                    )}
                                                 </TableCell>
                                                 <TableCell

@@ -1,10 +1,10 @@
 import {
    ORDER_CONSULT_FAIL,
    ORDER_CONSULT_REQUEST,
-   ORDER_CREATE_RESET,
    ORDER_CONSULT_SUCCESS,
    ORDER_CREATE_FAIL,
    ORDER_CREATE_REQUEST,
+   ORDER_CREATE_RESET,
    ORDER_CREATE_SUCCESS,
    ORDER_DELETE_FAIL,
    ORDER_DELETE_REQUEST,
@@ -17,6 +17,10 @@ import {
    ORDER_DETAILS_REQUEST,
    ORDER_DETAILS_SUCCESS,
    ORDER_DETAIL_RESET,
+   ORDER_FILTER_FAIL,
+   ORDER_FILTER_REQUEST,
+   ORDER_FILTER_RESET,
+   ORDER_FILTER_SUCCESS,
    ORDER_LIST_FAIL,
    ORDER_LIST_MY_FAIL,
    ORDER_LIST_MY_REQUEST,
@@ -247,6 +251,21 @@ export const orderConsultReducer = (state = {}, action) => {
             error: action.payload,
          }
 
+      default:
+         return state
+   }
+}
+
+export const orderFilterReducer = (state = { filter: [] }, action) => {
+   switch (action.type) {
+      case ORDER_FILTER_REQUEST:
+         return { loading: true }
+      case ORDER_FILTER_SUCCESS:
+         return { loading: false, success: true, filter: action.payload }
+      case ORDER_FILTER_FAIL:
+         return { loading: false, error: action.payload }
+      case ORDER_FILTER_RESET:
+         return { order: [] }
       default:
          return state
    }
