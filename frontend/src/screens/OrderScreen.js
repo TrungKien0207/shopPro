@@ -14,6 +14,7 @@ import {
 import Announcement from '../components/Announcement'
 import ImagePay from '../components/ImagePay'
 import Loader from '../components/Loader'
+import SkeletonEffect from '../components/SkeletonEffect'
 import Message from '../components/Message'
 import ProgressShipping from '../components/ProgressShipping'
 import {
@@ -140,7 +141,7 @@ const OrderScreen = ({ match, history }) => {
       <>
          <Header />
          {loading ? (
-            <Loader />
+            <SkeletonEffect />
          ) : error ? (
             <Message>{error}</Message>
          ) : (

@@ -216,11 +216,17 @@ export const ShippingScreen = ({ history }) => {
                      </DialogContent>
                   </Dialog>
                </div>
-               <Row className='shadow p-2 card_color m-4'>
-                  <Col md={7} className='d-flex align-items-center'>
-                     <Image src='/background/shipping.jpg' fluid />
+               <Row
+                  className='shadow p-2 card_color m-4'
+                  style={{ height: '75vh' }}
+               >
+                  <Col md={6} className='d-flex align-items-center'>
+                     <Image
+                        src='/background/shipping.jpg'
+                        style={{ height: '60vh' }}
+                     />
                   </Col>
-                  <Col md={5} className='mt-2 pr-4'>
+                  <Col md={6} className='mt-2 pr-4'>
                      <div>
                         <Step step1 step2 />
 
@@ -274,10 +280,12 @@ export const ShippingScreen = ({ history }) => {
                                  </div>
                               </div>
                            </Form.Group>
-                           <div>
+                           <div className='d-flex justify-content-center'>
                               <Button
                                  type='submit'
+                                 variant='outline-light'
                                  className='btn-block btn_color rounded-pill'
+                                 style={{ width: '10rem' }}
                               >
                                  Tiếp tục
                               </Button>

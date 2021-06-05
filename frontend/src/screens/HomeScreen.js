@@ -9,7 +9,7 @@ import {
 import Banner from '../components/Banner'
 import Footer from '../components/Footer'
 import Header from '../components/Header'
-import Loader from '../components/Loader'
+import SkeletonEffect from '../components/SkeletonEffect'
 import Message from '../components/Message'
 import Meta from '../components/Meta'
 import Paginate from '../components/Paginate'
@@ -164,7 +164,7 @@ function HomeScreen({ match, history }) {
                </h4>
             </div>
             {loadingSold ? (
-               <Loader />
+               <SkeletonEffect />
             ) : errorSold ? (
                <Message variant='danger'>{error}</Message>
             ) : (
@@ -194,7 +194,7 @@ function HomeScreen({ match, history }) {
                </h4>
             </div>
             {loadingRate ? (
-               <Loader />
+               <SkeletonEffect />
             ) : errorRate ? (
                <Message variant='danger'>{error}</Message>
             ) : (
@@ -224,7 +224,7 @@ function HomeScreen({ match, history }) {
                </h4>
             </div>
             {loading ? (
-               <Loader />
+               <SkeletonEffect />
             ) : error ? (
                <Message variant='danger'>{error}</Message>
             ) : (

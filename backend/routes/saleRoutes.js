@@ -11,7 +11,7 @@ var { admin, protect } = require('../middleware/authMiddleware.js')
 
 const router = express.Router()
 
-router.route('/').post(protect, admin, createSale).get(protect, admin, getSale)
+router.route('/').get(getSale).post(protect, admin, createSale)
 
 router
    .route('/:id')

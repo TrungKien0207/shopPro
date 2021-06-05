@@ -411,7 +411,7 @@ const CodeListScreen = ({ history }) => {
             <Col md={10} className='pl-0'>
                {loadingDelete && (
                      <MessageSuccess variant='Đã xoá thành công'></MessageSuccess>
-                  ) && <Loader />}
+                  ) && <SkeletonEffect />}
                {errorDelete && <Message>{errorDelete}</Message>}
                {loadingCreate && (
                   <MessageSuccess

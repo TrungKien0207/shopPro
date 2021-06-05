@@ -7,6 +7,7 @@ import {
    updateCategory,
 } from '../../actions/categoryAction'
 import Message from '../../components/Message'
+import SkeletonEffect from '../../components/SkeletonEffect'
 import MessageSuccess from '../../components/MessageSuccess'
 import { CATEGORY_UPDATE_RESET } from '../../constants/categoriesConstants'
 import SideBar from './components/SideBar'
@@ -61,7 +62,7 @@ const SaleEditScreen = ({ match, history }) => {
                )}
                {errorUpdate && <Message>{errorUpdate}</Message>}
                {loading ? (
-                  <Loader />
+                  <SkeletonEffect />
                ) : (
                   <Row className='justify-content-center'>
                      <Col md={6}>

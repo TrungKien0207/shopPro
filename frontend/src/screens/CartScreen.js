@@ -1,30 +1,20 @@
+import { Chip } from '@material-ui/core'
 import Buttonn from '@material-ui/core/Button'
 import ButtonGroupp from '@material-ui/core/ButtonGroup'
 import { makeStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
 import AddIcon from '@material-ui/icons/Add'
+import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline'
 import RemoveIcon from '@material-ui/icons/Remove'
 import React, { useEffect, useState } from 'react'
-import {
-   Button,
-   Card,
-   Col,
-   Image,
-   ListGroup,
-   ListGroupItem,
-   Row,
-} from 'react-bootstrap'
+import { Button, Card, Col, Image, ListGroup, Row } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { addToCart, removeFromCart } from '../actions/cartActions.js'
-import { getUserDetails } from '../actions/userActions.js'
-import Footer from '../components/Footer.js'
-import Header from '../components/Header.js'
-import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline'
-import Message from '../components/Message'
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import { Chip } from '@material-ui/core'
+import { addToCart, removeFromCart } from '../actions/cartActions.js'
+import Footer from '../components/Footer.js'
+import Header from '../components/Header.js'
 
 const useStyles = makeStyles((theme) => ({
    root: {
@@ -136,9 +126,9 @@ export const CartScreen = ({ match, location, history }) => {
                            className='border-0 mt-1 shadow card_color'
                            rounded
                         >
-                           <div className='mb-2'>
+                           {/* <div className='mb-2'>
                               <Chip label={item.brand} variant='outlined' />
-                           </div>
+                           </div> */}
                            <Row>
                               <Col md={2}>
                                  <Link

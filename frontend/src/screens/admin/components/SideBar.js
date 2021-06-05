@@ -58,7 +58,7 @@ const SideBar = () => {
 
    return (
       <>
-         <div>
+         <div className='side_bar'>
             <Button
                type='primary'
                onClick={toggleCollapsed}

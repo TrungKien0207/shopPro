@@ -24,12 +24,13 @@ import {
    listProductDetails,
 } from '../actions/productActions.js'
 import { listSale } from '../actions/saleAction.js'
+import { listUsers } from '../actions/userActions.js'
 import ActiveRating from '../components/ActiveRating'
 import Announcement from '../components/Announcement.js'
 import ButtonComponent from '../components/ButtonComponent'
 import Footer from '../components/Footer.js'
 import Header from '../components/Header.js'
-import Loader from '../components/Loader'
+import SkeletonEffect from '../components/SkeletonEffect'
 import Message from '../components/Message'
 import Meta from '../components/Meta'
 import ProgressLine from '../components/ProgressLine.js'
@@ -91,6 +92,9 @@ function ProductScreen({ history, match }) {
    const userLogin = useSelector((state) => state.userLogin)
    const { userInfo } = userLogin
 
+   const userList = useSelector((state) => state.userList)
+   const { users } = userList
+
    const saleList = useSelector((state) => state.saleList)
    const { sale } = saleList
 
@@ -100,6 +104,10 @@ function ProductScreen({ history, match }) {
       success: successProductReview,
       error: errorProductReview,
    } = productReviewCreate
+
+   let url = users?.map((u) => u._id)
+
+   console.log('url', url)
 
    var settings = {
       className: 'slider variable-width',
@@ -119,6 +127,7 @@ function ProductScreen({ history, match }) {
    }
 
    useEffect(() => {
+      dispatch(listUsers())
       dispatch(listSale())
       if (successProductReview) {
          setRating(0)
@@ -206,7 +215,7 @@ function ProductScreen({ history, match }) {
                Quay lại
             </Link>
             {loading ? (
-               <Loader />
+               <SkeletonEffect />
             ) : error ? (
                <Message variant='danger'>{error}</Message>
             ) : (
@@ -279,6 +288,15 @@ function ProductScreen({ history, match }) {
                               </ListGroup.Item>
 
                               <ListGroup.Item className='text-justify'>
+                                 <div
+                                    className='border border-danger rounded-pill text-center p-1 shadow'
+                                    style={{ width: '15rem' }}
+                                 >
+                                    {product.supplier?.name}
+                                 </div>
+                              </ListGroup.Item>
+                              <ListGroup.Item className='text-justify'>
+                                 <h6 className='mb-0'>Thông tin</h6>
                                  <p className='mb-0'>{product.description}</p>
                               </ListGroup.Item>
                               <ListGroup.Item className='text-justify'>
@@ -450,7 +468,7 @@ function ProductScreen({ history, match }) {
                   </Row>
 
                   {loading ? (
-                     <Loader />
+                     <SkeletonEffect />
                   ) : (
                      <Row>
                         <Col className='mt-3 p-3 pl-5 pr-5 background-light rounded shadow card_color'>
@@ -491,7 +509,7 @@ function ProductScreen({ history, match }) {
                                              {review ? (
                                                 <Image
                                                    className='rounded-circle'
-                                                   src={user.avatar?.url}
+                                                   src={review.avatar.url}
                                                    style={{
                                                       height: '2rem',
                                                       width: '2rem',

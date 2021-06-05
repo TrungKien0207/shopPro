@@ -1,16 +1,16 @@
 import Checkbox from '@material-ui/core/Checkbox'
+import FormControl from '@material-ui/core/FormControl'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import IconButton from '@material-ui/core/IconButton'
-import Select from '@material-ui/core/Select'
+import InputLabel from '@material-ui/core/InputLabel'
+import MenuItem from '@material-ui/core/MenuItem'
 import Paper from '@material-ui/core/Paper'
+import Select from '@material-ui/core/Select'
 import { lighten, makeStyles } from '@material-ui/core/styles'
 import Switch from '@material-ui/core/Switch'
 import TableBody from '@material-ui/core/TableBody'
 import TableCell from '@material-ui/core/TableCell'
 import TableContainer from '@material-ui/core/TableContainer'
-import FormControl from '@material-ui/core/FormControl'
-import InputLabel from '@material-ui/core/InputLabel'
-import MenuItem from '@material-ui/core/MenuItem'
 import TableHead from '@material-ui/core/TableHead'
 import TablePagination from '@material-ui/core/TablePagination'
 import TableRow from '@material-ui/core/TableRow'
@@ -18,27 +18,26 @@ import TableSortLabel from '@material-ui/core/TableSortLabel'
 import Toolbar from '@material-ui/core/Toolbar'
 import Tooltip from '@material-ui/core/Tooltip'
 import Typography from '@material-ui/core/Typography'
+import BubbleChartOutlinedIcon from '@material-ui/icons/BubbleChartOutlined'
 import DeleteIcon from '@material-ui/icons/Delete'
 import FilterListIcon from '@material-ui/icons/FilterList'
 import clsx from 'clsx'
+import { format, utcToZonedTime } from 'date-fns-tz'
 import PropTypes from 'prop-types'
 import React, { useEffect, useState } from 'react'
 import { Button, Col, Row, Table } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { LinkContainer } from 'react-router-bootstrap'
-import '../../notisfied.css'
 import {
-   listOrders,
    deleteOrder,
-   filterOrder,
+   filterOrder, listOrders
 } from '../../actions/orderActions'
 import Announcement from '../../components/Announcement'
 import Message from '../../components/Message'
-import Loader from '../../components/Loader'
-import SideBar from './components/SideBar'
+import SkeletonEffect from '../../components/SkeletonEffect'
+import '../../notisfied.css'
 import Header from './components/Header'
-import { format, utcToZonedTime } from 'date-fns-tz'
-import BubbleChartOutlinedIcon from '@material-ui/icons/BubbleChartOutlined'
+import SideBar from './components/SideBar'
 
 function formatMoney(n, currency) {
    return n.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + currency
@@ -430,10 +429,10 @@ function OrderListScreen({ history, match }) {
                      ))}
                   </Select>
                </FormControl>
-               {loadingDelete && <Loader />}
+               {loadingDelete && <SkeletonEffect />}
                {errorDelete && <Message>{errorDelete}</Message>}
                {loadingFilter ? (
-                  <Loader />
+                  <SkeletonEffect />
                ) : errorFilter ? (
                   <Announcement variant='danger'>{error}</Announcement>
                ) : filter?.length !== 0 ? (
@@ -692,7 +691,7 @@ function OrderListScreen({ history, match }) {
                      />
                   </div>
                ) : loading ? (
-                  <Loader />
+                  <SkeletonEffect />
                ) : error ? (
                   <Announcement variant='danger'>{error}</Announcement>
                ) : (

@@ -282,7 +282,7 @@ function ProfileScreen({ location, history }) {
 
                                  <div className='avatar_upload'>
                                     <div className='avatar_edit'>
-                                       {uploading && <Loader />}
+                                       {uploading && <SkeletonEffect />}
                                        <Form.Group>
                                           <Image
                                              className='avatar_icon'
@@ -301,13 +301,13 @@ function ProfileScreen({ location, history }) {
                            ) : (
                               <>
                                  <Avatar className={classes.orange}>
-                                    {uploading && <Loader />}
+                                    {uploading && <SkeletonEffect />}
                                     {userInfo.name.substring(0, 1)}
                                  </Avatar>
 
                                  <div className='avatar_upload'>
                                     <div className='avatar_edit'>
-                                       {uploading && <Loader />}
+                                       {uploading && <SkeletonEffect />}
                                        <Form.Group>
                                           <Image
                                              className='avatar_icon'

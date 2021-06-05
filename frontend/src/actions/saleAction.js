@@ -23,18 +23,18 @@ export const listSale = () => async (dispatch, getState) => {
          type: SALE_LIST_REQUEST,
       })
 
-      const {
-         userLogin: { userInfo },
-      } = getState()
+      // const {
+      //    userLogin: { userInfo },
+      // } = getState()
 
-      const config = {
-         headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${userInfo.token}`,
-         },
-      }
+      // const config = {
+      //    headers: {
+      //       'Content-Type': 'application/json',
+      //       Authorization: `Bearer ${userInfo.token}`,
+      //    },
+      // }
 
-      const { data } = await axios.get('/api/sale', config)
+      const { data } = await axios.get('/api/sale')
 
       dispatch({
          type: SALE_LIST_SUCCESS,

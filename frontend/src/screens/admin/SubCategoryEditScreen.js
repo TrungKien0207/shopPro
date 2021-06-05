@@ -16,6 +16,7 @@ import {
    getSubCategoryDetails,
    updateSubCategory,
 } from '../../actions/subCategoryAction'
+import SkeletonEffect from '../../components/SkeletonEffect'
 
 const SubCategoryEditScreen = ({ match, history }) => {
    const subId = match.params.id
@@ -53,6 +54,7 @@ const SubCategoryEditScreen = ({ match, history }) => {
             dispatch(listCategoriesAdm())
          } else {
             setName(subcat.name)
+            setSelectCategory(subcat.category)
          }
       }
    }, [dispatch, history, subId, subcat, successUpdate])
@@ -70,7 +72,7 @@ const SubCategoryEditScreen = ({ match, history }) => {
                )}
                {errorUpdate && <Message>{errorUpdate}</Message>}
                {loading ? (
-                  <Loader />
+                  <SkeletonEffect />
                ) : (
                   <Row className='justify-content-center'>
                      <Col md={6}>

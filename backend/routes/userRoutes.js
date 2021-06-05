@@ -23,7 +23,7 @@ router
    .route('/profile')
    .get(protect, getUserProfile)
    .put(protect, updateUserProfile)
-router.route('/').post(registerUser).get(protect, admin, getUsers)
+router.route('/').get(getUsers).post(registerUser)
 router.route('/createaddress').post(protect, createUserAddress)
 router.route('/deleteaddress').post(protect, deleteUserAddress)
 router.route('/roleaddress').post(protect, updateRoleUserAddress)

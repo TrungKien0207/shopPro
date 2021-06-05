@@ -42,6 +42,8 @@ const getAllProduct = asyncHandler(async (req, res) => {
       res.status(404)
       throw new Error('Product not found')
    }
+
+   console.log(product)
 })
 
 //* @desc       Fetch products by id
@@ -49,7 +51,7 @@ const getAllProduct = asyncHandler(async (req, res) => {
 //* @access     Public
 const getProductById = asyncHandler(async (req, res) => {
    const product = await Product.findOne({ _id: req.params.id }).populate(
-      'sales'
+      'sales supplier'
    )
 
    console.log(product)
@@ -168,48 +170,52 @@ const updateProduct = asyncHandler(async (req, res) => {
 //* @route      POST /api/products/:id/reviews
 //* @access     Private
 const createProductReview = asyncHandler(async (req, res) => {
-   const { rating, comment } = req.body
+   try {
+      const { rating, comment } = req.body
 
-   const product = await Product.findById(req.params.id)
-   // console.log(product)
+      const product = await Product.findById(req.params.id)
+      // console.log(product)
 
-   if (product) {
-      const review = {
-         name: req.user.name,
-         rating: Number(rating),
-         avatar: req.user.avatar,
-         comment,
-         user: req.user._id,
-      }
+      if (product) {
+         const review = {
+            name: req.user.name,
+            rating: Number(rating),
+            avatar: req.user.avatar,
+            comment,
+            user: req.user._id,
+         }
 
-      const alreadyReviewed = product.reviews.find(
-         (r) => r.user.toString() === req.user._id.toString()
-      )
+         const alreadyReviewed = product.reviews.find(
+            (r) => r.user.toString() === req.user._id.toString()
+         )
 
-      if (alreadyReviewed) {
-         product.reviews.forEach((review) => {
-            if (review.user.toString() === req.user._id.toString()) {
-               review.comment = comment
-               review.rating = rating
-            }
-         })
+         if (alreadyReviewed) {
+            product.reviews.forEach((review) => {
+               if (review.user.toString() === req.user._id.toString()) {
+                  review.comment = comment
+                  review.rating = rating
+               }
+            })
+         } else {
+            product.reviews.push(review)
+            product.numReviews = product.reviews.length
+         }
+
+         product.rating = (
+            product.reviews.reduce((acc, item) => item.rating + acc, 0) /
+            product.reviews.length
+         ).toFixed(2)
+
+         await product.save()
+         setTimeout(() => {
+            res.status(201).json({ message: 'Review added' })
+         }, 1500)
       } else {
-         product.reviews.push(review)
-         product.numReviews = product.reviews.length
+         res.status(404)
+         throw new Error('Product not found')
       }
-
-      product.rating = (
-         product.reviews.reduce((acc, item) => item.rating + acc, 0) /
-         product.reviews.length
-      ).toFixed(2)
-
-      await product.save()
-      setTimeout(() => {
-         res.status(201).json({ message: 'Review added' })
-      }, 1500)
-   } else {
-      res.status(404)
-      throw new Error('Product not found')
+   } catch (error) {
+      console.log(error)
    }
 })
 

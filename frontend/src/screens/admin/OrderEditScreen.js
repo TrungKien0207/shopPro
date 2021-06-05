@@ -75,8 +75,10 @@ const OrderEditScreen = ({ match, history }) => {
    const orderPay = useSelector((state) => state.orderPay)
    const { loading: loadingPay, success: successPay } = orderPay
 
+   console.log('orderstuas', order?.orderStatus)
+
    const stateOrder = ['Chờ xác nhận', 'Đang vận chuyển', 'Đã giao hàng', 'Huỷ']
-   const [orderStatus, setOrderStatus] = useState('')
+   const [orderStatus, setOrderStatus] = useState(order?.orderStatus)
 
    const submitHandler = (e) => {
       e.preventDefault()
@@ -84,10 +86,12 @@ const OrderEditScreen = ({ match, history }) => {
    }
 
    useEffect(() => {
-      if (successUpdate) {
-         dispatch({ type: ORDER_UPDATE_RESET })
-      } else {
-         dispatch(getOrderDetails(orderId))
+      if (userInfo) {
+         if (successUpdate) {
+            dispatch({ type: ORDER_UPDATE_RESET })
+         } else {
+            dispatch(getOrderDetails(orderId))
+         }
       }
    }, [dispatch, orderId, successUpdate])
 
@@ -119,7 +123,9 @@ const OrderEditScreen = ({ match, history }) => {
                                  </p>
                                  <p className='text-start'>
                                     Tổng tiền:{' '}
-                                    <strong>{order.totalPrice}đ</strong>
+                                    <strong>
+                                       {formatMoney(order.totalPrice, 'đ')}
+                                    </strong>
                                  </p>
                               </Col>
                               <Col md={6}>
@@ -136,11 +142,7 @@ const OrderEditScreen = ({ match, history }) => {
                                        open={open}
                                        onClose={handleClose}
                                        onOpen={handleOpen}
-                                       value={
-                                          order.orderStatus
-                                             ? orderStatus
-                                             : order.orderStatus
-                                       }
+                                       value={orderStatus}
                                        onChange={(e) =>
                                           setOrderStatus(e.target.value)
                                        }
@@ -159,11 +161,11 @@ const OrderEditScreen = ({ match, history }) => {
                               </Col>
                            </Row>
                         </ListGroup.Item>
-                        <ListGroup.Item className='border-0'>
+                        <ListGroup.Item className='border-0 '>
                            <Row>
-                              <Col md={6} className='border-0'>
+                              <Col md={6} className='border-0 '>
                                  <Card
-                                    className='rounded card_color'
+                                    className='rounded card_color '
                                     style={{
                                        height: '13rem',
                                        backgroundColor: '#F8F8F8',
@@ -450,7 +452,7 @@ const OrderEditScreen = ({ match, history }) => {
                            >
                               <Button
                                  type='submit'
-                                 variant='outline-light rounded-pill mt-4 btn_color_pink'
+                                 variant='outline-light rounded-pill mt-4 btn_color'
                                  size='normal'
                                  style={{
                                     width: '14rem',

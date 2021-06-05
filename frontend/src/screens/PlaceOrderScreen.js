@@ -309,11 +309,11 @@ function PlaceOrderScreen({ history }) {
                         <Button
                            type='button'
                            variant='outline-light'
-                           className='btn-block text-uppercase btn-apply btn_color_created pt-3 rounded-pill'
+                           className='btn-block text-uppercase btn-apply btn_color pt-3 rounded-pill'
                            disabled={cart.cartItems === 0}
                            onClick={placeOrderHandler}
                         >
-                           <h5>Đặt hàng</h5>
+                           <h5>Xác nhận đặt hàng</h5>
                         </Button>
                      </ListGroup.Item>
                   </ListGroup>

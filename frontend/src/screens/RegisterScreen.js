@@ -62,6 +62,7 @@ function RegisterScreen({ location, history }) {
                uploadFileAvatar({ image: uri }).then((res) => {
                   setAvatar(res.data)
                })
+               setUploading(true)
             } catch (error) {
                setUploading(false)
             }
@@ -89,6 +90,11 @@ function RegisterScreen({ location, history }) {
                   {message && <Message variant='danger'>{message}</Message>}
                   {error && <Message variant='danger'>{error}</Message>}
                   {loading && <Loader />}
+                  {/* {uploading === false && (
+                     <Message variant='danger'>
+                        {'Ảnh đại diện không được trống'}
+                     </Message>
+                  )} */}
                   <Form onSubmit={submitHandler}>
                      <h2 className='text-center'>Đăng kí</h2>
                      <Form.Group controlId='name'>
@@ -165,8 +171,9 @@ function RegisterScreen({ location, history }) {
                                     label='Chọn ảnh'
                                     custom
                                     onChange={uploadFile}
+                                    required
                                  ></Form.File>
-                                 {uploading && <Loader />}
+                                 {/* {uploading && <Loader />} */}
                               </Col>
                            </div>
                         </Row>

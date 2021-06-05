@@ -15,6 +15,7 @@ import Header from './components/Header'
 import SideBar from './components/SideBar'
 import { CloseOutlined } from '@ant-design/icons'
 import { listSubCategoryAdm } from '../../actions/subCategoryAction'
+import SkeletonEffect from '../../components/SkeletonEffect'
 
 function formatPrice(n, currency) {
    return n.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + currency
@@ -140,7 +141,7 @@ const ProductCreateScreen = () => {
                      <MessageSuccess variant='Thêm thành công'></MessageSuccess>
                   )}
                   {loadingCreate ? (
-                     <Loader />
+                     <SkeletonEffect />
                   ) : errorCreate ? (
                      <Message>{errorCreate}</Message>
                   ) : (
@@ -221,7 +222,7 @@ const ProductCreateScreen = () => {
                                     </Row>
                                  </Col>
                               </Row>
-                              {uploading && <Loader />}
+                              {uploading && <SkeletonEffect />}
                            </Form.Group>
 
                            <Row>

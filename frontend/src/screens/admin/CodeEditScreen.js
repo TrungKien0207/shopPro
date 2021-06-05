@@ -15,6 +15,7 @@ import Loader from '../../components/Loader'
 import { CODE_UPDATE_RESET } from '../../constants/codeConstants'
 import Header from './components/Header'
 import SideBar from './components/SideBar'
+import SkeletonEffect from '../../components/SkeletonEffect'
 
 const CodeEditScreen = ({ match, history }) => {
    const catId = match.params.id
@@ -81,7 +82,7 @@ const CodeEditScreen = ({ match, history }) => {
                )}
                {errorUpdate && <Message>{errorUpdate}</Message>}
                {loading ? (
-                  <Loader />
+                  <SkeletonEffect />
                ) : (
                   <Row className='justify-content-center'>
                      <Col md={6}>

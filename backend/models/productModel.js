@@ -3,7 +3,16 @@ var mongoose = require('mongoose')
 const reviewSchema = mongoose.Schema(
    {
       name: { type: String, required: true },
-      avatar: { type: String },
+      avatar: {
+         public_id: {
+            type: String,
+            required: false,
+         },
+         url: {
+            type: String,
+            required: false,
+         },
+      },
       rating: { type: Number, required: true },
       comment: { type: String, required: true },
       user: {

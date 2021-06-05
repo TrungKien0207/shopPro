@@ -29,7 +29,7 @@ import {
 } from '../../actions/categoryAction'
 import { deleteProduct, listAllProduct } from '../../actions/productActions'
 import Announcement from '../../components/Announcement'
-import Loader from '../../components/Loader'
+import SkeletonEffect from '../../components/SkeletonEffect'
 import Message from '../../components/Message'
 import '../../notisfied.css'
 import Header from './components/Header'
@@ -361,11 +361,11 @@ function ProductListScreen({ history, match }) {
                <SideBar />
             </Col>
             <Col md={10} className='pl-0'>
-               {loadingDelete && <Loader />}
+               {loadingDelete && <SkeletonEffect />}
                {errorDelete && <Message>{errorDelete}</Message>}
 
                {loading ? (
-                  <Loader />
+                  <SkeletonEffect />
                ) : error ? (
                   <Announcement variant='danger'>{error}</Announcement>
                ) : (

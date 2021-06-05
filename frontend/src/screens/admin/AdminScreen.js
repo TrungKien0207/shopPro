@@ -47,7 +47,7 @@ const AdminScreen = ({ history }) => {
       <>
          <Header />
          <Row style={{ backgroundColor: '#b68973' }}>
-            <Col md={2} className='p-0'>
+            <Col md={2} className='p-0 '>
                <SideBar />
             </Col>
             <Col
@@ -81,30 +81,41 @@ const AdminScreen = ({ history }) => {
                      </Select>
                   </FormControl>
                </div>
-               <BarChart width={1100} height={500} data={data}>
-                  <XAxis
-                     dataKey='name'
-                     stroke='#334443'
-                     style={{ fontWeight: '700' }}
-                  />
-                  <YAxis />
-                  <Tooltip
-                     wrapperStyle={{
-                        width: 220,
-                        backgroundColor: '#ccc',
-                        fontSize: '0.9rem',
-                        fontWeight: '700',
-                     }}
-                  />
+               <div className='ml-4'>
+                  <BarChart
+                     width={1100}
+                     height={500}
+                     data={data}
+                     style={{ zIndex: '5' }}
+                  >
+                     <XAxis
+                        dataKey='name'
+                        stroke='#334443'
+                        style={{ fontWeight: '700' }}
+                     />
+                     <YAxis />
+                     <Tooltip
+                        wrapperStyle={{
+                           width: 220,
+                           backgroundColor: '#ccc',
+                           fontSize: '0.9rem',
+                           fontWeight: '700',
+                        }}
+                     />
 
-                  <CartesianGrid
-                     stroke='#2e5a1c'
-                     // strokeDasharray='5 5'
-                     type='monotone'
-                  />
-                  <Bar dataKey={'Tổng doanh thu'} fill='#4e9525' barSize={20} />
-                  <Bar dataKey={'Số đơn hàng'} fill='#4e9525' barSize={1} />
-               </BarChart>
+                     <CartesianGrid
+                        stroke='#2e5a1c'
+                        // strokeDasharray='5 5'
+                        type='monotone'
+                     />
+                     <Bar
+                        dataKey={'Tổng doanh thu'}
+                        fill='#4e9525'
+                        barSize={20}
+                     />
+                     <Bar dataKey={'Số đơn hàng'} fill='#4e9525' barSize={1} />
+                  </BarChart>
+               </div>
             </Col>
          </Row>
       </>

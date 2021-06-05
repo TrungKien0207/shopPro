@@ -12,6 +12,7 @@ import MessageSuccess from '../../components/MessageSuccess'
 import { SUPPLIER_UPDATE_RESET } from '../../constants/supplierConstants'
 import SideBar from './components/SideBar'
 import Header from './components/Header'
+import SkeletonEffect from '../../components/SkeletonEffect'
 
 const SupplierEditScreen = ({ history, match }) => {
   const supId = match.params.id
@@ -61,7 +62,7 @@ const SupplierEditScreen = ({ history, match }) => {
           )}
           {errorUpdate && <Message>{errorUpdate}</Message>}
           {loading ? (
-            <Loader />
+            <SkeletonEffect />
           ) : (
             <Row className='justify-content-center'>
               <Col md={6}>

@@ -9,7 +9,7 @@ import 'react-toastify/dist/ReactToastify.css'
 import { listMyOrders } from '../actions/orderActions'
 import { getUserDetails, updateUserProfile } from '../actions/userActions'
 import Announcement from '../components/Announcement'
-import Loader from '../components/Loader'
+import SkeletonEffect from '../components/SkeletonEffect'
 import '../toast.css'
 import { format, utcToZonedTime } from 'date-fns-tz'
 import Footer from '../components/Footer.js'
@@ -324,7 +324,7 @@ const MyOrdersScreen = ({ history }) => {
       <>
          <Header />
          {loadingOrders ? (
-            <Loader />
+            <SkeletonEffect />
          ) : errorOrders ? (
             <Announcement variant='danger'>{errorOrders}</Announcement>
          ) : (

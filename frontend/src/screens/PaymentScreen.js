@@ -35,9 +35,12 @@ export const PaymentScreen = ({ history }) => {
    return (
       <>
          <Header />
-         <Row className='shadow p-2 card_color m-4'>
+         <Row className='shadow p-2 card_color m-4' style={{ height: '100vh' }}>
             <Col md={6} className='d-flex align-items-center'>
-               <Image src='/background/payment.jpg' fluid />
+               <Image
+                  src='/background/payment.jpg'
+                  style={{ height: '90vh' }}
+               />
             </Col>
             <Col md={6} className='d-flex align-items-center'>
                <div>

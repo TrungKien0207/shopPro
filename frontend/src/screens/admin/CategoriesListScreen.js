@@ -34,9 +34,8 @@ import {
   listCategoriesAdm,
 } from '../../actions/categoryAction'
 import Announcement from '../../components/Announcement'
-import Loader from '../../components/Loader'
-import MessageSuccess from '../../components/MessageSuccess'
 import SkeletonEffect from '../../components/SkeletonEffect'
+import MessageSuccess from '../../components/MessageSuccess'
 import SideBar from './components/SideBar'
 import Header from './components/Header'
 
@@ -381,7 +380,7 @@ const CategoriesListScreen = ({ history }) => {
         <Col md={10} className='pl-0'>
           {loadingDelete && (
               <MessageSuccess variant='Đã xoá thành công'></MessageSuccess>
-            ) && <Loader />}
+            ) && <SkeletonEffect />}
           {errorDelete && <Message>{errorDelete}</Message>}
           {loadingCreate && (
             <MessageSuccess

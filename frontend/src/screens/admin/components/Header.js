@@ -294,7 +294,7 @@ function Header(props) {
          <Navbar
             expand='lg'
             collapseOnSelect
-            className='p-0 pl-5 pr-5 m-0 shadow'
+            className='p-0 pl-5 pr-5 m-0 shadow '
             style={{ backgroundColor: '#edfead', height: '4rem' }}
          >
             <Container fluid>
@@ -366,7 +366,7 @@ function Header(props) {
                                                       alt='Remy Sharp'
                                                       src={
                                                          notify.logId.userId
-                                                            .avatar.url
+                                                            ?.avatar.url
                                                       }
                                                       style={{
                                                          width: '2.5rem',
@@ -376,7 +376,7 @@ function Header(props) {
                                                 </ListItemAvatar>
                                                 <div>
                                                    <strong className='text-capitalize'>
-                                                      {`${notify.logId.userId.name} đã đặt hàng #${notify.logId.rootId} thành công.`}
+                                                      {`${notify.logId.userId?.name} đã đặt hàng #${notify.logId.rootId} thành công.`}
                                                    </strong>
 
                                                    <p className='text-lowercase'>

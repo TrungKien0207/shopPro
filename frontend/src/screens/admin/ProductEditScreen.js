@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { listCategoriesAdm } from '../../actions/categoryAction'
 import { listProductDetails, updateProduct } from '../../actions/productActions'
-import Loader from '../../components/Loader'
+import SkeletonEffect from '../../components/SkeletonEffect'
 import Message from '../../components/Message'
 import MessageSuccess from '../../components/MessageSuccess'
 import { PRODUCT_UPDATE_RESET } from '../../constants/productConstants'
@@ -128,6 +128,7 @@ function ProductEditScreen({ match, history }) {
             setDescription(product.description)
             setHdsd(product.hdsd)
             setHdbq(product.hdbq)
+            setMass(product.mass)
          }
       }
    }, [dispatch, userInfo, history, productId, product, successUpdate])
@@ -143,10 +144,10 @@ function ProductEditScreen({ match, history }) {
                <Container>
                   {loadingUpdate && (
                         <MessageSuccess variant='Đã cập nhật thành công'></MessageSuccess>
-                     ) && <Loader />}
+                     ) && <SkeletonEffect />}
                   {errorUpdate && <Message>{errorUpdate}</Message>}
                   {loading ? (
-                     <Loader />
+                     <SkeletonEffect />
                   ) : error ? (
                      <Message>{error}</Message>
                   ) : (
@@ -229,7 +230,7 @@ function ProductEditScreen({ match, history }) {
                                     </Row>
                                  </Col>
                               </Row>
-                              {uploading && <Loader />}
+                              {uploading && <SkeletonEffect />}
                            </Form.Group>
 
                            <Row>
