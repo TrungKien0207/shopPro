@@ -16,6 +16,7 @@ import {
 import { listSubCategory } from '../actions/subCategoryAction'
 import {
    PRODUCT_FILTER_PRICE_RESET,
+   PRODUCT_FILTER_RESET,
    PRODUCT_FILTER_SUB_RESET,
    PRODUCT_OF_CATEGORY_RESET,
    PRODUCT_OF_SUB_CATEGORY_RESET,
@@ -126,6 +127,7 @@ const FilterNav = () => {
    function onChange(checkedValues) {
       if (checkedValues.target.checked === true) {
          setCat([...cat, checkedValues.target.value])
+         setSub([])
       } else {
          cat.map(
             (e) =>
@@ -138,6 +140,7 @@ const FilterNav = () => {
    function onChange2(checkedValues) {
       if (checkedValues.target.checked === true) {
          setSub([...sub, checkedValues.target.value])
+         setCat([])
       } else {
          sub.map(
             (e) =>
@@ -147,22 +150,24 @@ const FilterNav = () => {
       }
    }
 
-   console.log('sub', sub)
-
    const submitHandler = (e) => {
       e.preventDefault()
       if ((cat.length === 0) & (sub.length === 0)) {
+         dispatch({ type: PRODUCT_FILTER_RESET })
+         dispatch({ type: PRODUCT_FILTER_SUB_RESET })
          dispatch(filterPriceProduct([start, end]))
       } else if (sub.length === 0) {
          dispatch({ type: PRODUCT_FILTER_SUB_RESET })
          dispatch({ type: PRODUCT_FILTER_PRICE_RESET })
          dispatch({ type: PRODUCT_OF_SUB_CATEGORY_RESET })
          dispatch({ type: PRODUCT_OF_CATEGORY_RESET })
+
          dispatch(filterProduct(cat))
-      } else {
+      } else if (cat.length === 0) {
          dispatch({ type: PRODUCT_FILTER_PRICE_RESET })
          dispatch({ type: PRODUCT_OF_SUB_CATEGORY_RESET })
          dispatch({ type: PRODUCT_OF_CATEGORY_RESET })
+         dispatch({ type: PRODUCT_FILTER_RESET })
          dispatch(filterSubProduct(sub))
       }
    }

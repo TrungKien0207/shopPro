@@ -97,6 +97,7 @@ const ProductOfCategoryScreen = ({ match }) => {
    } = productFilterPrice
 
    console.log('product', productSub)
+   console.log('product cat', productsFilter)
 
    useEffect(() => {
       dispatch(getProductOfCategory(catId))
@@ -132,7 +133,7 @@ const ProductOfCategoryScreen = ({ match }) => {
                      </Col>
                      <Col md={9}>
                         <div className='pt-2 pl-3 pr-3 '>
-                           <Col
+                           {/* <Col
                               md={12}
                               className='d-flex justify-content-center '
                            >
@@ -145,7 +146,7 @@ const ProductOfCategoryScreen = ({ match }) => {
                                        label={prod.category.name}
                                     />
                                  ))}
-                           </Col>
+                           </Col> */}
                            <Row>
                               {loadingFilterPrice ? (
                                  <SkeletonEffect />

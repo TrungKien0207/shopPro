@@ -10,7 +10,7 @@ import { Col, Image, ListGroup, Row, Button, Form } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { getOrderDetails, updateOrder } from '../../actions/orderActions'
-import Loader from '../../components/Loader'
+import SkeletonEffect from '../../components/SkeletonEffect'
 import Message from '../../components/Message'
 import { ORDER_UPDATE_RESET } from '../../constants/orderConstants'
 import MessageSuccess from '../../components/MessageSuccess'
@@ -108,7 +108,7 @@ const OrderEditScreen = ({ match, history }) => {
                )}
                {errorUpdate && <Message>{errorUpdate}</Message>}
                {loading ? (
-                  <Loader />
+                  <SkeletonEffect />
                ) : (
                   <Form onSubmit={submitHandler}>
                      <ListGroup variant='flush' className='mt-3'>
@@ -129,12 +129,17 @@ const OrderEditScreen = ({ match, history }) => {
                                  </p>
                               </Col>
                               <Col md={6}>
+                                 <div>
+                                    <h5>
+                                       Trạng thái đơn hàng: {order?.orderStatus}
+                                    </h5>
+                                 </div>
                                  <FormControl className={classes.formControl}>
                                     <InputLabel
                                        id='demo-controlled-open-select-label'
                                        style={{ fontSize: '1.2rem' }}
                                     >
-                                       Trạng thái đơn hàng
+                                       Vui lòng chọn trạng thái đơn hàng
                                     </InputLabel>
                                     <Select
                                        labelId='demo-controlled-open-select-label'

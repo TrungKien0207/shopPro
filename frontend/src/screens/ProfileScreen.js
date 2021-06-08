@@ -25,11 +25,9 @@ import { getUserDetails, updateUserProfile } from '../actions/userActions'
 import Announcement from '../components/Announcement'
 import Footer from '../components/Footer.js'
 import Header from '../components/Header.js'
-import Loader from '../components/Loader'
 import Message from '../components/Message'
 import SkeletonEffect from '../components/SkeletonEffect'
 import { USER_UPDATE_PROFILE_RESET } from '../constants/userConstants'
-import data from '../data.json'
 import '../toast.css'
 
 const useStyles = makeStyles((theme) => ({
@@ -151,39 +149,22 @@ function ProfileScreen({ location, history }) {
                selectedDate,
             })
          )
-         //    toast.success(
-         //       <div>
-         //          <CheckCircleOutlineIcon className='pr-1' fontSize='large' />
-         //          Hồ sơ đã được cập nhật
-         //       </div>,
-         //       {
-         //          className: 'Toastify__toast--success',
-         //          position: 'top-right',
-         //          autoClose: 2500,
-         //          hideProgressBar: true,
-         //          closeOnClick: true,
-         //          pauseOnHover: true,
-         //          draggable: true,
-         //          progress: undefined,
-         //       }
-         //    )
-         // } else {
-         //    toast.error(
-         //       <div>
-         //          <ErrorOutlineIcon className='pr-1' fontSize='large' /> Số điện
-         //          thoại phải có đúng 10 số
-         //       </div>,
-         //       {
-         //          position: 'top-right',
-         //          autoClose: 2500,
-         //          hideProgressBar: true,
-         //          closeOnClick: true,
-         //          pauseOnHover: true,
-         //          draggable: true,
-         //          progress: undefined,
-         //       }
-         //    )
-         // }
+         toast.success(
+            <div>
+               <CheckCircleOutlineIcon className='pr-1' fontSize='large' />
+               Hồ sơ đã được cập nhật
+            </div>,
+            {
+               className: 'Toastify__toast--success',
+               position: 'top-right',
+               autoClose: 2500,
+               hideProgressBar: true,
+               closeOnClick: true,
+               pauseOnHover: true,
+               draggable: true,
+               progress: undefined,
+            }
+         )
       }
    }
 

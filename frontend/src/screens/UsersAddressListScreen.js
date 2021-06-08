@@ -18,6 +18,8 @@ import Header from '../components/Header.js'
 import Message from '../components/Message'
 import SkeletonEffect from '../components/SkeletonEffect'
 import data from '../data.json'
+import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline'
+import { toast, ToastContainer } from 'react-toastify'
 
 let formatPhoneNumber = (str) => {
    //Filter only numbers from the input
@@ -122,7 +124,25 @@ const UsersAddressListScreen = ({ history }) => {
 
    const createAddress = (e) => {
       e.preventDefault()
-      dispatch(createAddressUser(addressUser))
+      if (numberPhone.length === 14 || numberPhone.length === 10) {
+         dispatch(createAddressUser(addressUser))
+      } else {
+         toast.error(
+            <div>
+               <ErrorOutlineIcon className='pr-1' fontSize='large' /> Số điện
+               thoại phải đúng 10 số
+            </div>,
+            {
+               position: 'top-right',
+               autoClose: 2500,
+               hideProgressBar: true,
+               closeOnClick: true,
+               pauseOnHover: true,
+               draggable: true,
+               progress: undefined,
+            }
+         )
+      }
    }
 
    const selectRole = (id, role) => {
@@ -131,7 +151,25 @@ const UsersAddressListScreen = ({ history }) => {
 
    const updateAddress = (e) => {
       e.preventDefault()
-      dispatch(updateAddressUser(updateInformationAddress))
+      if (numberPhone.length === 14 || numberPhone.length === 10) {
+         dispatch(updateAddressUser(updateInformationAddress))
+      } else {
+         toast.error(
+            <div>
+               <ErrorOutlineIcon className='pr-1' fontSize='large' /> Số điện
+               thoại phải đúng 10 số
+            </div>,
+            {
+               position: 'top-right',
+               autoClose: 2500,
+               hideProgressBar: true,
+               closeOnClick: true,
+               pauseOnHover: true,
+               draggable: true,
+               progress: undefined,
+            }
+         )
+      }
    }
 
    return (
@@ -546,6 +584,7 @@ const UsersAddressListScreen = ({ history }) => {
                         </Row>
                      </div>
                   ))}
+                  <ToastContainer />
                </Container>
             </>
          )}

@@ -76,11 +76,11 @@ function LoginScreen({ location, history }) {
 
    useEffect(() => {
       if (userInfo) {
-         // if (userInfo?.isAdmin === true) {
-         //    history.push('/admin')
-         // } else {
-         history.push(redirect)
-         // }
+         if (userInfo?.isAdmin === true) {
+            history.push('/admin')
+         } else {
+            history.push(redirect)
+         }
       }
    }, [history, userInfo, redirect])
 
