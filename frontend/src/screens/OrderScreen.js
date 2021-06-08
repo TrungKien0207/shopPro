@@ -1,4 +1,6 @@
+import ClearIcon from '@material-ui/icons/Clear'
 import axios from 'axios'
+import { format, utcToZonedTime } from 'date-fns-tz'
 import React, { useEffect, useState } from 'react'
 import { Button, Card, Col, Image, ListGroup, Row } from 'react-bootstrap'
 import { PayPalButton } from 'react-paypal-button-v2'
@@ -6,28 +8,25 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import '../../src/notisfied.css'
 import {
+   Cash,
    deliverOrder,
    getOrderDetails,
    payOrder,
    updateOrderByMember,
 } from '../actions/orderActions'
 import Announcement from '../components/Announcement'
+import Footer from '../components/Footer'
+import Header from '../components/Header'
 import ImagePay from '../components/ImagePay'
 import Loader from '../components/Loader'
-import SkeletonEffect from '../components/SkeletonEffect'
 import Message from '../components/Message'
 import ProgressShipping from '../components/ProgressShipping'
+import SkeletonEffect from '../components/SkeletonEffect'
 import {
-   ORDER_CREATE_RESET,
    ORDER_DELIVER_RESET,
-   ORDER_DETAIL_RESET,
    ORDER_PAY_RESET,
    ORDER_UPDATE_BY_MEMBER_RESET,
 } from '../constants/orderConstants'
-import ClearIcon from '@material-ui/icons/Clear'
-import { format, utcToZonedTime } from 'date-fns-tz'
-import Header from '../components/Header'
-import Footer from '../components/Footer'
 
 let formatPhoneNumber = (str) => {
    //Filter only numbers from the input
@@ -64,6 +63,9 @@ const OrderScreen = ({ match, history }) => {
 
    const orderDeliver = useSelector((state) => state.orderDeliver)
    const { loading: loadingDeliver, success: successDeliver } = orderDeliver
+
+   const orderCash = useSelector((state) => state.orderCash)
+   const { loading: loadingCash, success: successCash } = orderCash
 
    const orderUpdateByMember = useSelector((state) => state.orderUpdateByMember)
    const { loading: loadingByMember, success: successByMember } =
@@ -123,12 +125,12 @@ const OrderScreen = ({ match, history }) => {
    }, [dispatch, orderId, successPay, successDeliver, successByMember, order])
 
    const successPaymentHandler = (paymentResult) => {
-      console.log(paymentResult)
       dispatch(payOrder(orderId, paymentResult))
    }
 
    const deliverHandler = () => {
       dispatch(deliverOrder(order))
+      dispatch(Cash(order))
    }
 
    const cancelOrder = () => {

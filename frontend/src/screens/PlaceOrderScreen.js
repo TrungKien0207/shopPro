@@ -271,9 +271,8 @@ function PlaceOrderScreen({ history }) {
                            <Col m={4}>
                               {code?.map((c) => (
                                  <strong>
-                                    {discountCode === c.name
-                                       ? format(c.discount, 'đ')
-                                       : '0đ'}
+                                    {discountCode === c.name &&
+                                       format(c.discount, 'đ')}
                                  </strong>
                               ))}
                            </Col>

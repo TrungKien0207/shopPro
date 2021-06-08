@@ -1,5 +1,8 @@
 import axios from 'axios'
 import {
+   ORDER_CASH_FAIL,
+   ORDER_CASH_REQUEST,
+   ORDER_CASH_SUCCESS,
    ORDER_CONSULT_FAIL,
    ORDER_CONSULT_REQUEST,
    ORDER_CONSULT_SUCCESS,
@@ -32,7 +35,7 @@ import {
    ORDER_UPDATE_BY_MEMBER_SUCCESS,
    ORDER_UPDATE_FAIL,
    ORDER_UPDATE_REQUEST,
-   ORDER_UPDATE_SUCCESS
+   ORDER_UPDATE_SUCCESS,
 } from '../constants/orderConstants'
 
 export const createOrder = (order) => async (dispatch, getState) => {
@@ -140,6 +143,43 @@ export const payOrder =
          })
       }
    }
+
+export const Cash = (order) => async (dispatch, getState) => {
+   try {
+      dispatch({
+         type: ORDER_CASH_REQUEST,
+      })
+
+      const {
+         userLogin: { userInfo },
+      } = getState()
+
+      const config = {
+         headers: {
+            Authorization: `Bearer ${userInfo.token}`,
+         },
+      }
+
+      const { data } = await axios.put(
+         `/api/orders/${order._id}/CASH`,
+         {},
+         config
+      )
+
+      dispatch({
+         type: ORDER_CASH_SUCCESS,
+         payload: data,
+      })
+   } catch (error) {
+      dispatch({
+         type: ORDER_CASH_FAIL,
+         payload:
+            error.response && error.response.data.message
+               ? error.response.data.message
+               : error.message,
+      })
+   }
+}
 
 export const deliverOrder = (order) => async (dispatch, getState) => {
    try {

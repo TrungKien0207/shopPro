@@ -1,4 +1,8 @@
 import {
+   ORDER_CASH_FAIL,
+   ORDER_CASH_REQUEST,
+   ORDER_CASH_RESET,
+   ORDER_CASH_SUCCESS,
    ORDER_CONSULT_FAIL,
    ORDER_CONSULT_REQUEST,
    ORDER_CONSULT_SUCCESS,
@@ -112,6 +116,30 @@ export const orderPayReducer = (state = {}, action) => {
             error: action.payload,
          }
       case ORDER_PAY_RESET:
+         return {}
+
+      default:
+         return state
+   }
+}
+
+export const orderCashReducer = (state = {}, action) => {
+   switch (action.type) {
+      case ORDER_CASH_REQUEST:
+         return {
+            loading: true,
+         }
+      case ORDER_CASH_SUCCESS:
+         return {
+            loading: false,
+            success: true,
+         }
+      case ORDER_CASH_FAIL:
+         return {
+            loading: false,
+            error: action.payload,
+         }
+      case ORDER_CASH_RESET:
          return {}
 
       default:

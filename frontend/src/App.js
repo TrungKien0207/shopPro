@@ -35,9 +35,13 @@ import PlaceOrderScreen from './screens/PlaceOrderScreen'
 import ProductOfCategoryScreen from './screens/ProductOfCategoryScreen'
 import ProductScreen from './screens/ProductScreen.js'
 import ProfileScreen from './screens/ProfileScreen'
+import ChatScreen from './screens/ChatScreen'
 import RegisterScreen from './screens/RegisterScreen.js'
+import SearchScreen from './screens/SearchScreen'
 import { ShippingScreen } from './screens/ShippingScreen'
 import UsersAddressListScreen from './screens/UsersAddressListScreen'
+import AdminChatScreen from './screens/admin/AdminChatScreen'
+import KonmunicateChat from './components/KonChat'
 
 const THEME = createMuiTheme({
    typography: {
@@ -62,7 +66,7 @@ const App = () => {
    return (
       <>
          <BackTop />
-
+         <KonmunicateChat />
          <Router>
             <div>
                <ThemeProvider theme={THEME}>
@@ -72,7 +76,7 @@ const App = () => {
                      <Route path='/' component={HomeScreen} exact />
                      <Route
                         path='/search/:keyword'
-                        component={HomeScreen}
+                        component={SearchScreen}
                         exact
                      />
 
@@ -96,6 +100,9 @@ const App = () => {
                            component={ProductScreen}
                            exact
                         />
+
+                        <Route path='/chat' component={ChatScreen} exact />
+
                         <Route
                            path='/order/:id'
                            component={OrderScreen}
@@ -249,6 +256,13 @@ const App = () => {
                      isAdmin={true}
                      path='/admin/order/:id/edit'
                      component={OrderEditScreen}
+                     exact
+                  />
+
+                  <ProtectedRoute
+                     isAdmin={true}
+                     path='/admin/chat'
+                     component={AdminChatScreen}
                      exact
                   />
 

@@ -18,6 +18,7 @@ import {
    codeUpdateReducer,
 } from './reducers/codeReducers.js'
 import {
+   orderCashReducer,
    orderConsultReducer,
    orderCreateReducer,
    orderDeleteReducer,
@@ -131,6 +132,7 @@ const reducer = combineReducers({
    orderUpdateByMember: orderUpdateByMemberReducer,
    orderConsult: orderConsultReducer,
    orderFilter: orderFilterReducer,
+   orderCash: orderCashReducer,
 
    categoriesList: categoriesListReducer,
    categoriesListAdm: categoriesListReducerAdm,

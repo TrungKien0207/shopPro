@@ -152,6 +152,27 @@ const updateOrderToDelivered = asyncHandler(async (req, res) => {
    }
 })
 
+//* @desc       Update order to delivered
+//* @route      GET /api/orders/:id/deliver
+//* @access     Private/Admin
+const updateOrderToPaidCash = asyncHandler(async (req, res) => {
+   const order = await Order.findById(req.params.id)
+
+   // console.log('Delivered', order)
+
+   if (order) {
+      order.isPaid = true
+      order.paidAt = Date.now()
+
+      const updatedOrder = await order.save()
+
+      res.json(updatedOrder)
+   } else {
+      res.status(404)
+      throw new Error('Order not found')
+   }
+})
+
 //* @desc       Get logged in user orders
 //* @route      GET /api/orders/myorders
 //* @access     Private
@@ -175,7 +196,9 @@ const getOrders = asyncHandler(async (req, res) => {
    let totalAmount = 0
 
    orders.forEach((order) => {
-      totalAmount += order.totalPrice
+      if (order.isPaid) {
+         totalAmount += order.totalPrice
+      }
    })
 
    setTimeout(() => {
@@ -297,4 +320,5 @@ module.exports = {
    updateStatus,
    updateStatusByMember,
    filterOrder,
+   updateOrderToPaidCash,
 }

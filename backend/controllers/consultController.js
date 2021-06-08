@@ -12,6 +12,7 @@ const handleCurrentWeek = (req, res) => {
       Order.aggregate([
          {
             $match: {
+               isPaid: true,
                createdAt: {
                   $gte: new Date(weekStart),
                   $lte: new Date(weekEnd),
@@ -21,7 +22,7 @@ const handleCurrentWeek = (req, res) => {
          {
             $group: {
                _id: {
-                  $dateToString: { format: '%d-%m-%Y', date: '$createdAt' },
+                  $dateToString: { format: '%d/%m', date: '$createdAt' },
                },
                count: { $sum: 1 },
                total: { $sum: '$totalPrice' },
@@ -44,6 +45,7 @@ const handleMonthAgo = (req, res) => {
       Order.aggregate([
          {
             $match: {
+               isPaid: true,
                createdAt: {
                   $gte: new Date(monthStart),
                   $lte: new Date(monthEnd),
@@ -53,7 +55,7 @@ const handleMonthAgo = (req, res) => {
          {
             $group: {
                _id: {
-                  $dateToString: { format: '%d-%m-%Y', date: '$createdAt' },
+                  $dateToString: { format: '%d/%m', date: '$createdAt' },
                },
                count: { $sum: 1 },
                total: { $sum: '$totalPrice' },
@@ -77,6 +79,7 @@ const handleCurrentMonth = (req, res) => {
       Order.aggregate([
          {
             $match: {
+               isPaid: true,
                createdAt: {
                   $gte: new Date(monthStart),
                },
@@ -85,7 +88,7 @@ const handleCurrentMonth = (req, res) => {
          {
             $group: {
                _id: {
-                  $dateToString: { format: '%d-%m-%Y', date: '$createdAt' },
+                  $dateToString: { format: '%d/%m', date: '$createdAt' },
                },
                count: { $sum: 1 },
                total: { $sum: '$totalPrice' },
@@ -107,6 +110,7 @@ const handleYear365 = (req, res) => {
       Order.aggregate([
          {
             $match: {
+               isPaid: true,
                createdAt: {
                   $gte: new Date(day365),
                },
@@ -115,7 +119,7 @@ const handleYear365 = (req, res) => {
          {
             $group: {
                _id: {
-                  $dateToString: { format: '%Y-%m-%d', date: '$createdAt' },
+                  $dateToString: { format: '%d/%m', date: '$createdAt' },
                },
                count: { $sum: 1 },
                total: { $sum: '$totalPrice' },
@@ -139,6 +143,7 @@ const handleDay7Ago = (req, res) => {
          {
             $match: {
                createdAt: {
+                  isPaid: true,
                   $gte: new Date(day7),
                },
             },
@@ -146,7 +151,7 @@ const handleDay7Ago = (req, res) => {
          {
             $group: {
                _id: {
-                  $dateToString: { format: '%d-%m-%Y', date: '$createdAt' },
+                  $dateToString: { format: '%d/%m', date: '$createdAt' },
                },
                count: { $sum: 1 },
                total: { $sum: '$totalPrice' },
