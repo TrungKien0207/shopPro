@@ -114,7 +114,7 @@ function HomeScreen({ match, history }) {
       dispatch(listProducts(keyword, pageNumber))
       dispatch(listTopRateProducts())
       dispatch(listTopSoldProducts())
-      window.scrollTo(0, 0)
+      // window.scrollTo(0, 0)
    }, [dispatch, keyword, pageNumber, userInfo])
 
    return (

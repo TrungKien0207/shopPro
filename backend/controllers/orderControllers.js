@@ -38,6 +38,7 @@ const addOrderItems = asyncHandler(async (req, res) => {
             discount,
          })
 
+         console.log(order)
          order.orderItems.map(async (item) => {
             const p = item.product
             const q = item.qty
@@ -156,20 +157,24 @@ const updateOrderToDelivered = asyncHandler(async (req, res) => {
 //* @route      GET /api/orders/:id/deliver
 //* @access     Private/Admin
 const updateOrderToPaidCash = asyncHandler(async (req, res) => {
-   const order = await Order.findById(req.params.id)
+   try {
+      const order = await Order.findById(req.params.id)
 
-   // console.log('Delivered', order)
+      // console.log('Delivered', order)
 
-   if (order) {
-      order.isPaid = true
-      order.paidAt = Date.now()
+      if (order) {
+         order.isPaid = true
+         order.paidAt = Date.now()
 
-      const updatedOrder = await order.save()
+         const updatedOrder = await order.save()
 
-      res.json(updatedOrder)
-   } else {
-      res.status(404)
-      throw new Error('Order not found')
+         res.json(updatedOrder)
+      } else {
+         res.status(404)
+         throw new Error('Order not found')
+      }
+   } catch (error) {
+      console.log(error)
    }
 })
 

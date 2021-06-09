@@ -27,6 +27,7 @@ const app = express()
 
 dotenv.config()
 connectDB().then((res) => {
+   console.log(res)
    const http = require('http').createServer(app)
    const server = http.listen(
       PORT,

@@ -226,7 +226,7 @@ const ProductCreateScreen = () => {
                            </Form.Group>
 
                            <Row>
-                              <Col md={3}>
+                              {/* <Col md={3}>
                                  <Form.Group
                                     controlId='brand'
                                     className='pl-3 pr-3'
@@ -247,8 +247,8 @@ const ProductCreateScreen = () => {
                                        }
                                     ></Form.Control>
                                  </Form.Group>
-                              </Col>
-                              <Col md={3}>
+                              </Col> */}
+                              <Col md={4}>
                                  <Form.Group
                                     controlId='countInStock'
                                     className='pl-3 pr-3'
@@ -270,7 +270,7 @@ const ProductCreateScreen = () => {
                                     ></Form.Control>
                                  </Form.Group>
                               </Col>
-                              <Col md={3}>
+                              <Col md={4}>
                                  <Form.Group
                                     controlId='category'
                                     className='pl-3 pr-3'
@@ -305,7 +305,7 @@ const ProductCreateScreen = () => {
                                     </Form.Control>
                                  </Form.Group>
                               </Col>
-                              <Col md={3}>
+                              <Col md={4}>
                                  <Form.Group
                                     controlId='price'
                                     className='pl-3 pr-3'

@@ -155,6 +155,8 @@ const FilterNav = () => {
       if ((cat.length === 0) & (sub.length === 0)) {
          dispatch({ type: PRODUCT_FILTER_RESET })
          dispatch({ type: PRODUCT_FILTER_SUB_RESET })
+         dispatch({ type: PRODUCT_OF_SUB_CATEGORY_RESET }) 
+         dispatch({ type: PRODUCT_OF_CATEGORY_RESET })
          dispatch(filterPriceProduct([start, end]))
       } else if (sub.length === 0) {
          dispatch({ type: PRODUCT_FILTER_SUB_RESET })
