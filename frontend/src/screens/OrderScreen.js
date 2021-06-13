@@ -398,7 +398,7 @@ const OrderScreen = ({ match, history }) => {
                                  <Col md={8}>Giảm giá</Col>
                                  <Col md={4}>
                                     <p className='mb-0'>
-                                       {formatMoney(order.discount, 'đ')}
+                                       {formatMoney(order?.discount, 'đ')}
                                     </p>
                                  </Col>
                               </Row>

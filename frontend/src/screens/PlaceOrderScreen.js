@@ -1,22 +1,18 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Card, Col, Image, ListGroup, Row, Form } from 'react-bootstrap'
+import { Button, Card, Col, Form, Image, ListGroup, Row } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
+import { ToastContainer } from 'react-toastify'
 import { removeFromCart } from '../actions/cartActions'
+import { listCode } from '../actions/codeAction'
 import { createOrder } from '../actions/orderActions'
 import Announcement from '../components/Announcement'
-import Message from '../components/Message'
-import Step from '../components/Step'
 import Footer from '../components/Footer.js'
 import Header from '../components/Header.js'
+import Message from '../components/Message'
+import Step from '../components/Step'
+import { ORDER_CREATE_RESET } from '../constants/orderConstants'
 import { USER_DETAILS_RESET } from '../constants/userConstants'
-import {
-   ORDER_CREATE_RESET,
-   ORDER_DETAIL_RESET,
-} from '../constants/orderConstants'
-import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline'
-import { toast, ToastContainer } from 'react-toastify'
-import { listCode } from '../actions/codeAction'
 
 PlaceOrderScreen.propTypes = {}
 
@@ -72,9 +68,7 @@ function PlaceOrderScreen({ history }) {
    // cart.shippingPrice = addDecimals(cart.itemsPrice > 100 ? 0 : 100)
    let discounted = ''
 
-   code?.map((c) =>
-      c.name === discountCode ? (discounted = c.discount) : (discounted = 0)
-   )
+   code?.filter((c) => c.name === discountCode && (discounted = c.discount))
 
    cart.taxPrice = addDecimals(Number((0.15 * cart.itemsPrice).toFixed(2)))
    cart.totalPrice =
