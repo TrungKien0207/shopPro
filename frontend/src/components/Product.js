@@ -23,8 +23,6 @@ function Product({ product }) {
       dispatch(listSale())
    }, [dispatch])
 
-   console.log('list sale', sale)
-
    return (
       <>
          <Card className='mt-0 rounded product-card '>
